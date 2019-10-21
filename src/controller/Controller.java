@@ -1,5 +1,7 @@
 package controller;
 
+import model.game.Game;
+
 public class Controller {
 
     private Game game;
@@ -8,7 +10,7 @@ public class Controller {
         this.game = game;
     }
 
-    public void moveHero (Command command) {
+    private void moveHero (Command command) {
         game.moveHero(command);
     }
 
