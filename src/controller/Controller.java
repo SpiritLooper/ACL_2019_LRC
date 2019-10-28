@@ -10,7 +10,7 @@ public class Controller {
         this.game = game;
     }
 
-    private void moveHero (Command command) {
+    public void move(Command command) {
         game.moveHero(command);
     }
 

@@ -46,7 +46,7 @@ public class InputManager implements KeyListener {
                 break;
         }
 
-        controller.moveHero(currentCommand);
+        controller.move(currentCommand);
     }
 
     @Override

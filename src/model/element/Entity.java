@@ -6,5 +6,5 @@ package model.element;
  */
 public interface Entity {
     Position getPosition();
-    boolean move(Position p);
+    void move(Position p);
 }

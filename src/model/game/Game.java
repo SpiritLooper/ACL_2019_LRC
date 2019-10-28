@@ -1,6 +1,7 @@
 package model.game;
 
 import controller.Command;
+import model.PoolPosition;
 import model.element.Hero;
 import model.element.Position;
 
@@ -28,27 +29,64 @@ public class Game {
         this.width = width;
         this.height = height;
 
+        PoolPosition.init(width, height); //pour initialisé la pool singleton
+
         //position initiale du héro en 0,0 le coin en haut à gauche POUR L'INSTANT
-        Position posStartHero = new Position(0,0);
+        Position posStartHero = PoolPosition.getInstance().getPosition(1,1);
         hero = new Hero(posStartHero);
+
     }
 
 
+    private void setLevel(Level l){
+        level = l;
+    }
     public void moveHero(Command command) {
-
-        Position p = hero.getPosition();
-        //la position actuelle du héro qu'on va modifier suivant la (commande)
-        //pour avoir la position potentielle et vérifier si la case est libre etc..
-
-        p.setPosition(command); //la classe Position traduit la Command en une nouvelle position
-
-        if(canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
+        Position p = hero.getNewPosition(command); //le jeu demande au héro sa position s'il execute sa commande
+        if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
             hero.move(p);        //le hero bouge
         }
+    }
+
+    private Hero getHero() {
+        return hero;
+    }
+
+
+    /////---------------TEST-------------------
+
+    public static void main(String[] argv){
+        testLevel();
+    }
+
+    private static void testLevel() {
+        Game game = new Game(3,3);
+        Level level = new Level();
+        level.generateDefaultLevel();
+
+        game.setLevel(level);//on bind la game au level
+
+        Command commands[] = new Command[5];
+        commands[0] = Command.UP;
+        commands[1] = Command.DOWN;
+        commands[2] = Command.LEFT;
+        commands[3] = Command.RIGHT;
+        commands[4] = Command.IDLE;
+
+        for(int i=0; i<5; i++){
+            game.moveHero(commands[i]);
+        }
+
+
+        System.out.println(game.getHero());
+        game.moveHero(commands[1]);
+        System.out.println(game.getHero()); //test coord 2,2, y'a un monstre il ne peut pas y aller
+        game.moveHero(commands[3]);
+        System.out.println(game.getHero());
 
     }
 
-    private boolean canHeroMove(Position p) {
-        return level.canHeroMove(p);
-    }
+
 }
+
+
