@@ -7,7 +7,6 @@ public abstract class Tile implements Entity{
     public Tile(Position position, boolean walkable){
         this.position = position;
         this.walkable = walkable;
-
     }
 
     @Override

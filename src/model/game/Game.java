@@ -38,9 +38,18 @@ public class Game {
     }
 
 
+    /**Fonction qui instensie le level actuel
+     *
+     * @param l
+     */
     private void setLevel(Level l){
         level = l;
     }
+
+    /**Fonction qui, selon la commande rentré en paramêtre, applique un mouvement au héro
+     *
+     * @param command
+     */
     public void moveHero(Command command) {
         Position p = hero.getNewPosition(command); //le jeu demande au héro sa position s'il execute sa commande
         if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors

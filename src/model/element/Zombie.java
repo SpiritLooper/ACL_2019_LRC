@@ -1,6 +1,7 @@
 package model.element;
 
 public class Zombie extends Monster {
+
     public Zombie(Position position) {
         super(position);
     }

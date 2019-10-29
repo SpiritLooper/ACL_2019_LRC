@@ -5,7 +5,7 @@ import controller.Command;
 import model.PoolPosition;
 
 /**
- * classe du Hero du jeu
+ * Classe du Hero du jeu
  * @author gouth
  */
 public class Hero implements Entity{
@@ -18,6 +18,10 @@ public class Hero implements Entity{
         position = PoolPosition.getInstance().getPosition(1,1);
     }
 
+    /**Constructeur avec une position donnée au héro
+     *
+     * @param p position du hero où placer le héro
+     */
     public Hero(Position p){
         position = p;
     }
@@ -27,7 +31,7 @@ public class Hero implements Entity{
         return position;
     }
 
-    /**
+    /**Fonction qui prend en paramêtre une commande et qui déplace le héro en fonction de cette dernière
      *
      * @param c : la commande
      * @return la nouvelle position selon la commande
@@ -63,6 +67,7 @@ public class Hero implements Entity{
         this.position = PoolPosition.getInstance().getPosition(p);
     }
 
+    @Override
     public String toString(){
         return "Hero : " + position.toString();
     }

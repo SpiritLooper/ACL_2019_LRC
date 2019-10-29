@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- * Classe permettant de desssiner le jeu à partir de l'image donnée
+ * Classe permettant de dessiner le jeu à partir de l'image donnée
  * @author Julien Claisse
  */
 public class Painter {

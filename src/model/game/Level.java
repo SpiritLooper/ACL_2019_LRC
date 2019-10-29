@@ -18,18 +18,45 @@ public class Level {
     private Level nextLevel;
     private HashMap<Position, Entity> hashmapMonsters;
     private HashMap<Position, Tile> hashMapTile;
+
     public Level(){
         hashmapMonsters = new HashMap<>();
         hashMapTile = new HashMap<>();
     }
 
+    /**Fonction qui ajoute une entité au level
+     *
+     * @param p position où placer l'entité dans le level
+     * @param e entité à ajouter
+     */
     protected void addEntity(Position p, Entity e){
         hashmapMonsters.put(p, e);
     }
+
+    /**Fonction qui ajoute une tuile au niveau
+     *
+     * @param p position où placer la tuile dans le level
+     * @param t tuile à ajouter
+     */
     protected void addTile(Position p, Tile t) { hashMapTile.put(p, t); }
+
+    /**Fonction qui supprime une entité se trouvant à la position donnée en paramêtre
+     *
+     * @param p
+     */
     protected void removeEntity(Position p){ hashmapMonsters.remove(p);}
+
+    /**Fonction qui supprime une tuile se trouvant à la position donnée en paramêtre
+     *
+     * @param p
+     */
     protected void removeTile(Position p){ hashMapTile.remove(p);}
 
+    /**Fonction booléen qui retourne vrai si le héro peut se déplacer à la position donnée en paramêtre, faux sinonv
+     *
+     * @param p
+     * @return
+     */
     public boolean canHeroMove(Position p) {
         boolean res = true;
         if(hashmapMonsters.containsKey(p)) //si y'a un monstre à l'emplacement on se déplace pas

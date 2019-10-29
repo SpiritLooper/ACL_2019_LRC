@@ -15,29 +15,44 @@ public class Position {
     private final int x;
     private final int y;
 
+    /**Constructeur
+     *
+     * @param x valeur entière de la coordonnée x
+     * @param y valeur entière de la coordonnée y
+     */
     public Position(int x, int y){
         this.x = x;
         this.y = y;
     }
 
+    //INUTILE ?
     public Position getPosition(){
         return this;
     }
 
+    /**Fonction qui retourne la coordonnée X
+     *
+     * @return la valeur entière de X
+     */
     public int getX(){
         return this.x;
     }
 
+    /**Fonction qui retourne la coordonnée Y
+     *
+     * @return la valeur entière de Y
+     */
     public int getY(){
         return this.y;
     }
 
+    @Override
     public String toString(){
         return "x:"+x+" y:"+y;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) { //peut mieux faire ?
         if(this == obj) return true;
         if(obj == null) return false;
         if(this.getClass() != obj.getClass()) return false;
