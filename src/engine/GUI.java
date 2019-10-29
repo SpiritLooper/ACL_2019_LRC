@@ -1,5 +1,8 @@
 package engine;
 
+import controller.Controller;
+import controller.InputManager;
+
 import javax.swing.*;
 
 /**
@@ -13,6 +16,7 @@ public class GUI {
      */
     private GamePanel panel;
 
+
     /**
      * la construction de l'interface graphique: JFrame avec panel pour le game
      *
@@ -20,7 +24,7 @@ public class GUI {
      * @param gameController l'afficheur a utiliser dans le moteur
      *
      */
-    public GUI(Painter gamePainter, GameController gameController){
+    public GUI(Painter gamePainter, Controller gameController){
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -28,8 +32,10 @@ public class GUI {
         this.panel=new GamePanel(gamePainter);
         f.setContentPane(this.panel);
 
+        //Creation du keyListener
+
         // attacher controller au panel du game
-        this.panel.addKeyListener(gameController);
+        this.panel.addKeyListener(new InputManager(gameController));
 
         f.pack();
         f.setVisible(true);

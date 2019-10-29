@@ -4,6 +4,9 @@ package engine;
  * Classe permettant de faire un rendu graphique du jeu
  * @author Horatiu Cirstea, Vincent Thomas, Julien Claisse
  */
+import controller.Controller;
+import model.game.Game;
+
 public class Engine {
 
     //Modele du jeu
@@ -13,7 +16,7 @@ public class Engine {
     private Painter gamePainter;
 
     //Controller du jeu
-    private GameController gameController;
+    private Controller gameController;
 
     //Interface graphique contenant l'image de rendu
     private GUI gui;
@@ -22,37 +25,30 @@ public class Engine {
      * construit le moteur graphique
      *
      * @param game
-     *            game a lancer
-     * @param gamePainter
-     *            afficheur a utiliser
-     * @param gameController
-     *            controlleur a utiliser
+     *            game a lancer et a afficher
      *
      */
-    public Engine(Game game, Painter gamePainter, GameController gameController) {
+    public Engine(Game game) {
         this.game = game;
-        this.gamePainter = gamePainter;
-        this.gameController = gameController;
+        this.gamePainter = new Painter(game);
+        this.gameController = new Controller(game);
     }
 
     /**
-     * permet de lancer le game
+     * Créer l'interface graphique
      */
-    public void run() throws InterruptedException {
-
-        // creation de l'interface graphique
+    public void run() {
         this.gui = new GUI(this.gamePainter,this.gameController);
+        update();
+    }
 
-        // boucle de game
-        while (!this.game.isFinished()) {
-            // demande controle utilisateur
-            Cmd c = this.gameController.getCommand();
-            // fait evoluer le game
-            this.game.evolve(c);
-            // affiche le game
-            this.gui.paint();
-            // met en attente
-            Thread.sleep(100);
-        }
+    /**
+     * Mets à jour l'affichage du jeu
+     */
+    public void update() {
+        // affiche le game
+        this.gui.paint();
+        // met en attente
+        //Thread.sleep(100); // a voir ce que ça donne si le jeu va plus vite que sonic
     }
 }
