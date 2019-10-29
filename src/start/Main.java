@@ -1,9 +1,7 @@
 package start;
 
-import model.PacmanPainter;
-import engine.GameEngineGraphical;
-import model.PacmanController;
-import model.PacmanGame;
+import engine.Engine;
+import model.game.Game;
 
 /**
  * lancement du moteur avec le jeu
@@ -12,13 +10,10 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		// creation du jeu particulier et de son afficheur
-		PacmanGame game = new PacmanGame("helpFilePacman.txt");
-		PacmanPainter painter = new PacmanPainter();
-		PacmanController controller = new PacmanController();
+		Game game = new Game(10,10);
 
 		// classe qui lance le moteur de jeu generique
-		GameEngineGraphical engine = new GameEngineGraphical(game, painter, controller);
+		Engine engine = new Engine(game);
 		engine.run();
 	}
 
