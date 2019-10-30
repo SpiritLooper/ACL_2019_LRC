@@ -76,7 +76,7 @@ public class Level {
           0   1   2
          _____________
       0  |_H_|___|___|
-      1  |___|___|___|
+      1  |___|___|_W_|
       2  |___|___|_M_|
 
          */
@@ -88,11 +88,19 @@ public class Level {
 
     }
 
+    /**
+     * Permet d'obtenir l'ensmble des positions des monstres
+     * @return
+     */
     public Collection<Position> getMonstersPosition() {
         return hashmapMonsters.keySet();
     }
 
-    public Collection<Position> getWallsPosition() { //A corriger plus tard c'est juste pour test la vue
-        return hashMapTile.keySet();
+    /**
+     * Permet d'obtenir l'ensemble des positions des murs
+     * @return positions de chaque tiles filtrees par murs
+     */
+    public Collection<Position> getWallsPosition() { //A corriger plus tard, il faudra filtrer les murs a partir de la hashmap Tiles
+        return hashMapTile.keySet();                // c'est juste pour test la vue
     }
 }

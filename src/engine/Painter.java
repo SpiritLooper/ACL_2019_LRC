@@ -42,6 +42,11 @@ public class Painter {
         drawMonsters(crayon, im);
     }
 
+    /**
+     * Dessine la structure du level
+     * @param g objet de dessin
+     * @param img image sur laquelle dessiner
+     */
     private void drawLabyrinth(Graphics2D g, BufferedImage img){
         //Création fond blanc
         g.setColor(Color.WHITE);
@@ -66,6 +71,11 @@ public class Painter {
         }
     }
 
+    /**
+     * Dessine l'ensemble des monstres du level
+     * @param g objet de dessin
+     * @param img image sur laquelle dessiner
+     */
     private void drawMonsters(Graphics2D g, BufferedImage img) {
         //Couleur des monstres
         g.setColor(Color.RED);
@@ -76,9 +86,14 @@ public class Painter {
         }
     }
 
+    /**
+     * Dessine le hero dans son level
+     * @param g objet de dessin
+     * @param img image sur laquelle dessiner
+     */
     private void drawHero(Graphics2D g, BufferedImage img) {
         //Récupération de sa position
-        Position heroPosition = game.getHero().getPosition();
+        Position heroPosition = game.getHeroPosition();
 
         //Dessin du hero
         g.setColor(Color.BLUE);

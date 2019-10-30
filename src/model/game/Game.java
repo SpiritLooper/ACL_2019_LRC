@@ -50,18 +50,26 @@ public class Game {
         this.observer.update();
     }
 
-    /**Fonction qui instensie le level actuel
-     *
+    /**
+     * Fonction qui instensie le level actuel
      * @param l
      */
     private void setLevel(Level l){
         level = l;
     }
 
+    /**
+     * Fonction façade pour connaitre la position des monstres
+     * @return l'ensemble des positions
+     */
     public Collection<Position> getMonstersPosition() {
         return level.getMonstersPosition();
     }
 
+    /**
+     * Fonction façade pour connaitre la position des murs
+     * @return l'ensemble des positions
+     */
     public Collection<Position> getWallsPosition() {
         return level.getWallsPosition();
     }
@@ -75,11 +83,19 @@ public class Game {
         if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
             hero.move(p);        //le hero bouge
         }
-        notifyObserver();
+        notifyObserver(); // Mis à jour de la vue
     }
 
-    public Hero getHero() {
+    protected Hero getHero() {
         return hero;
+    }
+
+    /**
+     * Permet d'obtenir la position du hero
+     * @return
+     */
+    public Position getHeroPosition() {
+        return hero.getPosition();
     }
 
     /**
