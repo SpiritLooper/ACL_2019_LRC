@@ -40,6 +40,10 @@ public class Painter {
         drawHero(crayon,im);
 
         drawMonsters(crayon, im);
+
+        if(game.isFinished()) {
+            drawWin(crayon);
+        }
     }
 
     /**
@@ -69,6 +73,20 @@ public class Painter {
         for(Position p : game.getWallsPosition())  {
             g.fillRect(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT, WORLD_UNIT, WORLD_UNIT);
         }
+
+        //Dessin escalier ou trésor
+        Position p;
+        if(game.hasATresorInLevel()){
+            g.setColor(Color.ORANGE);
+            p = game.getTresorPosition();
+        } else {
+            g.setColor(Color.GREEN);
+            p = game.getStairsPosition();
+        }
+
+        if(p != null)
+            g.fillRect(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , WORLD_UNIT, WORLD_UNIT);
+
     }
 
     /**
@@ -98,6 +116,12 @@ public class Painter {
         //Dessin du hero
         g.setColor(Color.BLUE);
         g.fillOval(heroPosition.getX() * WORLD_UNIT,heroPosition.getY() * WORLD_UNIT,WORLD_UNIT,WORLD_UNIT);
+    }
+
+    private void drawWin(Graphics2D g) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 36));
+        g.setColor(Color.DARK_GRAY);
+        g.drawString("You Win !",0,HEIGHT - 36);
     }
 
     public int getWidth() {

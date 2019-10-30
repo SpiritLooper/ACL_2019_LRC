@@ -11,7 +11,8 @@ public class Controller {
     }
 
     public void move(Command command) {
-        game.moveHero(command);
+        if(!game.isFinished())
+            game.moveHero(command);
     }
 
 }

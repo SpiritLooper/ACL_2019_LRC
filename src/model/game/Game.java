@@ -5,6 +5,8 @@ import engine.Engine;
 import model.PoolPosition;
 import model.element.Hero;
 import model.element.Position;
+import model.element.Stairs;
+import model.element.Tresure;
 
 import java.util.Collection;
 
@@ -30,6 +32,8 @@ public class Game {
 
     private Engine observer;
 
+    private boolean isFinished = false;
+
     public Game(int width, int height){
         this.width = width;
         this.height = height;
@@ -49,6 +53,7 @@ public class Game {
     private void notifyObserver() { // Equivalent à l'update
         this.observer.update();
     }
+
 
     /**
      * Fonction qui instensie le level actuel
@@ -70,8 +75,16 @@ public class Game {
      * Fonction façade pour connaitre la position des murs
      * @return l'ensemble des positions
      */
-    public Collection<Position> getWallsPosition() {
-        return level.getWallsPosition();
+    public Collection<Position> getWallsPosition() { //TODO : a corriger il faut choisir les murs seulement
+        return level.getTilesEventPosition();
+    }
+
+    /**
+     * Fonction façade pour connaitre la position des tuiles evenements
+     * @return l'ensemble des positions
+     */
+    public Collection<Position> getEventTilesPosition() {
+        return level.getTilesEventPosition();
     }
 
     /**Fonction qui, selon la commande rentré en paramêtre, applique un mouvement au héro
@@ -82,12 +95,48 @@ public class Game {
         Position p = hero.getNewPosition(command); //le jeu demande au héro sa position s'il execute sa commande
         if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
             hero.move(p);        //le hero bouge
+            level.fireEventTile(p);
         }
         notifyObserver(); // Mis à jour de la vue
     }
 
     protected Hero getHero() {
         return hero;
+    }
+
+    /**
+     * Indique si le level possède un trésor
+     * @return vrai s'il y en a un
+     */
+    public boolean hasATresorInLevel() {
+        return level.hasATresor();
+    }
+
+    /**
+     * Permet de savoir la position du tresor
+     * @return la position du tresor
+     */
+    public Position getTresorPosition() {
+        return level.getPositionTresor();
+    }
+
+    /**
+     * Permet de savoir la position de l'escalier
+     * @return la position de l'escalier
+     */
+    public Position getStairsPosition() {
+        return level.getPositionStairs();
+    }
+
+    /**
+     * Fonction qui change de level et qui redeplace le heros
+     */
+    public void nextLevel() {
+        level = level.nextLevel();
+
+        Position p = PoolPosition.getInstance().getPosition(0,0);
+
+        hero.move(p);
     }
 
     /**
@@ -103,10 +152,24 @@ public class Game {
      */
     public void generateGame() {
         //Génération par défaut
-        Level level = new Level();
-        level.generateDefaultLevel();
+        Level level1 = new Level();
+        level1 = level1.generateDefaultLevel(this);
 
-        this.setLevel(level);//on bind la game au level
+        //Ajout stairs
+        Position p = PoolPosition.getInstance().getPosition(4,4);
+        level1.addTile(p, new Stairs(p, this));
+
+        Level level2 = new Level();
+        level2 = level2.generateDefaultLevel(this);
+
+        //Ajout Tresor
+        p = PoolPosition.getInstance().getPosition(5,4);
+        level2.addTile(p, new Tresure(p, this));
+
+
+        level1.setNextLevel(level2);
+
+        this.setLevel(level1);//on bind la game au level
     }
 
     /**
@@ -123,10 +186,10 @@ public class Game {
         testLevel();
     }
 
-    private static void testLevel() {
+    public static void testLevel() {
         Game game = new Game(3,3);
         Level level = new Level();
-        level.generateDefaultLevel();
+        level.generateDefaultLevel(game);
 
         game.setLevel(level);//on bind la game au level
 
@@ -150,7 +213,20 @@ public class Game {
 
     }
 
+    /**
+     * Indique si le jeu est fini ou non
+     * @return
+     */
+    public boolean isFinished() {
+        return isFinished;
+    }
 
+    /**
+     * REnd le jeu à l'état fini
+     */
+    public void finished() {
+        isFinished = true;
+    }
 }
 
 
