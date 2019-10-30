@@ -14,6 +14,8 @@ public class Main {
 
 		// classe qui lance le moteur de jeu generique
 		Engine engine = new Engine(game);
+		game.setObserver(engine);
+
 		engine.run();
 	}
 

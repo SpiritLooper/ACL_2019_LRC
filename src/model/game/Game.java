@@ -1,6 +1,7 @@
 package model.game;
 
 import controller.Command;
+import engine.Engine;
 import model.PoolPosition;
 import model.element.Hero;
 import model.element.Position;
@@ -25,6 +26,8 @@ public class Game {
     private Hero hero;
     private Level level; //current
 
+    private Engine observer;
+
     public Game(int width, int height){
         this.width = width;
         this.height = height;
@@ -37,6 +40,13 @@ public class Game {
 
     }
 
+    public void setObserver(Engine e){
+        this.observer = e;
+    }
+
+    private void notifyObserver() { // Equivalent à l'update
+        this.observer.update();
+    }
 
     /**Fonction qui instensie le level actuel
      *
@@ -55,9 +65,10 @@ public class Game {
         if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
             hero.move(p);        //le hero bouge
         }
+        notifyObserver();
     }
 
-    private Hero getHero() {
+    public Hero getHero() {
         return hero;
     }
 
