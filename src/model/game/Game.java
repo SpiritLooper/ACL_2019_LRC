@@ -72,6 +72,12 @@ public class Game {
         return hero;
     }
 
+    public void generateGame() {
+        Level level = new Level();
+        level.generateDefaultLevel();
+
+        this.setLevel(level);//on bind la game au level
+    }
 
     /////---------------TEST-------------------
 
