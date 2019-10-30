@@ -6,6 +6,7 @@ import model.element.Position;
 import model.element.Tile;
 import model.element.Zombie;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -83,6 +84,10 @@ public class Level {
         Position p = PoolPosition.getInstance().getPosition(2,2);
         addEntity(p, new Zombie(p));
 
+    }
+
+    public Collection<Position> getMonstersPosition() {
+        return hashmapMonsters.keySet();
     }
 
 }

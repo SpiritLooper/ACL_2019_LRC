@@ -6,6 +6,8 @@ import model.PoolPosition;
 import model.element.Hero;
 import model.element.Position;
 
+import java.util.Collection;
+
 /**
  * classe façade faisant le lien dans le MVC entre le controlleur la vue et le modèle.
  * dans cette version:
@@ -54,6 +56,10 @@ public class Game {
      */
     private void setLevel(Level l){
         level = l;
+    }
+
+    public Collection<Position> getMonstersPosition() {
+        return level.getMonstersPosition();
     }
 
     /**Fonction qui, selon la commande rentré en paramêtre, applique un mouvement au héro
