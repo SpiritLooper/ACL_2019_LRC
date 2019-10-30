@@ -159,4 +159,17 @@ public class Level {
             }
         }
     }
+
+    /**
+     * Update all the monsters of the level
+     */
+    public void update () {
+        for (Position p : hashmapMonsters.keySet()) {
+            Position temp = ((Monster)hashmapMonsters.get(p)).behave(); //sauvegarde de la position
+            Entity t = hashmapMonsters.get(p); //sauvegarde du monstre
+            hashmapMonsters.get(p).move(temp); //déplacement du monstre
+            hashmapMonsters.remove(p); //on retire le monstre de la hashmap (sa position a changée
+            hashmapMonsters.put(temp, t); //on l'ajoute à nouveau dans sa nouvelle position
+        }
+    }
 }

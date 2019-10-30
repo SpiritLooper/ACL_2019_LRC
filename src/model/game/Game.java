@@ -98,6 +98,14 @@ public class Game {
             level.fireEventTile(p);
         }
         notifyObserver(); // Mis à jour de la vue
+        update();
+    }
+
+    /**
+     * Update the current game state by updating all the monsters of the level
+     */
+    private void update () {
+        level.update();
     }
 
     protected Hero getHero() {
