@@ -28,7 +28,7 @@ public class PoolPosition {
     }
 
     public Position getPosition(int x, int y){
-        if(!(x<0 || y<0 || x>pool.length || y>pool[0].length)){//on check si la position est in bounds
+        if(!(x<0 || y<0 || x>=pool.length || y>=pool[0].length)){//on check si la position est in bounds
             return pool[x][y];
         }
         return lower;//astuce pour checker les bounds me demander (Pierre) si besoin pour changer
