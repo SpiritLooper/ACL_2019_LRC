@@ -78,11 +78,23 @@ public class Game {
         return hero;
     }
 
+    /**
+     * Génére le jeu et ses niveaux
+     */
     public void generateGame() {
+        //Génération par défaut
         Level level = new Level();
         level.generateDefaultLevel();
 
         this.setLevel(level);//on bind la game au level
+    }
+
+    /**
+     * Permet d'obtenir la dimension du level
+     * @return la derniere tuile au max HAUTEUR et LARGEUR
+     */
+    public Position getMaxDimLevel() {
+        return PoolPosition.getInstance().getPosition(width - 1, height - 1);
     }
 
     /////---------------TEST-------------------
