@@ -62,6 +62,10 @@ public class Game {
         return level.getMonstersPosition();
     }
 
+    public Collection<Position> getWallsPosition() {
+        return level.getWallsPosition();
+    }
+
     /**Fonction qui, selon la commande rentré en paramêtre, applique un mouvement au héro
      *
      * @param command

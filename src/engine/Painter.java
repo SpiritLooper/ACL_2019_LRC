@@ -1,6 +1,5 @@
 package engine;
 
-import model.element.Hero;
 import model.element.Position;
 import model.game.Game;
 
@@ -59,7 +58,12 @@ public class Painter {
         for (int c = 0 ; c <= (positionExtreme.getY() + 1) * WORLD_UNIT ; c += WORLD_UNIT ){
             g.drawLine(c, 0, c , (positionExtreme.getY() + 1) * WORLD_UNIT );
         }
+
         //Dessin des murs
+        g.setColor(Color.BLACK);
+        for(Position p : game.getWallsPosition())  {
+            g.fillRect(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT, WORLD_UNIT, WORLD_UNIT);
+        }
     }
 
     private void drawMonsters(Graphics2D g, BufferedImage img) {

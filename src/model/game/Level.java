@@ -83,6 +83,8 @@ public class Level {
 
         Position p = PoolPosition.getInstance().getPosition(2,2);
         addEntity(p, new Zombie(p));
+        p = PoolPosition.getInstance().getPosition(2,1);
+        addTile(p, new Tile(p,false) {});
 
     }
 
@@ -90,4 +92,7 @@ public class Level {
         return hashmapMonsters.keySet();
     }
 
+    public Collection<Position> getWallsPosition() { //A corriger plus tard c'est juste pour test la vue
+        return hashMapTile.keySet();
+    }
 }
