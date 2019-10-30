@@ -37,7 +37,7 @@ public class InputManager implements KeyListener {
                 break;
 
             case rightKey:
-                currentCommand = Command.DOWN;
+                currentCommand = Command.RIGHT;
                 break;
 
             default:
