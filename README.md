@@ -2,10 +2,10 @@
 Projet Analyse Conception Logiciel - Groupe : Julien Claisse / Pierre Gouth / Nicolas Kleinhentz / Emilien Lambert
 
 ## Prérequis
-    JDK installer sur son pc
+JDK installer sur son pc
 
 ## Executer le projet le projet
-    - **Windows**
+- **Windows**
         1. Aller dans le dossier src
         2. compiler le projet
             `> dir /s /B *.java > sources.txt` puis
@@ -15,7 +15,7 @@ Projet Analyse Conception Logiciel - Groupe : Julien Claisse / Pierre Gouth / Ni
         4. Vous pouvez clean les fichier .class avec la commande
             `> del /S *.class`
 
-    - **Linux**
+ - **Linux**
             1. Aller dans le dossier src
             2. compiler le projet
                 `$ find -name "*.java" > sources.txt` puis
