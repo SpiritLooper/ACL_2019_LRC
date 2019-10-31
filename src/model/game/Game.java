@@ -93,7 +93,7 @@ public class Game {
      */
     public void moveHero(Command command) {
         Position p = hero.getNewPosition(command); //le jeu demande au héro sa position s'il execute sa commande
-        if(level.canHeroMove(p)){ //si le hero peut bouger à cette nouvelle position alors
+        if(level.canEntityMove(p)){ //si le hero peut bouger à cette nouvelle position alors
             hero.move(p);        //le hero bouge
             level.fireEventTile(p);
         }

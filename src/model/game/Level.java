@@ -55,7 +55,7 @@ public class Level {
      * @param p
      * @return
      */
-    public boolean canHeroMove(Position p) {
+    public boolean canEntityMove(Position p) {
         boolean res = true;
         if(hashmapMonsters.containsKey(p)) //si y'a un monstre à l'emplacement on se déplace pas
             res = false;
@@ -165,11 +165,24 @@ public class Level {
      */
     public void update () {
         for (Position p : hashmapMonsters.keySet()) {
-            Position temp = ((Monster)hashmapMonsters.get(p)).behave(); //sauvegarde de la position
+            Position newPosition = ((Monster)hashmapMonsters.get(p)).behave(); //sauvegarde de la position
             Entity t = hashmapMonsters.get(p); //sauvegarde du monstre
-            hashmapMonsters.get(p).move(temp); //déplacement du monstre
-            hashmapMonsters.remove(p); //on retire le monstre de la hashmap (sa position a changée
-            hashmapMonsters.put(temp, t); //on l'ajoute à nouveau dans sa nouvelle position
+            if( canEntityMove(newPosition) && !isAStairsOrTresure(newPosition)) { // On vérifie s'il peut se déplacer
+                hashmapMonsters.get(p).move(newPosition); //déplacement du monstre
+                hashmapMonsters.remove(p); //on retire le monstre de la hashmap (sa position a changée
+                hashmapMonsters.put(newPosition, t); //on l'ajoute à nouveau dans sa nouvelle position
+            }
         }
+    }
+
+    /**
+     * Indique si a la position parametre il y a un tresor ou un escalier
+     * @param position position demande
+     * @return vrai si un des deux est trouve
+     */
+    private boolean isAStairsOrTresure(Position position) {
+        return hashMapTile.containsKey(position) ||
+                hashMapTile.get(position) instanceof Tresure ||
+                hashMapTile.get(position) instanceof Stairs ;
     }
 }
