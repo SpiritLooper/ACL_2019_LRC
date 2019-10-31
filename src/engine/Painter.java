@@ -60,11 +60,11 @@ public class Painter {
         g.setColor(Color.BLACK);
         Position positionExtreme = game.getMaxDimLevel();
             //Dessin des lignes
-        for (int l = 0 ; l <= (positionExtreme.getX() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
+        for (int l = 0 ; l <= (positionExtreme.getY() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
             g.drawLine(0,  l, (positionExtreme.getX() + 1) * WORLD_UNIT, l );
         }
             //Dessin des colonnes
-        for (int c = 0 ; c <= (positionExtreme.getY() + 1) * WORLD_UNIT ; c += WORLD_UNIT ){
+        for (int c = 0 ; c <= (positionExtreme.getX() + 1) * WORLD_UNIT ; c += WORLD_UNIT ){
             g.drawLine(c, 0, c , (positionExtreme.getY() + 1) * WORLD_UNIT );
         }
 
