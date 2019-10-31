@@ -4,7 +4,7 @@ Projet Analyse Conception Logiciel - Groupe : Julien Claisse / Pierre Gouth / Ni
 ## Prérequis
 JDK installer sur son pc
 
-## Executer le projet le projet
+## Executer le projet
 - **Windows**
 1. Aller dans le dossier src
 2. compiler le projet
