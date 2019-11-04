@@ -1,10 +1,15 @@
 package model.element;
 
+import model.game.Game;
+
 public abstract class EventTile extends Tile{
 
-    public EventTile(Position position) {
-        super(position, true);
+    protected Game game;
+
+    public EventTile(Position position, Game game) {
+        super(true, true, position);
+        this.game = game;
     }
 
-    public abstract void fireEnvent();
+    public abstract void fireEvent();
 }

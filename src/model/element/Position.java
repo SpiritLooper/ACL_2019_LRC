@@ -1,6 +1,8 @@
 package model.element;
 
 import controller.Command;
+import model.PoolPosition;
+import model.game.Game;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -128,4 +130,29 @@ public class Position {
         return "collision : " + (float)(check.size()/len1) + " %";
     }
 */
+
+    public Position applyCommand (Command c) {
+        switch (c) {
+            case UP:
+                return PoolPosition.getInstance().getPosition(x, y - 1);
+
+            case DOWN:
+                return PoolPosition.getInstance().getPosition(x, y + 1);
+
+            case LEFT:
+                return PoolPosition.getInstance().getPosition(x - 1, y);
+
+            case RIGHT:
+                return PoolPosition.getInstance().getPosition(x + 1, y);
+
+            case IDLE:
+            default:
+                return this;
+        }
+    }
+
+    public boolean isInBounds () {
+        return x >= 0 && x < Game.width && y >= 0 && y < Game.height;
+    }
+
 }

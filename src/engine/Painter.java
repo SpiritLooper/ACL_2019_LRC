@@ -111,7 +111,7 @@ public class Painter {
      */
     private void drawHero(Graphics2D g, BufferedImage img) {
         //Récupération de sa position
-        Position heroPosition = game.getHeroPosition();
+        Position heroPosition = game.getLevel().getHero().getPosition();
 
         //Dessin du hero
         g.setColor(Color.BLUE);
@@ -121,7 +121,12 @@ public class Painter {
     private void drawWin(Graphics2D g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 36));
         g.setColor(Color.DARK_GRAY);
-        g.drawString("You Win !",0,HEIGHT - 36);
+
+        if (game.isGameWon()) {
+            g.drawString("You Win !",0,HEIGHT - 36);
+        } else {
+            g.drawString("You Loose !",0,HEIGHT - 36);
+        }
     }
 
     public int getWidth() {

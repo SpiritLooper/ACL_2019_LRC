@@ -1,10 +1,13 @@
 package model.game;
 
+import controller.Command;
 import model.PoolPosition;
 import model.element.*;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Dans cette version , le level sert à retrouver les différents élements du niveau actuel
@@ -14,21 +17,24 @@ import java.util.HashMap;
 public class Level {
 
     private Level nextLevel;
-    private HashMap<Position, Entity> hashmapMonsters;
-    private HashMap<Position, Tile> hashMapTile;
+    private Map<Position, Monster> monsters;
+    private Map<Position, Tile> tiles;
+    private Hero hero;
 
     public Level(){
-        hashmapMonsters = new HashMap<>();
-        hashMapTile = new HashMap<>();
+        monsters = new HashMap<>();
+        tiles = new HashMap<>();
+
+        hero = new Hero(PoolPosition.getInstance().getPosition(0, 0));
     }
 
     /**Fonction qui ajoute une entité au level
      *
      * @param p position où placer l'entité dans le level
-     * @param e entité à ajouter
+     * @param m entité à ajouter
      */
-    protected void addEntity(Position p, Entity e){
-        hashmapMonsters.put(p, e);
+    protected void addMonster(Position p, Monster m){
+        monsters.put(p, m);
     }
 
     /**Fonction qui ajoute une tuile au niveau
@@ -36,37 +42,19 @@ public class Level {
      * @param p position où placer la tuile dans le level
      * @param t tuile à ajouter
      */
-    protected void addTile(Position p, Tile t) { hashMapTile.put(p, t); }
+    protected void addTile(Position p, Tile t) { tiles.put(p, t); }
 
     /**Fonction qui supprime une entité se trouvant à la position donnée en paramêtre
      *
      * @param p
      */
-    protected void removeEntity(Position p){ hashmapMonsters.remove(p);}
+    protected void removeEntity(Position p){ monsters.remove(p);}
 
     /**Fonction qui supprime une tuile se trouvant à la position donnée en paramêtre
      *
      * @param p
      */
-    protected void removeTile(Position p){ hashMapTile.remove(p);}
-
-    /**Fonction booléen qui retourne vrai si le héro peut se déplacer à la position donnée en paramêtre, faux sinonv
-     *
-     * @param p
-     * @return
-     */
-    public boolean canEntityMove(Position p) {
-        boolean res = true;
-        if(hashmapMonsters.containsKey(p)) //si y'a un monstre à l'emplacement on se déplace pas
-            res = false;
-        if(hashMapTile.containsKey(p)){ //s'il y a une tuile
-            Tile t = hashMapTile.get(p);
-            if(!t.isWalkable()){//si la tuile n'est pas marchable
-                res = false;
-            }
-        }
-        return res;
-    }
+    protected void removeTile(Position p){ tiles.remove(p);}
 
     protected Level generateDefaultLevel(Game g){
         /*
@@ -79,11 +67,11 @@ public class Level {
          */
 
         Position p = PoolPosition.getInstance().getPosition(2,2);
-        addEntity(p, new Zombie(p));
+        addMonster(p, new Zombie());
 
         //Ajout mur
         p = PoolPosition.getInstance().getPosition(2,1);
-        addTile(p, new Tile(p,false) {});
+        addTile(p, new Tile(false,false, p) {});
 
         return this;
     }
@@ -93,7 +81,7 @@ public class Level {
      * @return
      */
     public Collection<Position> getMonstersPosition() {
-        return hashmapMonsters.keySet();
+        return monsters.keySet();
     }
 
     /**
@@ -101,7 +89,7 @@ public class Level {
      * @return positions de chaque tiles filtrees par murs
      */
     public Collection<Position> getTilesEventPosition() { //A corriger plus tard, il faudra filtrer les murs et les autres tiles a partir de la hashmap Tiles
-        return hashMapTile.keySet();                // c'est juste pour test la vue
+        return tiles.keySet();                // c'est juste pour test la vue
     }
 
     public boolean hasATresor() {
@@ -117,9 +105,9 @@ public class Level {
      * @return null si pas de trésor
      */
     public Position getPositionTresor() {
-        for (Position p : hashMapTile.keySet()) {
-            Tile t = hashMapTile.get(p);
-            if(t instanceof Tresure){
+        for (Position p : tiles.keySet()) {
+            Tile t = tiles.get(p);
+            if(t instanceof Treasure){
                 return p;
             }
         }
@@ -130,8 +118,8 @@ public class Level {
      * @return null si pas d'escaliers
      */
     public Position getPositionStairs() {
-        for (Position p : hashMapTile.keySet()) {
-            Tile t = hashMapTile.get(p);
+        for (Position p : tiles.keySet()) {
+            Tile t = tiles.get(p);
             if(t instanceof Stairs){
                 return p;
             }
@@ -147,42 +135,39 @@ public class Level {
         this.nextLevel = l;
     }
 
-    /**
-     * Active l'évenement de case de position p
-     * @param p
-     */
-    public void fireEventTile(Position p) {
-        if(hashMapTile.containsKey(p)){
-            Tile t = hashMapTile.get(p);
-            if(t instanceof EventTile){
-                ((EventTile)t).fireEnvent();
-            }
-        }
-    }
-
-    /**
-     * Update all the monsters of the level
-     */
     public void update () {
-        for (Position p : hashmapMonsters.keySet()) {
-            Position newPosition = ((Monster)hashmapMonsters.get(p)).behave(); //sauvegarde de la position
-            Entity t = hashmapMonsters.get(p); //sauvegarde du monstre
-            if( canEntityMove(newPosition) && !isAStairsOrTresure(newPosition)) { // On vérifie s'il peut se déplacer
-                hashmapMonsters.get(p).move(newPosition); //déplacement du monstre
-                hashmapMonsters.remove(p); //on retire le monstre de la hashmap (sa position a changée
-                hashmapMonsters.put(newPosition, t); //on l'ajoute à nouveau dans sa nouvelle position
+        //test d'un évènement à déclencher
+        if (tiles.containsKey(hero.getPosition()) && tiles.get(hero.getPosition()).hasEvent()) {
+            ((EventTile)tiles.get(hero.getPosition())).fireEvent();
+        }
+
+        //mise à jour des monstres
+        Set<Position> monstersPositions = monsters.keySet(); //on récupère les positions avant changement de la hashmap
+
+        for (Position p : monstersPositions) { //parcours des monstres
+            Command monsterCommand = monsters.get(p).behave(); //sauvegarde de la position
+            Monster m = monsters.get(p); //sauvegarde du monstre
+            Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre
+            if (newPosition.isInBounds() && isEmpty(newPosition) && hero.getPosition() != newPosition) {
+                monsters.remove(p);
+                monsters.put(newPosition, m);
             }
         }
     }
 
-    /**
-     * Indique si a la position parametre il y a un tresor ou un escalier
-     * @param position position demande
-     * @return vrai si un des deux est trouve
-     */
-    private boolean isAStairsOrTresure(Position position) {
-        return hashMapTile.containsKey(position) ||
-                hashMapTile.get(position) instanceof Tresure ||
-                hashMapTile.get(position) instanceof Stairs ;
+    private boolean isEmpty (Position p) {
+        return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
     }
+
+    public void moveHero (Command command) {
+        Position newPosition = hero.getPosition().applyCommand(command);
+        if (newPosition.isInBounds() && isEmpty(newPosition)) {
+            hero.setPosition(newPosition);
+        }
+    }
+
+    public Hero getHero () {
+        return hero;
+    }
+
 }

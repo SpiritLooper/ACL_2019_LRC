@@ -6,7 +6,7 @@ import model.PoolPosition;
 import model.element.Hero;
 import model.element.Position;
 import model.element.Stairs;
-import model.element.Tresure;
+import model.element.Treasure;
 
 import java.util.Collection;
 
@@ -24,26 +24,29 @@ public class Game {
     pour effectuer les tests j'ai (gouth) pris la liberté de rajouter ces deux attributs width et height
     pcq on a pas encore de lecture de fichier avec Parser etc
      */
-    private int width; //largeur du niveau
-    private int height; //hauteur du niveau
+    public static int width; //largeur du niveau
+    public static int height; //hauteur du niveau
 
-    private Hero hero;
     private Level level; //current
 
     private Engine observer;
 
+    private Timer timer;
+
     private boolean isFinished = false;
+
+    private boolean won = false; //détermine si le jeu est gagné ou non
 
     public Game(int width, int height){
         this.width = width;
         this.height = height;
 
+        this.timer = new Timer();
+
         PoolPosition.init(width, height); //pour initialisé la pool singleton
 
         //position initiale du héro en 0,0 le coin en haut à gauche POUR L'INSTANT
         Position posStartHero = PoolPosition.getInstance().getPosition(1,1);
-        hero = new Hero(posStartHero);
-
     }
 
     public void setObserver(Engine e){
@@ -54,13 +57,16 @@ public class Game {
         this.observer.update();
     }
 
-
     /**
      * Fonction qui instensie le level actuel
      * @param l
      */
     private void setLevel(Level l){
         level = l;
+    }
+
+    public Level getLevel () {
+        return level;
     }
 
     /**
@@ -92,12 +98,7 @@ public class Game {
      * @param command
      */
     public void moveHero(Command command) {
-        Position p = hero.getNewPosition(command); //le jeu demande au héro sa position s'il execute sa commande
-        if(level.canEntityMove(p)){ //si le hero peut bouger à cette nouvelle position alors
-            hero.move(p);        //le hero bouge
-            level.fireEventTile(p);
-        }
-        notifyObserver(); // Mis à jour de la vue
+        level.moveHero(command);
         update();
     }
 
@@ -106,10 +107,15 @@ public class Game {
      */
     private void update () {
         level.update();
+        if (timer.tick() <= 0) {
+            finish(false);
+        }
+        System.out.println(timer.getTimeLeft());
+        notifyObserver();
     }
 
-    protected Hero getHero() {
-        return hero;
+    public int getTimeLeft () {
+        return timer.getTimeLeft();
     }
 
     /**
@@ -143,16 +149,6 @@ public class Game {
         level = level.nextLevel();
 
         Position p = PoolPosition.getInstance().getPosition(0,0);
-
-        hero.move(p);
-    }
-
-    /**
-     * Permet d'obtenir la position du hero
-     * @return
-     */
-    public Position getHeroPosition() {
-        return hero.getPosition();
     }
 
     /**
@@ -172,7 +168,7 @@ public class Game {
 
         //Ajout Tresor
         p = PoolPosition.getInstance().getPosition(5,4);
-        level2.addTile(p, new Tresure(p, this));
+        level2.addTile(p, new Treasure(p, this));
 
 
         level1.setNextLevel(level2);
@@ -212,13 +208,6 @@ public class Game {
             game.moveHero(commands[i]);
         }
 
-
-        System.out.println(game.getHero());
-        game.moveHero(commands[1]);
-        System.out.println(game.getHero()); //test coord 2,2, y'a un monstre il ne peut pas y aller
-        game.moveHero(commands[3]);
-        System.out.println(game.getHero());
-
     }
 
     /**
@@ -232,9 +221,16 @@ public class Game {
     /**
      * REnd le jeu à l'état fini
      */
-    public void finished() {
+    public void finish (boolean won) {
+        this.won = won;
         isFinished = true;
     }
+
+    // return si le jeu est gagné ou non
+    public boolean isGameWon () {
+        return won;
+    }
+
 }
 
 

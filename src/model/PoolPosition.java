@@ -3,6 +3,7 @@ package model;
 import model.element.Position;
 
 public class PoolPosition {
+
     private static PoolPosition ourInstance = null;
     private Position[][] pool;
     private static final Position lower = new Position(-1,-1); //astuce me demander (Pierre)
