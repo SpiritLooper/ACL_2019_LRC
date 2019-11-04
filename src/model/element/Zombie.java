@@ -4,12 +4,15 @@ import controller.Command;
 
 import java.util.Random;
 
+/**
+ * A Zombie is a monster that moves randomly around
+ */
 public class Zombie extends Monster {
 
-    public Zombie() {
-        super();
-    }
-
+    /**
+     * Behaves randomly
+     * @return random command
+     */
     @Override
     public Command behave() {
         Random r = new Random();
@@ -22,4 +25,5 @@ public class Zombie extends Monster {
     public String toString() {
         return "Zombie>" + super.toString();
     }
+
 }

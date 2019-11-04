@@ -1,8 +1,7 @@
 package model.element;
 
 /**
- * interface modelisant le comportement des entités dans le jeu
- * les entités sont les objets qui "bougent" dans le niveau
+ * Interface regrouping the different entities of the game
  */
 public interface Entity {
 }

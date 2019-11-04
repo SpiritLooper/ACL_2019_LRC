@@ -1,5 +1,6 @@
 package engine;
 
+import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
 
@@ -60,7 +61,7 @@ public class Painter {
 
         //Dessin du cadrillage
         g.setColor(Color.BLACK);
-        Position positionExtreme = game.getMaxDimLevel();
+        Position positionExtreme = PositionPool.getInstance().getPosition(Game.WIDTH - 1, Game.HEIGHT - 1);
             //Dessin des lignes
         for (int l = 0 ; l <= (positionExtreme.getY() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
             g.drawLine(0,  l, (positionExtreme.getX() + 1) * WORLD_UNIT, l );
@@ -78,9 +79,9 @@ public class Painter {
 
         //Dessin escalier ou trésor
         Position p;
-        if(game.hasATresorInLevel()){
+        if(game.hasATreasureInLevel()){
             g.setColor(Color.ORANGE);
-            p = game.getTresorPosition();
+            p = game.getTreasurePosition();
         } else {
             g.setColor(Color.GREEN);
             p = game.getStairsPosition();
@@ -113,7 +114,7 @@ public class Painter {
      */
     private void drawHero(Graphics2D g, BufferedImage img) {
         //Récupération de sa position
-        Position heroPosition = game.getLevel().getHero().getPosition();
+        Position heroPosition = game.getHeroPosition();
 
         //Dessin du hero
         g.setColor(Color.BLUE);

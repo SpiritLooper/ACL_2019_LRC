@@ -2,8 +2,7 @@ package model.game;
 
 import controller.Command;
 import engine.Engine;
-import model.PoolPosition;
-import model.element.Hero;
+import model.PositionPool;
 import model.element.Position;
 import model.element.Stairs;
 import model.element.Treasure;
@@ -20,82 +19,142 @@ import java.util.Collection;
  * @author gouth
  */
 public class Game {
-    /*
-    pour effectuer les tests j'ai (gouth) pris la liberté de rajouter ces deux attributs width et height
-    pcq on a pas encore de lecture de fichier avec Parser etc
+
+    /**
+     * Width of the game
      */
-    public static int width; //largeur du niveau
-    public static int height; //hauteur du niveau
+    public static final int WIDTH = 10; //largeur du niveau
 
-    private Level level; //current
+    /**
+     * Heigth of the game
+     */
+    public static final int HEIGHT = 10; //hauteur du niveau
 
-    private Engine observer;
+    /**
+     * current level to play in
+     */
+    private Level level;
 
+    /**
+     * graphical engine drawing the game
+     */
+    private Engine engine;
+
+    /**
+     * timer controlling the remaining time before loosing
+     */
     private Timer timer;
 
-    private boolean isFinished = false;
+    /**
+     * is the game finished or not?
+     */
+    private boolean finished;
 
-    private boolean won = false; //détermine si le jeu est gagné ou non
+    /**
+     * is the game won or lost? (used when the game is finished)
+     */
+    private boolean won;
 
-    public Game(int width, int height){
-        this.width = width;
-        this.height = height;
-
+    /**
+     * Constructor instantiating a timer and setting the game to not finished
+     */
+    public Game(){
+        this.level = null;
+        this.engine = null;
         this.timer = new Timer();
-
-        PoolPosition.init(width, height); //pour initialisé la pool singleton
-
-        //position initiale du héro en 0,0 le coin en haut à gauche POUR L'INSTANT
-        Position posStartHero = PoolPosition.getInstance().getPosition(1,1);
-    }
-
-    public void setObserver(Engine e){
-        this.observer = e;
-    }
-
-    private void notifyObserver() { // Equivalent à l'update
-        this.observer.update();
+        this.finished = false;
+        this.won = false;
     }
 
     /**
-     * Fonction qui instensie le level actuel
-     * @param l
+     * Setting the current level
+     * @param l current level
      */
     private void setLevel(Level l){
-        level = l;
+        this.level = l;
     }
 
+    /**
+     * Setting the observer
+     * @param e engine observing the game
+     */
+    public void setEngine (Engine e){
+        this.engine = e;
+    }
+
+    /**
+     * @return current level
+     */
     public Level getLevel () {
         return level;
     }
 
     /**
-     * Fonction façade pour connaitre la position des monstres
-     * @return l'ensemble des positions
+     * @return time left before its out
+     */
+    public int getTimeLeft () {
+        return timer.getTimeLeft();
+    }
+
+    /**
+     * @return true if the game is finished, false else
+     */
+    public boolean isFinished() {
+        return finished;
+    }
+
+    /**
+     * @return true if the game is won, false if lost
+     */
+    public boolean isGameWon () {
+        return won;
+    }
+
+    /**
+     * @return a collection of the position of each monsters
      */
     public Collection<Position> getMonstersPosition() {
         return level.getMonstersPosition();
     }
 
     /**
-     * Fonction façade pour connaitre la position des murs
-     * @return l'ensemble des positions
+     * @return a collection of the position of each walls
      */
     public Collection<Position> getWallsPosition() { //TODO : a corriger il faut choisir les murs seulement
         return level.getTilesEventPosition();
     }
 
     /**
-     * Fonction façade pour connaitre la position des tuiles evenements
-     * @return l'ensemble des positions
+     * @return a collection of the position of each event tiles
      */
     public Collection<Position> getEventTilesPosition() {
         return level.getTilesEventPosition();
     }
 
-    /**Fonction qui, selon la commande rentré en paramêtre, applique un mouvement au héro
-     *
-     * @param command
+    /**
+     * @return position of the hero
+     */
+    public Position getHeroPosition () {
+        return level.getHero().getPosition();
+    }
+
+    /**
+     * @return position of the treasure in the level
+     */
+    public Position getTreasurePosition() {
+        return level.getPositionTresor();
+    }
+
+    /**
+     * @return position of the set of stairs in the level
+     */
+    public Position getStairsPosition() {
+        return level.getPositionStairs();
+    }
+
+    /**
+     * Moves the hero based on a command
+     * @param command command representing the move to make
      */
     public void moveHero(Command command) {
         level.moveHero(command);
@@ -103,76 +162,48 @@ public class Game {
     }
 
     /**
-     * Update the current game state by updating all the monsters of the level
+     * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
     private void update () {
         level.update();
         if (timer.tick() <= 0) {
             finish(false);
         }
-        System.out.println(timer.getTimeLeft());
-        notifyObserver();
-    }
-
-    public int getTimeLeft () {
-        return timer.getTimeLeft();
-    }
-
-    public Position getHeroPosition () {
-        return level.getHero().getPosition();
+        notifyEngine();
     }
 
     /**
-     * Indique si le level possède un trésor
-     * @return vrai s'il y en a un
+     * @return true if the level contains a treasure, false else
      */
-    public boolean hasATresorInLevel() {
-        return level.hasATresor();
+    public boolean hasATreasureInLevel() {
+        return level.hasATreasure();
     }
 
     /**
-     * Permet de savoir la position du tresor
-     * @return la position du tresor
-     */
-    public Position getTresorPosition() {
-        return level.getPositionTresor();
-    }
-
-    /**
-     * Permet de savoir la position de l'escalier
-     * @return la position de l'escalier
-     */
-    public Position getStairsPosition() {
-        return level.getPositionStairs();
-    }
-
-    /**
-     * Fonction qui change de level et qui redeplace le heros
+     * Put the current level to the next level
      */
     public void nextLevel() {
         level = level.nextLevel();
-
-        Position p = PoolPosition.getInstance().getPosition(0,0);
     }
 
     /**
-     * Génére le jeu et ses niveaux
+     * Generates a basic game
      */
     public void generateGame() {
         //Génération par défaut
         Level level1 = new Level();
-        level1 = level1.generateDefaultLevel(this);
+        level1 = level1.generateDefaultLevel();
 
         //Ajout stairs
-        Position p = PoolPosition.getInstance().getPosition(4,4);
-        level1.addTile(p, new Stairs(p, this));
+        Position p = PositionPool.getInstance().getPosition(4,4);
+        level1.addTile(p, new Stairs(this));
 
         Level level2 = new Level();
-        level2 = level2.generateDefaultLevel(this);
+        level2 = level2.generateDefaultLevel();
 
         //Ajout Tresor
-        p = PoolPosition.getInstance().getPosition(5,4);
-        level2.addTile(p, new Treasure(p, this));
+        p = PositionPool.getInstance().getPosition(5,4);
+        level2.addTile(p, new Treasure(this));
 
 
         level1.setNextLevel(level2);
@@ -181,58 +212,19 @@ public class Game {
     }
 
     /**
-     * Permet d'obtenir la dimension du level
-     * @return la derniere tuile au max HAUTEUR et LARGEUR
-     */
-    public Position getMaxDimLevel() {
-        return PoolPosition.getInstance().getPosition(width - 1, height - 1);
-    }
-
-    /////---------------TEST-------------------
-
-    public static void main(String[] argv){
-        testLevel();
-    }
-
-    public static void testLevel() {
-        Game game = new Game(3,3);
-        Level level = new Level();
-        level.generateDefaultLevel(game);
-
-        game.setLevel(level);//on bind la game au level
-
-        Command commands[] = new Command[5];
-        commands[0] = Command.UP;
-        commands[1] = Command.DOWN;
-        commands[2] = Command.LEFT;
-        commands[3] = Command.RIGHT;
-        commands[4] = Command.IDLE;
-
-        for(int i=0; i<5; i++){
-            game.moveHero(commands[i]);
-        }
-
-    }
-
-    /**
-     * Indique si le jeu est fini ou non
-     * @return
-     */
-    public boolean isFinished() {
-        return isFinished;
-    }
-
-    /**
-     * REnd le jeu à l'état fini
+     * Ends the game
+     * @param won true if the player won, false if he lost
      */
     public void finish (boolean won) {
         this.won = won;
-        isFinished = true;
+        finished = true;
     }
 
-    // return si le jeu est gagné ou non
-    public boolean isGameWon () {
-        return won;
+    /**
+     * Notifies to the engine that the game updated
+     */
+    private void notifyEngine() { // Equivalent à l'update
+        this.engine.update();
     }
 
 }

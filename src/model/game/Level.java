@@ -1,7 +1,7 @@
 package model.game;
 
 import controller.Command;
-import model.PoolPosition;
+import model.PositionPool;
 import model.element.*;
 
 import java.util.Collection;
@@ -10,53 +10,81 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Dans cette version , le level sert à retrouver les différents élements du niveau actuel
- * et dans un soucis de passer les niveaux via des escaliers, un level connait son prochain level
+ * The Level contains all of its tiles and monsters, its next level (if any) as well as the hero
  * @author gouth
  */
 public class Level {
 
+    /**
+     * next level (using stairs)
+     */
     private Level nextLevel;
+
+    /**
+     * Map of the monsters identified by their positions
+     */
     private Map<Position, Monster> monsters;
+
+    /**
+     * Map of the tiles identified by their positions
+     */
     private Map<Position, Tile> tiles;
+
+    /**
+     * hero contained in the level
+     */
     private Hero hero;
 
+    /**
+     * Constructor instantiating the maps and the hero to the default position
+     */
     public Level(){
         monsters = new HashMap<>();
         tiles = new HashMap<>();
 
-        hero = new Hero(PoolPosition.getInstance().getPosition(0, 0));
+        hero = new Hero(PositionPool.getInstance().getPosition(0, 0));
     }
 
-    /**Fonction qui ajoute une entité au level
-     *
-     * @param p position où placer l'entité dans le level
-     * @param m entité à ajouter
+    /**
+     * @return hero
+     */
+    public Hero getHero () {
+        return hero;
+    }
+
+    /**
+     * Adds a monster to the level at a given position
+     * @param p position to spawn the monster at
+     * @param m monster to spawn
      */
     protected void addMonster(Position p, Monster m){
         monsters.put(p, m);
     }
 
-    /**Fonction qui ajoute une tuile au niveau
-     *
-     * @param p position où placer la tuile dans le level
-     * @param t tuile à ajouter
+    /**
+     * Adds a tile to the level at a given position
+     * @param p position to put the tile at
+     * @param t tile to put
      */
     protected void addTile(Position p, Tile t) { tiles.put(p, t); }
 
-    /**Fonction qui supprime une entité se trouvant à la position donnée en paramêtre
-     *
-     * @param p
+    /**
+     * Removes the monster identified by its position
+     * @param p position identifying the monster
      */
-    protected void removeEntity(Position p){ monsters.remove(p);}
+    protected void removeMonster(Position p){ monsters.remove(p);}
 
-    /**Fonction qui supprime une tuile se trouvant à la position donnée en paramêtre
-     *
-     * @param p
+    /**
+     * Removes the tile indentified by its position
+     * @param p position identifying the tile
      */
     protected void removeTile(Position p){ tiles.remove(p);}
 
-    protected Level generateDefaultLevel(Game g){
+    /**
+     * Generates a default level
+     * @return the generated level
+     */
+    protected Level generateDefaultLevel(){
         /*
           0   1   2
          _____________
@@ -66,43 +94,48 @@ public class Level {
 
          */
 
-        Position p = PoolPosition.getInstance().getPosition(2,2);
+        Position p = PositionPool.getInstance().getPosition(2,2);
         addMonster(p, new Zombie());
 
         //Ajout mur
-        p = PoolPosition.getInstance().getPosition(2,1);
-        addTile(p, new Tile(false,false, p) {});
+        p = PositionPool.getInstance().getPosition(2,1);
+        addTile(p, new Tile(false,false) {});
 
         return this;
     }
 
     /**
-     * Permet d'obtenir l'ensmble des positions des monstres
-     * @return
+     * @return a collection of the monsters' positions
      */
     public Collection<Position> getMonstersPosition() {
         return monsters.keySet();
     }
 
     /**
-     * Permet d'obtenir l'ensemble des positions des murs
-     * @return positions de chaque tiles filtrees par murs
+     * @return a collection of the tiles' positions
      */
     public Collection<Position> getTilesEventPosition() { //A corriger plus tard, il faudra filtrer les murs et les autres tiles a partir de la hashmap Tiles
         return tiles.keySet();                // c'est juste pour test la vue
     }
 
-    public boolean hasATresor() {
+    /**
+     * @return true if the level contains a treasure, false else
+     */
+    public boolean hasATreasure() {
         return nextLevel == null;
     }
 
+    /**
+     * @return next level
+     */
     public Level nextLevel() {
         return nextLevel;
     }
 
     /**
-     * Permet de trouver la position du trésor du niveau
-     * @return null si pas de trésor
+     * Returns the position of the treasure
+     * TODO retirer le instanceof!
+     * @return position of the treasure
      */
     public Position getPositionTresor() {
         for (Position p : tiles.keySet()) {
@@ -113,9 +146,11 @@ public class Level {
         }
         return null;
     }
+
     /**
-     * Permet de trouver la position des escaliers du niveau
-     * @return null si pas d'escaliers
+     * Returns the position of the stairs
+     * TODO retirer le instanceof
+     * @return
      */
     public Position getPositionStairs() {
         for (Position p : tiles.keySet()) {
@@ -128,13 +163,16 @@ public class Level {
     }
 
     /**
-     * Défini le prochain niveau du level
-     * @param l
+     * Sets the next level
+     * @param level next level
      */
-    public void setNextLevel(Level l){
-        this.nextLevel = l;
+    public void setNextLevel(Level level){
+        this.nextLevel = level;
     }
 
+    /**
+     * Updates the level, firing the event of the hero position if any and updates each monsters using their behaviors
+     */
     public void update () {
         //test d'un évènement à déclencher
         if (tiles.containsKey(hero.getPosition()) && tiles.get(hero.getPosition()).hasEvent()) {
@@ -148,26 +186,31 @@ public class Level {
             Command monsterCommand = monsters.get(p).behave(); //sauvegarde de la position
             Monster m = monsters.get(p); //sauvegarde du monstre
             Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre
-            if (newPosition.isInBounds() && isEmpty(newPosition) && hero.getPosition() != newPosition) {
+            if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
                 monsters.remove(p);
                 monsters.put(newPosition, m);
             }
         }
     }
 
-    private boolean isEmpty (Position p) {
-        return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
-    }
-
+    /**
+     * Moves the hero given a command
+     * @param command command representing the move to make
+     */
     public void moveHero (Command command) {
         Position newPosition = hero.getPosition().applyCommand(command);
-        if (newPosition.isInBounds() && isEmpty(newPosition)) {
+        if (isEmpty(newPosition)) {
             hero.setPosition(newPosition);
         }
     }
 
-    public Hero getHero () {
-        return hero;
+    /**
+     * Checks if a position is empty and enables someone to walk onto it
+     * @param p position to check
+     * @return true if someone can walk onto it, false else
+     */
+    private boolean isEmpty (Position p) {
+        return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
     }
 
 }

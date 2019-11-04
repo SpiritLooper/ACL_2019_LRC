@@ -1,51 +1,89 @@
 package model.element;
 
 import controller.Command;
-import model.PoolPosition;
+import model.PositionPool;
 import model.game.Game;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
-
 /**
- * classe position en coordonnées entière, (x,y)
- * la classe doit être immuable, il n'y a pas de setteurs
+ * Represents a position in a 2-dimensional integer world
+ * Immutable objects being managed by the model.PositionPool
  */
 public class Position {
+
+    /**
+     * x coordinate of the position (final)
+     */
     private final int x;
+
+    /**
+     * y coordinate of the position (final)
+     */
     private final int y;
 
-    /**Constructeur
-     *
-     * @param x valeur entière de la coordonnée x
-     * @param y valeur entière de la coordonnée y
+    /**
+     * Constructor with the x and y coordinates
+     * @param x x coordinate of the position
+     * @param y y coordinate of the position
      */
     public Position(int x, int y){
         this.x = x;
         this.y = y;
     }
 
-    //INUTILE ?
-    public Position getPosition(){
-        return this;
-    }
-
-    /**Fonction qui retourne la coordonnée X
-     *
-     * @return la valeur entière de X
+    /**
+     * @return x coordinate of the position
      */
     public int getX(){
-        return this.x;
+        return x;
     }
 
-    /**Fonction qui retourne la coordonnée Y
-     *
-     * @return la valeur entière de Y
+    /**
+     * @return y coordinate of the position
      */
     public int getY(){
-        return this.y;
+        return y;
+    }
+
+    /**
+     * Calculates a position relative to this one compared to a command or this one if the new position is off the board
+     * @param c command to determinate the new position
+     * @return position relative to this one compared to a command or this one
+     */
+    public Position applyCommand (Command c) {
+        //returns the position if in reach or break the switch statement if not (or if IDLE), then returns this position in this case
+
+        switch (c) {
+            case UP:
+                if (PositionPool.getInstance().isInBounds(x, y - 1)) {
+                    return PositionPool.getInstance().getPosition(x, y - 1);
+                }
+                break;
+
+            case DOWN:
+                if (PositionPool.getInstance().isInBounds(x, y + 1)) {
+                    return PositionPool.getInstance().getPosition(x, y + 1);
+                }
+                break;
+
+            case LEFT:
+                if (PositionPool.getInstance().isInBounds(x - 1, y )) {
+                    return PositionPool.getInstance().getPosition(x - 1, y);
+                }
+                break;
+
+            case RIGHT:
+                if (PositionPool.getInstance().isInBounds(x + 1, y)) {
+                    return PositionPool.getInstance().getPosition(x + 1, y);
+                }
+                break;
+
+            case IDLE:
+            default:
+                break;
+        }
+
+        //the wanted position is off reach, returning this one
+        return this;
     }
 
     @Override
@@ -60,99 +98,6 @@ public class Position {
         if(this.getClass() != obj.getClass()) return false;
         Position tmp = (Position) obj;
         return this.getX() == tmp.getX() && this.getY() == tmp.getY();
-    }
-
-    /*
-
-    @Override
-    public int hashCode() {
-        int m = 2147000000;
-        int p = 2147000041; //nombre premier
-        Random r = new Random();
-        int a = m/2;
-        int b = m/4;
-
-        int hash = ((a*(getX()+1/(getY()+1)) + b)%p)%m;
-        hash += ((a*getY() + b)%p)%m;
-        return hash;
-    }
-*/
-
-
-    public static void main(String[] argv){
-        //System.out.println(testCollision());
-        //testPositions();
-
-    }
-/*
-    private static void testPositions() {
-        Position p1 = new Position(1,0);
-        Position p2 = new Position(1,0);
-
-        Position p3 = new Position(2,0);
-        Position p4 = new Position(0,2);
-
-        System.out.println(p1.hashCode());
-        System.out.println(p2.hashCode());
-
-        System.out.println(p3.hashCode());
-        System.out.println(p4.hashCode());
-
-
-        System.out.println("===========");
-
-        assert(p1.hashCode() == p2.hashCode()):"erreur Classe Position immuable";
-        assert(p3.hashCode() != p4.hashCode()):"erreur Classe position immuable";
-
-    }
-
-
-    private static String testCollision() {
-
-        boolean res = true;
-        ArrayList pool = new ArrayList();
-        for(int i = 1; i <= 2000; i++){
-            for(int j = 0; j < 2000; j++){
-                Position p = new Position(i-1,j);
-                int hashcode = p.hashCode();
-           //     System.out.println(hashcode);
-                pool.add(hashcode);
-            }
-        }
-
-        int len1 = pool.size();
-        Set check = new TreeSet();
-        for(int i = 0; i < len1; i++) {
-            check.add(pool.get(i));
-        }
-        System.out.println(len1);
-        System.out.println(check.size());
-        return "collision : " + (float)(check.size()/len1) + " %";
-    }
-*/
-
-    public Position applyCommand (Command c) {
-        switch (c) {
-            case UP:
-                return PoolPosition.getInstance().getPosition(x, y - 1);
-
-            case DOWN:
-                return PoolPosition.getInstance().getPosition(x, y + 1);
-
-            case LEFT:
-                return PoolPosition.getInstance().getPosition(x - 1, y);
-
-            case RIGHT:
-                return PoolPosition.getInstance().getPosition(x + 1, y);
-
-            case IDLE:
-            default:
-                return this;
-        }
-    }
-
-    public boolean isInBounds () {
-        return x >= 0 && x < Game.width && y >= 0 && y < Game.height;
     }
 
 }
