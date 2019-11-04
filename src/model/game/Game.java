@@ -118,6 +118,10 @@ public class Game {
         return timer.getTimeLeft();
     }
 
+    public Position getHeroPosition () {
+        return level.getHero().getPosition();
+    }
+
     /**
      * Indique si le level possède un trésor
      * @return vrai s'il y en a un

@@ -41,6 +41,8 @@ public class Painter {
 
         drawMonsters(crayon, im);
 
+        drawTimer(crayon, im);
+
         if(game.isFinished()) {
             drawWin(crayon);
         }
@@ -116,6 +118,13 @@ public class Painter {
         //Dessin du hero
         g.setColor(Color.BLUE);
         g.fillOval(heroPosition.getX() * WORLD_UNIT,heroPosition.getY() * WORLD_UNIT,WORLD_UNIT,WORLD_UNIT);
+    }
+
+    private void drawTimer (Graphics2D g, BufferedImage img) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 36));
+        g.setColor(Color.BLACK);
+
+        g.drawString(game.getTimeLeft() + "", WIDTH - 36, 36);
     }
 
     private void drawWin(Graphics2D g) {
