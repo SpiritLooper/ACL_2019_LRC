@@ -36,6 +36,11 @@ public class Level {
     private Hero hero;
 
     /**
+     * timer of the level
+     */
+    private Timer timer;
+
+    /**
      * Constructor instantiating the maps and the hero to the default position
      */
     public Level(){
@@ -43,6 +48,7 @@ public class Level {
         tiles = new HashMap<>();
 
         hero = new Hero(PositionPool.getInstance().getPosition(0, 0));
+        timer = new Timer();
     }
 
     /**
@@ -50,6 +56,13 @@ public class Level {
      */
     public Hero getHero () {
         return hero;
+    }
+
+    /**
+     * @return timer of the level
+     */
+    public Timer getTimer () {
+        return timer;
     }
 
     /**
@@ -99,7 +112,7 @@ public class Level {
 
         //Ajout mur
         p = PositionPool.getInstance().getPosition(2,1);
-        addTile(p, new Tile(false,false) {});
+        addTile(p, new Wall());
 
         return this;
     }
@@ -191,6 +204,9 @@ public class Level {
                 monsters.put(newPosition, m);
             }
         }
+
+        //mise à jour du timer
+        timer.tick();
     }
 
     /**

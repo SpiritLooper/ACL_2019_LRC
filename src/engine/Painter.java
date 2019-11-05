@@ -129,8 +129,8 @@ public class Painter {
         int timeLeft = game.getTimeLeft();
 
         g.setColor( ( timeLeft <= TIMER_WARNING_START) ?
-                        Color.RED :
-                        Color.BLACK );
+                Color.RED :
+                Color.BLACK );
 
         g.drawString("Move Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
     }
