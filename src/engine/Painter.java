@@ -1,5 +1,6 @@
 package engine;
 
+import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
 
@@ -18,6 +19,9 @@ public class Painter {
     protected static final int HEIGHT = 600;
 
     private static final int WORLD_UNIT = 50;
+    public static final int FONT_SIZE = 36;
+    public static final Font STANDARD_FONT = new Font("TimesRoman", Font.PLAIN, FONT_SIZE);
+    public static final int TIMER_WARNING_START = 5;
 
     /**
      * Jeu à dessiner
@@ -41,6 +45,8 @@ public class Painter {
 
         drawMonsters(crayon, im);
 
+        drawTimer(crayon, im);
+
         if(game.isFinished()) {
             drawWin(crayon);
         }
@@ -58,12 +64,12 @@ public class Painter {
 
         //Dessin du cadrillage
         g.setColor(Color.BLACK);
-        Position positionExtreme = game.getMaxDimLevel();
-            //Dessin des lignes
+        Position positionExtreme = PositionPool.getInstance().getPosition(Game.WIDTH - 1, Game.HEIGHT - 1);
+        //Dessin des lignes
         for (int l = 0 ; l <= (positionExtreme.getY() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
             g.drawLine(0,  l, (positionExtreme.getX() + 1) * WORLD_UNIT, l );
         }
-            //Dessin des colonnes
+        //Dessin des colonnes
         for (int c = 0 ; c <= (positionExtreme.getX() + 1) * WORLD_UNIT ; c += WORLD_UNIT ){
             g.drawLine(c, 0, c , (positionExtreme.getY() + 1) * WORLD_UNIT );
         }
@@ -76,9 +82,9 @@ public class Painter {
 
         //Dessin escalier ou trésor
         Position p;
-        if(game.hasATresorInLevel()){
+        if(game.hasATreasureInLevel()){
             g.setColor(Color.ORANGE);
-            p = game.getTresorPosition();
+            p = game.getTreasurePosition();
         } else {
             g.setColor(Color.GREEN);
             p = game.getStairsPosition();
@@ -111,22 +117,36 @@ public class Painter {
      */
     private void drawHero(Graphics2D g, BufferedImage img) {
         //Récupération de sa position
-        Position heroPosition = game.getLevel().getHero().getPosition();
+        Position heroPosition = game.getHeroPosition();
 
         //Dessin du hero
         g.setColor(Color.BLUE);
         g.fillOval(heroPosition.getX() * WORLD_UNIT,heroPosition.getY() * WORLD_UNIT,WORLD_UNIT,WORLD_UNIT);
     }
 
+    private void drawTimer (Graphics2D g, BufferedImage img) {
+        g.setFont(STANDARD_FONT);
+        int timeLeft = game.getTimeLeft();
+
+        g.setColor( ( timeLeft <= TIMER_WARNING_START) ?
+                        Color.RED :
+                        Color.BLACK );
+
+        g.drawString("Move Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
+    }
+
     private void drawWin(Graphics2D g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 36));
+        g.setFont(STANDARD_FONT);
         g.setColor(Color.DARK_GRAY);
 
+        String endMessage;
         if (game.isGameWon()) {
-            g.drawString("You Win !",0,HEIGHT - 36);
+            endMessage = "You win !";
         } else {
-            g.drawString("You Loose !",0,HEIGHT - 36);
+            endMessage = "You Loose !";
         }
+
+        g.drawString(endMessage,0 ,HEIGHT - ( FONT_SIZE / 4 ));
     }
 
     public int getWidth() {
