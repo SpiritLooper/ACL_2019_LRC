@@ -29,7 +29,7 @@ public class PositionPool {
     }
 
     public boolean isInBounds (int x, int y) {
-        return x >= 0 && y >= 0 && x <= Game.WIDTH && y <= Game.WIDTH;
+        return x >= 0 && y >= 0 && x < Game.WIDTH && y < Game.WIDTH;
     }
 
 }
