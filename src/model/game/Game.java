@@ -10,12 +10,7 @@ import model.element.Treasure;
 import java.util.Collection;
 
 /**
- * classe façade faisant le lien dans le MVC entre le controlleur la vue et le modèle.
- * dans cette version:
- * le héro peut se déplacer dans les différents niveaux
- * les monstres se mettent à jour i.e ils se déplacent
- * les cases trésors et escaliers s'activent quand le héro est dessus
- * Game connaît un Héro
+ * Facade connecting the Model to the View for the MVC architecture
  * @author gouth
  */
 public class Game {
