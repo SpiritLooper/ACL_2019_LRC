@@ -38,8 +38,8 @@ public class Timer {
      * Decreases the remaining time and returns it
      * @return decreased time
      */
-    public int tick () {
-        return --timeLeft;
+    public void tick () {
+        timeLeft--;
     }
 
     /**

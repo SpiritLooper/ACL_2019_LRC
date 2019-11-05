@@ -41,11 +41,6 @@ public class Game {
     private Engine engine;
 
     /**
-     * timer controlling the remaining time before loosing
-     */
-    private Timer timer;
-
-    /**
      * is the game finished or not?
      */
     private boolean finished;
@@ -61,7 +56,6 @@ public class Game {
     public Game(){
         this.level = null;
         this.engine = null;
-        this.timer = new Timer();
         this.finished = false;
         this.won = false;
     }
@@ -93,7 +87,7 @@ public class Game {
      * @return time left before its out
      */
     public int getTimeLeft () {
-        return timer.getTimeLeft();
+        return level.getTimer().getTimeLeft();
     }
 
     /**
@@ -166,7 +160,7 @@ public class Game {
      */
     private void update () {
         level.update();
-        if (timer.tick() <= 0) {
+        if (level.getTimer().getTimeLeft()<= 0) {
             finish(false);
         }
         notifyEngine();
