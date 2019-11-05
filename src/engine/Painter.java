@@ -132,7 +132,7 @@ public class Painter {
                 Color.RED :
                 Color.BLACK );
 
-        g.drawString("Move Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
+        g.drawString("Moves Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
     }
 
     private void drawWin(Graphics2D g) {
