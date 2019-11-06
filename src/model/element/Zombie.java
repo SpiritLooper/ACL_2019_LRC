@@ -23,7 +23,7 @@ public class Zombie extends Monster {
 
     @Override
     public String toString() {
-        return "Zombie>" + super.toString();
+        return "Zombie<>";
     }
 
 }

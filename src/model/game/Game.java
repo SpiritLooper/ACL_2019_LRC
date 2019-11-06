@@ -2,12 +2,15 @@ package model.game;
 
 import controller.Command;
 import engine.Engine;
+import model.GameParser;
 import model.Menu;
 import model.PositionPool;
+import model.SaveDAO;
 import model.element.Position;
 import model.element.Stairs;
 import model.element.Treasure;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -161,9 +164,12 @@ public class Game {
                     break;
 
                 case SAVE:
+                    saveGame();
                     break;
 
                 case LOAD:
+                    loadSave();
+                    menu.close();
                     break;
 
                 case EXIT:
@@ -175,20 +181,36 @@ public class Game {
                     break;
             }
 
-        } else {
-            //if the escape key is input while in game we open the menu
-            if (command == Command.ESCAPE) {
-                System.out.println("ici");
-                menu.open();
-            }
+            notifyEngine();
+            return;
         }
 
-        //moves the hero if the menu is closed
-        if (!menu.isOpen()) {
-            moveHero(command);
+        //if the escape key is input while in game we open the menu
+        if (command == Command.ESCAPE) {
+            menu.open();
+            notifyEngine();
+            return;
         }
 
+        moveHero(command);
         update();
+    }
+
+    private void saveGame () {
+        try {
+            GameParser.getINSTANCE().writeSaveFile(level.createSave());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadSave () {
+        try {
+            SaveDAO save = GameParser.getINSTANCE().parseSaveFile();
+            level.loadSave(save);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -217,10 +239,7 @@ public class Game {
      * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
     private void update () {
-        //updates the level if the menu isn't open
-        if (!menu.isOpen()) {
-            level.update();
-        }
+        level.update();
 
         if (level.getTimer().getTimeLeft()<= 0) {
             finish(false);

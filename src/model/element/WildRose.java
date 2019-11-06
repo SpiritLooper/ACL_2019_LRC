@@ -14,7 +14,7 @@ public class WildRose extends Monster {
 
     @Override
     public String toString() {
-        return "WildRose>" + super.toString();
+        return "WildRose<>";
     }
 
 }

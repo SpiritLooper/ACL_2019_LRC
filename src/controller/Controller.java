@@ -13,11 +13,17 @@ public class Controller {
     private Game game;
 
     /**
+     * states if the controller can throw in input in the game or not
+     */
+    private boolean listening;
+
+    /**
      * Constructor with the game
      * @param game game to send the received command to
      */
     public Controller (Game game) {
         this.game = game;
+        this.listening = true;
     }
 
     /**
@@ -25,9 +31,14 @@ public class Controller {
      * @param command received command
      */
     public void execute (Command command) {
-        if(!game.isFinished()) {
+        if(!game.isFinished() && listening) {
+            listening = false;
             game.execute(command);
         }
+    }
+
+    public void listen () {
+        listening = true;
     }
 
 }

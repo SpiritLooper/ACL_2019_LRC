@@ -14,8 +14,4 @@ public abstract class Monster implements Entity {
      */
     public abstract Command behave();
 
-    @Override
-    public String toString() {
-        return "Monster : " + super.toString();
-    }
 }

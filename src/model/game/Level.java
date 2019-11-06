@@ -2,12 +2,10 @@ package model.game;
 
 import controller.Command;
 import model.PositionPool;
+import model.SaveDAO;
 import model.element.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The Level contains all of its tiles and monsters, its next level (if any) as well as the hero
@@ -193,13 +191,16 @@ public class Level {
         }
 
         //mise à jour des monstres
-        Set<Position> monstersPositions = monsters.keySet(); //on récupère les positions avant changement de la hashmap
+
+        //on récupère les positions avant changement de la hashmap
+        List<Position> monstersPositions = new ArrayList<>(monsters.keySet());
 
         for (Position p : monstersPositions) { //parcours des monstres
-            Command monsterCommand = monsters.get(p).behave(); //sauvegarde de la position
+            Command monsterCommand = monsters.get(p).behave(); //sauvegarde du comportement du monstre
             Monster m = monsters.get(p); //sauvegarde du monstre
-            Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre
+            Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre par rapport à son comportement
             if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
+                //si la case est libre ET le hero n'y est pas on se déplace
                 monsters.remove(p);
                 monsters.put(newPosition, m);
             }
@@ -227,6 +228,27 @@ public class Level {
      */
     private boolean isEmpty (Position p) {
         return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
+    }
+
+    /**
+     * Loads a save given by the game containing the data of the hero and monsters
+     * @param save save DAO containing the data to load
+     */
+    public void loadSave (SaveDAO save) {
+        timer.reset(save.getTimer());
+        hero = save.getHero();
+        monsters = save.getMonsters();
+    }
+
+    public SaveDAO createSave () {
+        SaveDAO save = new SaveDAO();
+        save.setTimer(timer.getTimeLeft());
+        save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), 1, 1);
+        for (Position p : monsters.keySet()) {
+            save.addMonster(monsters.get(p).getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), 1, 1);
+        }
+        System.out.println(save);
+        return save;
     }
 
 }

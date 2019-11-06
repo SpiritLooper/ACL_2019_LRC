@@ -48,7 +48,6 @@ public class Engine {
     public void update() {
         // affiche le game
         this.gui.paint();
-        // met en attente
-        //Thread.sleep(100); // a voir ce que ça donne si le jeu va plus vite que sonic
+        gameController.listen();
     }
 }

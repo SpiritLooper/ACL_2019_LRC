@@ -34,4 +34,8 @@ public class Hero implements Entity{
         this.position = position;
     }
 
+    @Override
+    public String toString() {
+        return "Hero<" + position.getX() + "," + position.getY() + ">";
+    }
 }

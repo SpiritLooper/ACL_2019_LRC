@@ -34,7 +34,11 @@ public class Menu {
     public MenuItem control (Command command) {
         switch (command) {
             case UP:
-                selected = MenuItem.values()[(selected.ordinal() - 1) % (MenuItem.values().length - 1)];
+                if (selected.ordinal() - 1 == -1) {
+                    selected = MenuItem.values()[MenuItem.values().length - 1];
+                } else {
+                    selected = MenuItem.values()[(selected.ordinal() - 1) % (MenuItem.values().length - 1)];
+                }
                 break;
 
             case DOWN:
