@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.scene.input.KeyCode;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -21,27 +23,37 @@ public class InputManager implements KeyListener {
     /**
      * key representing the up movement
      */
-    private final char UP_KEY = 'z';
+    private final int UP_KEY = KeyEvent.VK_Z;
 
     /**
      * key representing the down movement
      */
-    private final char DOWN_KEY = 's';
+    private final int DOWN_KEY = KeyEvent.VK_S;
 
     /**
      * key representing the left movement
      */
-    private final char LEFT_KEY = 'q';
+    private final int LEFT_KEY = KeyEvent.VK_Q;
 
     /**
      * key representing the right movement
      */
-    private final char RIGHT_KEY = 'd';
+    private final int RIGHT_KEY = KeyEvent.VK_D;
 
     /**
      * key representing the idle movement
      */
-    private final char IDLE_KEY = 'r';
+    private final int IDLE_KEY = KeyEvent.VK_X;
+
+    /**
+     * key representing the menu opening
+     */
+    private final int ESCAPE_KEY = KeyEvent.VK_ESCAPE;
+
+    /**
+     * key representing the select in menu
+     */
+    private final int SPACE_KEY = KeyEvent.VK_SPACE;
 
     /**
      * Constructor linking the controller
@@ -59,7 +71,7 @@ public class InputManager implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
-        switch (e.getKeyChar()) {
+        switch (e.getExtendedKeyCode()) {
             case UP_KEY:
                 currentCommand = Command.UP;
                 break;
@@ -76,13 +88,20 @@ public class InputManager implements KeyListener {
                 currentCommand = Command.RIGHT;
                 break;
 
-            default:
+            case ESCAPE_KEY:
+                currentCommand = Command.ESCAPE;
+                break;
+
+            case SPACE_KEY:
+                currentCommand = Command.SPACE;
+                break;
+
             case IDLE_KEY:
                 currentCommand = Command.IDLE;
                 break;
         }
 
-        controller.move(currentCommand);
+        controller.execute(currentCommand);
 
         currentCommand = Command.IDLE;
     }
@@ -103,13 +122,6 @@ public class InputManager implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         return;
-    }
-
-    /**
-     * @return the current keyboard input from the user
-     */
-    public Command getCurrentCommand () {
-        return currentCommand;
     }
 
 }

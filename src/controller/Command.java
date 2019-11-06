@@ -1,7 +1,7 @@
 package controller;
 
 /**
- * enum representing the different possible actions for the hero to move
+ * enum representing the different possible actions for the hero to input
  */
 public enum Command {
 
@@ -9,6 +9,8 @@ public enum Command {
     DOWN,
     LEFT,
     RIGHT,
-    IDLE;
+    IDLE,
+    ESCAPE,
+    SPACE;
 
 }

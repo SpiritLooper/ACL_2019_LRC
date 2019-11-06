@@ -24,9 +24,9 @@ public class Controller {
      * Telling the game to move the hero following the received command
      * @param command received command
      */
-    public void move(Command command) {
+    public void execute (Command command) {
         if(!game.isFinished()) {
-            game.moveHero(command);
+            game.execute(command);
         }
     }
 

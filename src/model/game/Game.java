@@ -2,6 +2,7 @@ package model.game;
 
 import controller.Command;
 import engine.Engine;
+import model.Menu;
 import model.PositionPool;
 import model.element.Position;
 import model.element.Stairs;
@@ -24,6 +25,11 @@ public class Game {
      * Heigth of the game
      */
     public static final int HEIGHT = 10; //hauteur du niveau
+
+    /**
+     * menu of the game
+     */
+    private Menu menu;
 
     /**
      * current level to play in
@@ -49,6 +55,7 @@ public class Game {
      * Constructor instantiating a timer and setting the game to not finished
      */
     public Game(){
+        this.menu = new Menu();
         this.level = null;
         this.engine = null;
         this.finished = false;
@@ -142,22 +149,83 @@ public class Game {
     }
 
     /**
+     * Executes the received command for the menu of open or the hero
+     * @param command user input
+     */
+    public void execute (Command command) {
+        //controls the menu if it is open
+        if (menu.isOpen()) {
+            switch (menu.control(command)) {
+                case CONTINUE:
+                    menu.close();
+                    break;
+
+                case SAVE:
+                    break;
+
+                case LOAD:
+                    break;
+
+                case EXIT:
+                    finish(false);
+                    break;
+
+                case IDLE:
+                default:
+                    break;
+            }
+
+        } else {
+            //if the escape key is input while in game we open the menu
+            if (command == Command.ESCAPE) {
+                System.out.println("ici");
+                menu.open();
+            }
+        }
+
+        //moves the hero if the menu is closed
+        if (!menu.isOpen()) {
+            moveHero(command);
+        }
+
+        update();
+    }
+
+    /**
+     * @return true if the menu is open, false else
+     */
+    public boolean isMenuOpen () {
+        return menu.isOpen();
+    }
+
+    /**
+     * @return an integer (0..3) representing the selected item in the menu : 0:CONTINUE, 1:SAVE, 2:LOAD, 3:EXIT
+     */
+    public int getSelectedMenuItem () {
+        return menu.getSelected().ordinal();
+    }
+
+    /**
      * Moves the hero based on a command
      * @param command command representing the move to make
      */
     public void moveHero(Command command) {
         level.moveHero(command);
-        update();
     }
 
     /**
      * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
     private void update () {
-        level.update();
+        //updates the level if the menu isn't open
+        if (!menu.isOpen()) {
+            level.update();
+        }
+
         if (level.getTimer().getTimeLeft()<= 0) {
             finish(false);
         }
+
         notifyEngine();
     }
 
