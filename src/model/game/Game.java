@@ -2,10 +2,7 @@ package model.game;
 
 import controller.Command;
 import engine.Engine;
-import model.GameParser;
-import model.Menu;
-import model.PositionPool;
-import model.SaveDAO;
+import model.*;
 import model.element.Position;
 import model.element.Stairs;
 import model.element.Treasure;
@@ -213,6 +210,17 @@ public class Game {
         }
     }
 
+    private Level generateLevel(int lvl){
+        try {
+            LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl, this);
+            Level level = new Level();
+            level.generate(lvlDAO);
+            return level;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Level(); //astuce pour le try catch normalement on ne retourne jamais un lvl vide
+    }
     /**
      * @return true if the menu is open, false else
      */
@@ -266,14 +274,20 @@ public class Game {
      * Generates a basic game
      */
     public void generateGame() {
-        //Génération par défaut
         Level level1 = new Level();
+        Position p;
+        /*
+        //Génération par défaut
+
         level1 = level1.generateDefaultLevel();
 
         //Ajout stairs
         Position p = PositionPool.getInstance().getPosition(4,4);
         level1.addTile(p, new Stairs(this));
+        */
 
+        //generation du level1 par fichier
+        level1 = generateLevel(1);
         Level level2 = new Level();
         level2 = level2.generateDefaultLevel();
 
@@ -286,6 +300,7 @@ public class Game {
 
         this.setLevel(level1);//on bind la game au level
     }
+
 
     /**
      * Ends the game

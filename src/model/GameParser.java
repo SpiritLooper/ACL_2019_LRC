@@ -2,6 +2,8 @@ package model;
 
 import model.element.Monster;
 import model.element.Position;
+import model.game.Game;
+import model.game.Level;
 
 import java.io.*;
 
@@ -9,8 +11,10 @@ public class GameParser {
 
     private static GameParser INSTANCE = new GameParser();
 
-    private final String GAME_FILENAME = "res/saves/game.lyt";
-    private final String SAVE_FILENAME = "res/saves/save.sav";
+    private final String EXTENSION      = ".lyt";
+    private final String GAME_FILENAME  = "res/saves/game"+EXTENSION;
+    private final String SAVE_FILENAME  = "res/saves/save.sav";
+    private final String LEVEL_FILENAME = "res/saves/level";
     private String[] levelsFilenames;
 
     private GameParser() {
@@ -62,6 +66,82 @@ public class GameParser {
         }
 
         return save;
+    }
+
+    /**
+     * parse un fichier levelX.lyt pour générer un niveau dans le modèle
+     * @param lvl : l'indice du niveau (1,2,3...N)
+     * @param game : le  jeu car sinon problème lors d'ajout d'eventTile
+     * @return LevelDAO qui va servir à generer le niveau depuis le fichier
+     */
+    public LevelDAO parseLevelFile(int lvl, Game game) throws IOException{
+        LevelDAO level = new LevelDAO(game);
+        File file = new File(LEVEL_FILENAME+lvl+EXTENSION);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("DIM:")) {
+                String[] dimensions = line.substring(4).split(",");
+                int w = Integer.parseInt(dimensions[0]);
+                int h = Integer.parseInt(dimensions[1]);
+                level.setDimension(w,h);
+
+            } else if (line.startsWith("HERO:")) {
+                String[] hero = line.substring(5).split(",");
+
+                level.setHeroPosition(Integer.parseInt(hero[0]), Integer.parseInt(hero[1]));
+            } else if (line.startsWith("ZOMBIE:")) {
+                String[] zombies = line.substring(7).split(";");
+                for(String position : zombies){
+                    String[] tmp = position.split(",");
+                    level.addZombie(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+                }
+            } else if (line.startsWith("WILDROSE:")) {
+                String[] roses = line.substring(9).split(";");
+                for(String position : roses){
+                    String[] tmp = position.split(",");
+                    level.addWildrose(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+                }
+            } else if (line.startsWith("TREASURE:")){
+                String[] position = line.substring(9).split(",");
+                level.addTreasure(Integer.parseInt(position[0]), Integer.parseInt(position[1]));
+            } else if (line.startsWith("STAIRS:")){
+                String[] position = line.substring(7).split(",");
+                level.addStairs(Integer.parseInt(position[0]), Integer.parseInt(position[1]));
+            } else if (line.startsWith("WALLS:")){
+                String[] walls = line.substring(6).split(";");
+
+                for(String wall : walls){
+                    if(wall.contains("to")){ //logique point HG ; BD
+                        int HGx;
+                        int HGy;
+                        int BDx;
+                        int BDy;
+
+                        String[] bounds = wall.split("to");
+                        String[] HG = bounds[0].split(",");
+                        String[] BD = bounds[1].split(",");
+
+                        HGx = Integer.parseInt(HG[0]);
+                        HGy = Integer.parseInt(HG[1]);
+                        BDx = Integer.parseInt(BD[0]);
+                        BDy = Integer.parseInt(BD[1]);
+
+                        for(int i = HGx; i <= BDx; i++){
+                            for(int j = HGy; j <= BDy; j++){
+                                level.addWall(i,j);
+                            }
+                        }
+                    } else { //just one position
+                        String[] tmp = wall.split(",");
+                        level.addWall(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+                    }
+                }//end for
+            }//end if...else..if
+
+        }//end while
+        return level;
     }
 
 }

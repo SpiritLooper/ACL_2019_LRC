@@ -1,6 +1,7 @@
 package model.game;
 
 import controller.Command;
+import model.LevelDAO;
 import model.PositionPool;
 import model.SaveDAO;
 import model.element.*;
@@ -240,6 +241,8 @@ public class Level {
         monsters = save.getMonsters();
     }
 
+
+
     public SaveDAO createSave () {
         SaveDAO save = new SaveDAO();
         save.setTimer(timer.getTimeLeft());
@@ -251,4 +254,15 @@ public class Level {
         return save;
     }
 
+    /**
+     * generate a level from a LevelDAO
+     * @param lvl ; LevelDAO which was read from a file
+     */
+    public void generate(LevelDAO lvl) {
+        this.monsters = lvl.getMonsters();
+        this.tiles = lvl.getTiles();
+        this.hero = lvl.getHero();
+
+
+    }
 }
