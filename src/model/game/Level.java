@@ -120,6 +120,7 @@ public class Level {
      * @return a collection of the monsters' positions
      */
     public Collection<Position> getMonstersPosition() {
+
         return monsters.keySet();
     }
 
@@ -262,7 +263,27 @@ public class Level {
         this.monsters = lvl.getMonsters();
         this.tiles = lvl.getTiles();
         this.hero = lvl.getHero();
+    }
 
+    /**
+     * Met a jour l'etat du jeu a renvoyer a la vue
+     * @param gs objet stockant les etats du jeu
+     */
+    public void updateGameStatement(GameStatement gs) {
+        // Parcours des monstres
+        for(Position p : monsters.keySet()) {
+            Monster m = monsters.get(p);
+            gs.addElement(m.getClass().getSimpleName(),p);
+        }
+
+        //Parcours des tuiles
+        for(Position p : tiles.keySet()) {
+            Tile t = tiles.get(p);
+            gs.addElement(t.getClass().getSimpleName(), p);
+        }
+
+        //Ajout position de l'hero*
+        gs.addElement(hero.getClass().getSimpleName(), hero.getPosition());
 
     }
 }

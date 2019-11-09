@@ -3,6 +3,7 @@ package model.game;
 import controller.Command;
 import engine.Engine;
 import model.*;
+import model.element.Monster;
 import model.element.Position;
 import model.element.Stairs;
 import model.element.Treasure;
@@ -50,6 +51,11 @@ public class Game {
      * is the game won or lost? (used when the game is finished)
      */
     private boolean won;
+
+    /**
+     * Etat du jeu, a envoyer a la vue
+     */
+    private final GameStatement gameStatement = new GameStatement();
 
     /**
      * Constructor instantiating a timer and setting the game to not finished
@@ -299,6 +305,8 @@ public class Game {
         level1.setNextLevel(level2);
 
         this.setLevel(level1);//on bind la game au level
+
+        level.updateGameStatement(this.gameStatement); // Mis a jour de l'instance de jeu
     }
 
 
@@ -315,9 +323,16 @@ public class Game {
      * Notifies to the engine that the game updated
      */
     private void notifyEngine() { // Equivalent à l'update
+        this.gameStatement.clear();
+
+        level.updateGameStatement(this.gameStatement);
+
         this.engine.update();
     }
 
+    public GameStatement getGameStatement() {
+        return gameStatement;
+    }
 }
 
 

@@ -1,11 +1,14 @@
 package engine;
 
+import engine.spriteManager.SpriteTileParser;
 import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
+import model.game.GameStatement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * Classe permettant de dessiner le jeu à partir de l'image donnée
@@ -18,10 +21,18 @@ public class Painter {
     protected static final int WIDTH = 800;
     protected static final int HEIGHT = 600;
 
-    private static final int WORLD_UNIT = 50;
+    public static final int WORLD_UNIT = 50;
     public static final int FONT_SIZE = 36;
     public static final Font STANDARD_FONT = new Font("TimesRoman", Font.PLAIN, FONT_SIZE);
     public static final int TIMER_WARNING_START = 5;
+
+    private BufferedImage heroSprite;
+    private BufferedImage treasureSprite;
+    private BufferedImage stairsSprite;
+    private BufferedImage zombieSprite;
+    private BufferedImage wildRoseSprite;
+
+
 
     /**
      * Jeu à dessiner
@@ -30,6 +41,19 @@ public class Painter {
 
     public Painter(Game game) {
         this.game = game;
+
+        try {
+            SpriteTileParser.loadSprites();
+            heroSprite = SpriteTileParser.getHeroSprite();
+            treasureSprite = SpriteTileParser.getTreasureSprite();
+            stairsSprite = SpriteTileParser.getStairsSprite();
+            zombieSprite = SpriteTileParser.getZombieSprite();
+            wildRoseSprite = SpriteTileParser.getWildRoseSprite();
+        } catch (IOException e) {
+            System.err.println("Load sprite failed");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -39,11 +63,13 @@ public class Painter {
     public void draw(BufferedImage im) {
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
-        drawLabyrinth(crayon,im);
+        GameStatement gameStat = game.getGameStatement();
 
-        drawHero(crayon,im);
+        drawLabyrinth(crayon,im, gameStat);
 
-        drawMonsters(crayon, im);
+        drawHero(crayon,im, gameStat);
+
+        drawMonsters(crayon, im, gameStat);
 
         drawTimer(crayon, im);
 
@@ -56,14 +82,15 @@ public class Painter {
      * Dessine la structure du level
      * @param g objet de dessin
      * @param img image sur laquelle dessiner
+     * @param gameStat
      */
-    private void drawLabyrinth(Graphics2D g, BufferedImage img){
+    private void drawLabyrinth(Graphics2D g, BufferedImage img, GameStatement gameStat){
         //Création fond blanc
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.fillRect(0,0, img.getWidth(), img.getHeight());
 
         //Dessin du cadrillage
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         Position positionExtreme = PositionPool.getInstance().getPosition(Game.WIDTH - 1, Game.HEIGHT - 1);
         //Dessin des lignes
         for (int l = 0 ; l <= (positionExtreme.getY() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
@@ -82,16 +109,13 @@ public class Painter {
 
         //Dessin escalier ou trésor
         Position p;
-        if(game.hasATreasureInLevel()){
-            g.setColor(Color.ORANGE);
-            p = game.getTreasurePosition();
+        if(gameStat.hasATresure()){
+            p = gameStat.getFirstPosition(GameStatement.TREASURE);
+            g.drawImage(treasureSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
         } else {
-            g.setColor(Color.GREEN);
-            p = game.getStairsPosition();
+            p = gameStat.getFirstPosition(GameStatement.STAIRS);
+            g.drawImage(stairsSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
         }
-
-        if(p != null)
-            g.fillRect(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , WORLD_UNIT, WORLD_UNIT);
 
     }
 
@@ -99,14 +123,18 @@ public class Painter {
      * Dessine l'ensemble des monstres du level
      * @param g objet de dessin
      * @param img image sur laquelle dessiner
+     * @param gameStat
      */
-    private void drawMonsters(Graphics2D g, BufferedImage img) {
-        //Couleur des monstres
-        g.setColor(Color.RED);
+    private void drawMonsters(Graphics2D g, BufferedImage img, GameStatement gameStat) {
 
-        //Parcours de chaque position de monstre
-        for(Position p : game.getMonstersPosition())  {
-            g.fillOval(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT, WORLD_UNIT, WORLD_UNIT);
+        //Parcours de chaque position de Zombie
+        for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
+            g.drawImage(zombieSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
+        }
+
+        //Parcours de chaque position de Wild Rose
+        for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
+            g.drawImage(wildRoseSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
         }
     }
 
@@ -114,14 +142,14 @@ public class Painter {
      * Dessine le hero dans son level
      * @param g objet de dessin
      * @param img image sur laquelle dessiner
+     * @param gameStat
      */
-    private void drawHero(Graphics2D g, BufferedImage img) {
+    private void drawHero(Graphics2D g, BufferedImage img, GameStatement gameStat) {
         //Récupération de sa position
-        Position heroPosition = game.getHeroPosition();
+        Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        g.setColor(Color.BLUE);
-        g.fillOval(heroPosition.getX() * WORLD_UNIT,heroPosition.getY() * WORLD_UNIT,WORLD_UNIT,WORLD_UNIT);
+        g.drawImage(heroSprite, heroPosition.getX() * WORLD_UNIT , heroPosition.getY() * WORLD_UNIT, null );
     }
 
     private void drawTimer (Graphics2D g, BufferedImage img) {
@@ -130,7 +158,7 @@ public class Painter {
 
         g.setColor( ( timeLeft <= TIMER_WARNING_START) ?
                 Color.RED :
-                Color.BLACK );
+                Color.WHITE );
 
         g.drawString("Moves Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
     }
