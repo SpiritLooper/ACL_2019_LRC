@@ -90,7 +90,7 @@ public class Painter {
      */
     private void drawLabyrinth(Graphics2D g, BufferedImage img, GameStatement gameStat){
         //Création fond blanc
-        g.setColor(Color.BLACK);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0, img.getWidth(), img.getHeight());
 
         //Dessin du sol

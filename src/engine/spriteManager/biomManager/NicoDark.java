@@ -3,7 +3,6 @@ package engine.spriteManager.biomManager;
 import engine.spriteManager.SpriteTileParser;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class NicoDark extends BiomLevel {
 

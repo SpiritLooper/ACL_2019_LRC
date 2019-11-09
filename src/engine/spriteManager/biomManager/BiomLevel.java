@@ -68,6 +68,16 @@ public abstract class BiomLevel {
                 BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g = levelDesign.createGraphics();
+        //Dessin du fond
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0,0, levelDesign.getWidth(), levelDesign.getHeight());
+
+        // Dessin du sol
+        for(int l = 0 ; l < Game.HEIGHT ; l++) {
+            for(int c = 0 ; c < Game.WIDTH; c++) {
+                g.drawImage(ground, ( c + 1 ) * Painter.WORLD_UNIT, ( l + 1 ) * Painter.WORLD_UNIT, null );
+            }
+        }
 
         //Dessin des murs interne
         PositionPool pool = PositionPool.getInstance();
@@ -167,8 +177,27 @@ public abstract class BiomLevel {
         return wallSelected;
     }
 
+    /**
+     * Defini le sprite avec le mur sans mur autour de lui
+     * @return L'image
+     */
     protected abstract BufferedImage defineWallAlone();
+
+    /**
+     * Defini le sprite du sol
+     * @return Image du sol
+     */
     protected abstract BufferedImage defineGround();
+
+    /**
+     * Defini les murs en forme de rectangle
+     * @return tableau d'image organise comme les constante SQUARE_*
+     */
     protected abstract BufferedImage[] defineWallSquare();
+
+    /**
+     * Defini les murs en forme de croix
+     * @return tableau d'image organise comme les constante CROSS_*
+     */
     protected abstract BufferedImage[] defineWallCross();
 }
