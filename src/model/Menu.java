@@ -63,6 +63,7 @@ public class Menu {
      */
     public void open () {
         open = true;
+        System.out.println("Menu est ouvert");
     }
 
     /**
@@ -71,6 +72,7 @@ public class Menu {
     public void close () {
         selected = MenuItem.CONTINUE;
         open = false;
+        System.out.println("Menu est fermé");
     }
 
     /**
