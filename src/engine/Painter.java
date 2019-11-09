@@ -2,8 +2,6 @@ package engine;
 
 import engine.spriteManager.SpriteTileParser;
 import engine.spriteManager.biomManager.BiomLevel;
-import engine.spriteManager.biomManager.NicoDark;
-import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
 import model.game.GameStatement;
@@ -20,9 +18,6 @@ public class Painter {
     /**
      * la taille des cases
      */
-    protected static final int WIDTH = 800;
-    protected static final int HEIGHT = 600;
-
     public static final int WORLD_UNIT = 50;
     public static final int FONT_SIZE = 36;
     public static final Font STANDARD_FONT = new Font("TimesRoman", Font.PLAIN, FONT_SIZE);
@@ -150,7 +145,7 @@ public class Painter {
                 Color.RED :
                 Color.WHITE );
 
-        g.drawString("Moves Left : "+timeLeft , 0, HEIGHT - ( FONT_SIZE / 4 * 6));
+        g.drawString("Moves Left : "+timeLeft , 0, getHeight() - ( FONT_SIZE / 4 * 6));
     }
 
     private void drawWin(Graphics2D g) {
@@ -164,14 +159,14 @@ public class Painter {
             endMessage = "You Loose !";
         }
 
-        g.drawString(endMessage,0 ,HEIGHT - ( FONT_SIZE / 4 ));
+        g.drawString(endMessage,0 ,getHeight() - ( FONT_SIZE / 4 ));
     }
 
     public int getWidth() {
-        return WIDTH;
+        return WORLD_UNIT * (Game.WIDTH + 2);
     }
 
     public int getHeight() {
-        return HEIGHT;
+        return WORLD_UNIT * (Game.HEIGHT + 2);
     }
 }
