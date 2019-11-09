@@ -1,6 +1,7 @@
 package engine.spriteManager.basicSprite;
 
 import engine.Painter;
+import engine.spriteManager.SpriteTileParser;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,7 +20,7 @@ import java.io.IOException;
     private BufferedImage sprite;
 
     public BasicSprite(String path) throws IOException {
-        this.sprite = resizeBufferedImageAsWorldUnit( ImageIO.read(new File(path)) ) ;
+        this.sprite = SpriteTileParser.resizeBufferedImageAsWorldUnit( ImageIO.read(new File(path)) ) ;
     }
 
     /**
@@ -46,20 +47,5 @@ import java.io.IOException;
         return sprite;
     }
 
-    /**
-     * REdimmensionne l'image pour qu'elle corresponde à la taille de monde
-     * @param bi image a redimmensionner
-     * @return img redimensionnee
-     */
-    private BufferedImage resizeBufferedImageAsWorldUnit(BufferedImage bi){
-        int w = bi.getWidth();
-        int h = bi.getHeight();
-        BufferedImage dimg = new BufferedImage(Painter.WORLD_UNIT, Painter.WORLD_UNIT, bi.getType());
-        Graphics2D g = dimg.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.drawImage(bi, 0, 0, Painter.WORLD_UNIT, Painter.WORLD_UNIT, 0, 0, w, h, null);
-        g.dispose();
-        return dimg;
-    }
+
 }

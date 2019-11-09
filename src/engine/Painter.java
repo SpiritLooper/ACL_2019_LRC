@@ -1,6 +1,8 @@
 package engine;
 
 import engine.spriteManager.SpriteTileParser;
+import engine.spriteManager.biomManager.BiomLevel;
+import engine.spriteManager.biomManager.NicoDark;
 import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
@@ -32,8 +34,8 @@ public class Painter {
     private BufferedImage zombieSprite;
     private BufferedImage wildRoseSprite;
 
-
-
+    private BiomLevel levelDesign;
+    
     /**
      * Jeu à dessiner
      */
@@ -49,6 +51,7 @@ public class Painter {
             stairsSprite = SpriteTileParser.getStairsSprite();
             zombieSprite = SpriteTileParser.getZombieSprite();
             wildRoseSprite = SpriteTileParser.getWildRoseSprite();
+            levelDesign = SpriteTileParser.getLevelDesign();
         } catch (IOException e) {
             System.err.println("Load sprite failed");
             e.printStackTrace();
@@ -61,6 +64,7 @@ public class Painter {
      * @param im image sur laquelle dessinee
      */
     public void draw(BufferedImage im) {
+
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
         GameStatement gameStat = game.getGameStatement();
@@ -89,32 +93,18 @@ public class Painter {
         g.setColor(Color.BLACK);
         g.fillRect(0,0, img.getWidth(), img.getHeight());
 
-        //Dessin du cadrillage
-        g.setColor(Color.WHITE);
-        Position positionExtreme = PositionPool.getInstance().getPosition(Game.WIDTH - 1, Game.HEIGHT - 1);
-        //Dessin des lignes
-        for (int l = 0 ; l <= (positionExtreme.getY() + 1) * WORLD_UNIT ; l += WORLD_UNIT ){
-            g.drawLine(0,  l, (positionExtreme.getX() + 1) * WORLD_UNIT, l );
-        }
-        //Dessin des colonnes
-        for (int c = 0 ; c <= (positionExtreme.getX() + 1) * WORLD_UNIT ; c += WORLD_UNIT ){
-            g.drawLine(c, 0, c , (positionExtreme.getY() + 1) * WORLD_UNIT );
-        }
-
-        //Dessin des murs
-        g.setColor(Color.BLACK);
-        for(Position p : game.getWallsPosition())  {
-            g.fillRect(p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT, WORLD_UNIT, WORLD_UNIT);
-        }
+        //Dessin du sol
+        BufferedImage level = levelDesign.buildImageLevel(gameStat.getAllPosition(GameStatement.WALL));
+        g.drawImage(level, 0,0, null);
 
         //Dessin escalier ou trésor
         Position p;
         if(gameStat.hasATresure()){
             p = gameStat.getFirstPosition(GameStatement.TREASURE);
-            g.drawImage(treasureSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
+            g.drawImage(treasureSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
         } else {
             p = gameStat.getFirstPosition(GameStatement.STAIRS);
-            g.drawImage(stairsSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
+            g.drawImage(stairsSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
         }
 
     }
@@ -129,12 +119,12 @@ public class Painter {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
-            g.drawImage(zombieSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
+            g.drawImage(zombieSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
         }
 
         //Parcours de chaque position de Wild Rose
         for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
-            g.drawImage(wildRoseSprite, p.getX() * WORLD_UNIT, p.getY() * WORLD_UNIT , null);
+            g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
         }
     }
 
@@ -149,7 +139,7 @@ public class Painter {
         Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        g.drawImage(heroSprite, heroPosition.getX() * WORLD_UNIT , heroPosition.getY() * WORLD_UNIT, null );
+        g.drawImage(heroSprite, ( heroPosition.getX() + 1 )* WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
     }
 
     private void drawTimer (Graphics2D g, BufferedImage img) {
@@ -165,7 +155,7 @@ public class Painter {
 
     private void drawWin(Graphics2D g) {
         g.setFont(STANDARD_FONT);
-        g.setColor(Color.DARK_GRAY);
+        g.setColor(Color.LIGHT_GRAY);
 
         String endMessage;
         if (game.isGameWon()) {

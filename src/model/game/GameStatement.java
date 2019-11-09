@@ -18,6 +18,7 @@ public class GameStatement {
     public static final String TREASURE = Treasure.class.getSimpleName();
     public static final String WILD_ROSE = WildRose.class.getSimpleName();
     public static final String ZOMBIE = Zombie.class.getSimpleName();
+    public static final String WALL = Wall.class.getSimpleName() ;
     /**
      * Stockage des elements
      */
@@ -29,6 +30,7 @@ public class GameStatement {
         elements.put(HERO, new HashSet<>());
         elements.put(STAIRS, new HashSet<>());
         elements.put(TREASURE, new HashSet<>());
+        elements.put(WALL, new HashSet<>());
         elements.put(WILD_ROSE, new HashSet<>());
         elements.put(ZOMBIE, new HashSet<>());
     }
