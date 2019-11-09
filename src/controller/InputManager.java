@@ -71,7 +71,7 @@ public class InputManager implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
-        switch (e.getExtendedKeyCode()) {
+        switch (e.getKeyChar()) {
             case UP_KEY:
                 currentCommand = Command.UP;
                 break;
