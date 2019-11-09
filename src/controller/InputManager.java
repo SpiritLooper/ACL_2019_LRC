@@ -23,37 +23,37 @@ public class InputManager implements KeyListener {
     /**
      * key representing the up movement
      */
-    private final int UP_KEY = KeyEvent.VK_Z;
+    private final int UP_KEY = 'z';
 
     /**
      * key representing the down movement
      */
-    private final int DOWN_KEY = KeyEvent.VK_S;
+    private final int DOWN_KEY = 's';
 
     /**
      * key representing the left movement
      */
-    private final int LEFT_KEY = KeyEvent.VK_Q;
+    private final int LEFT_KEY = 'q';
 
     /**
      * key representing the right movement
      */
-    private final int RIGHT_KEY = KeyEvent.VK_D;
+    private final int RIGHT_KEY = 'd';
 
     /**
      * key representing the idle movement
      */
-    private final int IDLE_KEY = KeyEvent.VK_X;
+    private final int IDLE_KEY = 'x';
 
     /**
      * key representing the menu opening
      */
-    private final int ESCAPE_KEY = KeyEvent.VK_ESCAPE;
+    private final int ESCAPE_KEY = 'a';
 
     /**
      * key representing the select in menu
      */
-    private final int SPACE_KEY = KeyEvent.VK_SPACE;
+    private final int SPACE_KEY = ' ';
 
     /**
      * Constructor linking the controller
