@@ -3,6 +3,7 @@ package engine.spriteManager.biomManager;
 import engine.spriteManager.SpriteTileParser;
 
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 public class NicoDark extends BiomLevel {
 
@@ -59,5 +60,20 @@ public class NicoDark extends BiomLevel {
             wallCross[i] = SpriteTileParser.resizeBufferedImageAsWorldUnit(wallCross[i]);
 
         return wallCross;
+    }
+
+    @Override
+    protected BufferedImage[] defineWallCorners() {
+        BufferedImage[] wallCorners = new BufferedImage[4];
+
+        wallCorners[CORNER_TOP_LEFT] = this.tileSet.getSubimage(224,32,32,32);
+        wallCorners[CORNER_TOP_RIGHT] = this.tileSet.getSubimage(224,32,32,32);
+        wallCorners[CORNER_BOTTOM_LEFT] = this.tileSet.getSubimage(224,32,32,32);
+        wallCorners[CORNER_BOTTOM_RIGHT] = this.tileSet.getSubimage(224,32,32,32);
+
+        for (int i = 0 ; i < wallCorners.length ; i++ )
+            wallCorners[i] = SpriteTileParser.resizeBufferedImageAsWorldUnit(wallCorners[i]);
+
+        return wallCorners;
     }
 }

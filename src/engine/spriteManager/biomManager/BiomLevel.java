@@ -40,6 +40,13 @@ public abstract class BiomLevel {
     protected static final int CROSS_SIDE_VERTICAL = 5;
     protected static final int CROSS_SIDE_HORIZONTAL = 6;
 
+    private BufferedImage[] wallCorner;
+    protected static final int CORNER_TOP_LEFT = 0;
+    protected static final int CORNER_TOP_RIGHT = 1;
+    protected static final int CORNER_BOTTOM_LEFT = 2;
+    protected static final int CORNER_BOTTOM_RIGHT = 3;
+
+
     public BiomLevel(String path) {
        try {
            tileSet = ImageIO.read(new File(path));
@@ -48,6 +55,8 @@ public abstract class BiomLevel {
            wallAlone = defineWallAlone();
            wallCross = defineWallCross();
            wallSquare = defineWallSquare();
+           wallCorner = defineWallCorners();
+
        } catch (IOException e ) {
            System.err.println("Load setTile Failed");
            e.printStackTrace();
@@ -55,6 +64,7 @@ public abstract class BiomLevel {
        }
 
     }
+
 
     /**
      * Creer l'image de fond du level
@@ -96,10 +106,10 @@ public abstract class BiomLevel {
 
         //Dessin de l'enceinte de mur
             // Ajout des murs angles
-            g.drawImage(wallSquare[SQUARE_MID_MID], 0 * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Gauche
-            g.drawImage(wallSquare[SQUARE_MID_MID], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Droite
-            g.drawImage(wallSquare[SQUARE_MID_MID], 0 * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Gauche
-            g.drawImage(wallSquare[SQUARE_MID_MID], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Droite
+            g.drawImage(wallCorner[CORNER_TOP_LEFT], 0 * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Gauche
+            g.drawImage(wallCorner[CORNER_TOP_RIGHT], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Droite
+            g.drawImage(wallCorner[CORNER_BOTTOM_LEFT], 0 * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Gauche
+            g.drawImage(wallCorner[CORNER_BOTTOM_RIGHT], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Droite
 
             // Ajout des murs qui vont jusque ces angles
         for(int i = 1 ; i <= Game.WIDTH ; i++ ) {
@@ -200,4 +210,11 @@ public abstract class BiomLevel {
      * @return tableau d'image organise comme les constante CROSS_*
      */
     protected abstract BufferedImage[] defineWallCross();
+
+    /**
+     * Defini les murs en forme de croix
+     * @return tableau d'image organise comme les constante CORNER_*
+     */
+    protected abstract BufferedImage[] defineWallCorners();
+
 }

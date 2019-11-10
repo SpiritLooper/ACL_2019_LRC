@@ -3,14 +3,15 @@ package engine.spriteManager;
 import engine.Painter;
 import engine.spriteManager.basicSprite.*;
 import engine.spriteManager.biomManager.BiomLevel;
-import engine.spriteManager.biomManager.NicoDark;
+import engine.spriteManager.biomManager.DarkWasteland;
+import engine.spriteManager.biomManager.PokemonTileset;
+import engine.spriteManager.biomManager.TemporalTower;
 import model.element.Position;
 import model.game.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class SpriteTileParser {
     private static BasicSprite wildRoseSprite;
     private static BasicSprite heroSprite;
 
-    private final static BiomLevel DEFAULT_BIOM = new NicoDark();
+private final static BiomLevel DEFAULT_BIOM = new TemporalTower();
 
     private static ImageLevelLinked imagesLevel;
 
