@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Hero extends BasicSprite {
 
-    private static final String path = SpriteTileParser.TEXTURE_PATH + "hero.png";
+    private static final String path = SpriteTileParser.TEXTURE_PATH + "hero2.png";
 
     public Hero() throws IOException {
         super(path);

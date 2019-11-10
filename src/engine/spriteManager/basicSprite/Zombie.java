@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class Zombie extends BasicSprite {
 
-    private static final String path = SpriteTileParser.TEXTURE_PATH + "zombie.png";
+    private static final String path = SpriteTileParser.TEXTURE_PATH + "zombie2.png";
 
     public Zombie() throws IOException {
         super(path);

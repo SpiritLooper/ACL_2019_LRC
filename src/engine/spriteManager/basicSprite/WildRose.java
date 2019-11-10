@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class WildRose extends BasicSprite {
 
-    private static final String path = SpriteTileParser.TEXTURE_PATH + "wild_rose.png";
+    private static final String path = SpriteTileParser.TEXTURE_PATH + "wild_rose2.png";
 
     public WildRose() throws IOException {
         super(path);
