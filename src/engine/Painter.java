@@ -25,8 +25,8 @@ public class Painter {
 
     private DrawMode displayMode;
 
-    private final DrawMode MENU ;
-    private final DrawMode GAME ;
+    private final DrawMenu MENU ;
+    private final DrawGame GAME ;
 
     /**
      * Jeu à dessiner
@@ -61,5 +61,9 @@ public class Painter {
 
     public static int getHeight() {
         return WORLD_UNIT * (Game.HEIGHT + 2);
+    }
+
+    public void updateNextLevel() {
+        GAME.updateNextLevel();
     }
 }

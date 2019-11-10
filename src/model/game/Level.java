@@ -307,6 +307,21 @@ public class Level {
     }
 
     /**
+     * Permet d'obtenir la postion de chaque mur du niveau
+     * @return Ensemble de position
+     */
+    public Set<Position> getWallsPosition() {
+        Set<Position> res = new HashSet<>();
+         for (Position p : tiles.keySet() ) {
+             Tile t = tiles.get(p);
+             if (t.getClass().getName().equals(Wall.class.getName())) {
+                 res.add(p);
+             }
+         }
+        return res;
+    }
+
+    /**
      * @return life of the Hero
      */
     public int heroLife(){

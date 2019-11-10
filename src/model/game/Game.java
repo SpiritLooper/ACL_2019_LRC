@@ -9,7 +9,10 @@ import model.element.Stairs;
 import model.element.Treasure;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Facade connecting the Model to the View for the MVC architecture
@@ -341,12 +344,30 @@ public class Game {
         this.engine.update();
     }
 
+    public void notifyNextLevelEngine() {
+        this.engine.nextLevelUpdate();
+    }
+
     /**
      * TODO oui je sais c'est évident mais même :-)
      * @return
      */
     public GameStatement getGameStatement() {
         return gameStatement;
+    }
+
+    /**
+     * Utilisé à la vue de build les images de fond de chaque level
+     * @return List d'ensemble de position de chaque level
+     */
+    public List<Set<Position>> getAllWallsOfEachLevels() {
+        ArrayList<Set<Position>> res = new ArrayList<>();
+        Level indiceLevel = level;
+        while (  indiceLevel != null ) {
+            res.add(indiceLevel.getWallsPosition());
+            indiceLevel = indiceLevel.nextLevel();
+        }
+        return res;
     }
 }
 

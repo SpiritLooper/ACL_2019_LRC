@@ -3,6 +3,7 @@ package engine.drawMode;
 import engine.Painter;
 import engine.spriteManager.SpriteTileParser;
 import engine.spriteManager.biomManager.BiomLevel;
+import engine.spriteManager.biomManager.NicoDark;
 import model.element.Position;
 import model.game.Game;
 import model.game.GameStatement;
@@ -10,6 +11,7 @@ import model.game.GameStatement;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static engine.Painter.*;
 
@@ -20,7 +22,6 @@ public class DrawGame implements DrawMode {
 
     private static final int TIMER_WARNING_START = 5;
 
-    private BiomLevel levelDesign;
     private Game game;
 
     private BufferedImage heroSprite;
@@ -28,18 +29,24 @@ public class DrawGame implements DrawMode {
     private BufferedImage stairsSprite;
     private BufferedImage zombieSprite;
     private BufferedImage wildRoseSprite;
-    
+
+    private BufferedImage levelBackground ; // Contient le sol et les murs dessinee
+
     public DrawGame(Game g) {
         this.game = g;
 
         try {
             SpriteTileParser.loadSprites();
+            SpriteTileParser.loadLevels( game );
+
             heroSprite = SpriteTileParser.getHeroSprite();
             treasureSprite = SpriteTileParser.getTreasureSprite();
             stairsSprite = SpriteTileParser.getStairsSprite();
             zombieSprite = SpriteTileParser.getZombieSprite();
             wildRoseSprite = SpriteTileParser.getWildRoseSprite();
-            levelDesign = SpriteTileParser.getLevelDesign();
+
+            levelBackground = SpriteTileParser.nextLevel();
+
         } catch (IOException e) {
             System.err.println("Load sprite failed");
             e.printStackTrace();
@@ -93,8 +100,7 @@ public class DrawGame implements DrawMode {
         g.fillRect(0,0, Painter.getWidth(), Painter.getHeight());
 
         //Dessin du sol
-        BufferedImage level = levelDesign.buildImageLevel(gameStat.getAllPosition(GameStatement.WALL));
-        g.drawImage(level, 0,0, null);
+        g.drawImage(levelBackground, 0,0, null);
 
         //Dessin escalier ou trésor
         Position p;
@@ -162,5 +168,9 @@ public class DrawGame implements DrawMode {
         }
 
         g.drawString(endMessage,0 ,Painter.getHeight() - ( FONT_SIZE / 4 ));
+    }
+
+    public void updateNextLevel() {
+        this.levelBackground = SpriteTileParser.nextLevel();
     }
 }

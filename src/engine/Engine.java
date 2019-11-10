@@ -50,4 +50,8 @@ public class Engine {
         this.gui.paint();
         gameController.listen();
     }
+
+    public void nextLevelUpdate() {
+        gamePainter.updateNextLevel();
+    }
 }

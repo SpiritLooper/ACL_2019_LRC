@@ -4,10 +4,15 @@ import engine.Painter;
 import engine.spriteManager.basicSprite.*;
 import engine.spriteManager.biomManager.BiomLevel;
 import engine.spriteManager.biomManager.NicoDark;
+import model.element.Position;
+import model.game.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Classe principale de la gestion des sprites
@@ -28,7 +33,9 @@ public class SpriteTileParser {
     private static BasicSprite wildRoseSprite;
     private static BasicSprite heroSprite;
 
-    private final static BiomLevel levelDesign = new NicoDark();
+    private final static BiomLevel DEFAULT_BIOM = new NicoDark();
+
+    private static ImageLevelLinked imagesLevel;
 
     /**
      * Charge l'ensemble des sprites
@@ -40,6 +47,17 @@ public class SpriteTileParser {
         zombieSprite = new Zombie();
         wildRoseSprite = new WildRose();
         heroSprite = new Hero();
+    }
+
+    public static void loadLevels( Game game ) {
+        // TODO Ajouter au model la lecture du type de biome
+        List<Set<Position>> levels =  game.getAllWallsOfEachLevels();
+
+        imagesLevel = new ImageLevelLinked(null);
+
+        for ( Set<Position> ens : levels ) {
+            imagesLevel.add(  DEFAULT_BIOM.buildImageLevel(ens) );
+        }
     }
 
     /*
@@ -66,10 +84,6 @@ public class SpriteTileParser {
         return wildRoseSprite.getSprite();
     }
 
-    public static BiomLevel getLevelDesign() {
-        return levelDesign;
-    }
-
     /**
      * Redimmensionne l'image pour qu'elle corresponde à la taille de monde
      * @param bi image a redimmensionner
@@ -84,6 +98,10 @@ public class SpriteTileParser {
         g2d.dispose();
 
         return dimg;
-        //return bi;
+    }
+
+    public static BufferedImage nextLevel() {
+        imagesLevel = imagesLevel.next();
+        return imagesLevel.getImage();
     }
 }

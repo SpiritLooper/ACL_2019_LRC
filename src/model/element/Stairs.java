@@ -21,5 +21,6 @@ public class Stairs extends EventTile {
     @Override
     public void fireEvent() {
         game.nextLevel();
+        game.notifyNextLevelEngine();
     }
 }
