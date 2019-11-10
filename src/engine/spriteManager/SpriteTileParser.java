@@ -2,10 +2,7 @@ package engine.spriteManager;
 
 import engine.Painter;
 import engine.spriteManager.basicSprite.*;
-import engine.spriteManager.biomManager.BiomLevel;
-import engine.spriteManager.biomManager.DarkWasteland;
-import engine.spriteManager.biomManager.PokemonTileset;
-import engine.spriteManager.biomManager.TemporalTower;
+import engine.spriteManager.biomManager.*;
 import model.element.Position;
 import model.game.Game;
 
@@ -34,7 +31,7 @@ public class SpriteTileParser {
     private static BasicSprite wildRoseSprite;
     private static BasicSprite heroSprite;
 
-private final static BiomLevel DEFAULT_BIOM = new TemporalTower();
+private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
 
     private static ImageLevelLinked imagesLevel;
 
