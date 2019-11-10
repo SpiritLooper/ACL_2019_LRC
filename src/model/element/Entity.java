@@ -6,13 +6,13 @@ package model.element;
 public interface Entity {
 
     /**
-     * The Entity attack the Entity e
+     * This Entity attack the Entity e
      * @param e entity attacked
      */
     void attack(Entity e);
 
     /**
-     * The Entity takes a hit
+     * This Entity takes a hit
      * @param atk attack's force
      */
     void hit(int atk);

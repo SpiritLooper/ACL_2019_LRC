@@ -11,8 +11,7 @@ public class Zombie extends Monster {
 
 
     public Zombie(){
-        atk = 2;
-        hp = 1;
+        super(2,1);
     }
     /**
      * Behaves randomly
@@ -33,13 +32,12 @@ public class Zombie extends Monster {
 
     @Override
     public void attack(Entity e) {
-        hp = hp - e.getAtk();
-        e.hit(atk);
+        super.attack(e);
     }
 
     @Override
     public void hit(int atk) {
-        hp = hp - atk;
+        super.hit(atk);
     }
 
     @Override

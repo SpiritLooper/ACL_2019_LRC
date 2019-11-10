@@ -8,8 +8,7 @@ import controller.Command;
 public class WildRose extends Monster {
 
     public WildRose(){
-        atk = 2;
-        hp = 2;
+        super(2,2);
     }
 
     @Override
@@ -24,13 +23,12 @@ public class WildRose extends Monster {
 
     @Override
     public void attack(Entity e) {
-        hp = hp - e.getAtk();
-        e.hit(atk);
+        super.attack(e);
     }
 
     @Override
     public void hit(int atk) {
-        hp = hp - atk;
+        super.hit(atk);
     }
 
     @Override

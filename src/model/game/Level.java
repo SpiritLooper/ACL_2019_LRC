@@ -206,16 +206,21 @@ public class Level {
             if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
                 //si la case est libre ET le hero n'y est pas on se déplace
                 monsters.remove(p);
-                if(m.getHp() > 0) {//si le monstre n'a plus d'HP alors on le remet dans la HasMap
+                if(m.getHp() > 0) {//si le monstre a encore des HP alors on le remet dans la HashMap
                     monsters.put(newPosition, m);
-                }
+                } //sinon il est implicitement remove de la hashmap
             }else if(newPosition.equals(hero.getPosition())){
-                m.attack(hero);
+                m.attack(hero); //le monstre peut perdre des pv ici
                 //Debug combat
                 System.out.println("Attaque du monstre");
                 System.out.println("hero hp:"+hero.getHp());
                 System.out.println("monstre hp:" + m.getHp());
+                if(m.getHp() <= 0) {//si le monstre n'a plus de hp
+                    System.out.println("===DEBUG==remove monster : =" + m.getHp());
+                    removeMonster(newPosition);
+                }
             }
+
         }
         //mise à jour du timer
         timer.tick();
@@ -236,6 +241,9 @@ public class Level {
             System.out.println("ATTAQUE!");
             System.out.println("hero hp:"+hero.getHp());
             System.out.println("monstre hp:" + m.getHp());
+            if(m.getHp()<=0){
+                removeMonster(newPosition);
+            }
         }
     }
 
