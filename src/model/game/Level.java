@@ -198,16 +198,25 @@ public class Level {
         List<Position> monstersPositions = new ArrayList<>(monsters.keySet());
 
         for (Position p : monstersPositions) { //parcours des monstres
+
             Command monsterCommand = monsters.get(p).behave(); //sauvegarde du comportement du monstre
             Monster m = monsters.get(p); //sauvegarde du monstre
             Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre par rapport à son comportement
+
             if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
                 //si la case est libre ET le hero n'y est pas on se déplace
                 monsters.remove(p);
-                monsters.put(newPosition, m);
+                if(m.getHp() > 0) {//si le monstre n'a plus d'HP alors on le remet dans la HasMap
+                    monsters.put(newPosition, m);
+                }
+            }else if(newPosition.equals(hero.getPosition())){
+                m.attack(hero);
+                //Debug combat
+                System.out.println("Attaque du monstre");
+                System.out.println("hero hp:"+hero.getHp());
+                System.out.println("monstre hp:" + m.getHp());
             }
         }
-
         //mise à jour du timer
         timer.tick();
     }
@@ -218,8 +227,15 @@ public class Level {
      */
     public void moveHero (Command command) {
         Position newPosition = hero.getPosition().applyCommand(command);
-        if (isEmpty(newPosition)) {
+        if (isEmpty(newPosition)) {//si c'est libre
             hero.setPosition(newPosition);
+        }else if( monsters.containsKey(newPosition)){//si un monstre s'y trouve
+            Monster m = monsters.get(newPosition);
+            hero.attack(m);
+            //Debug combat
+            System.out.println("ATTAQUE!");
+            System.out.println("hero hp:"+hero.getHp());
+            System.out.println("monstre hp:" + m.getHp());
         }
     }
 
@@ -243,7 +259,10 @@ public class Level {
     }
 
 
-
+    /**
+     * TODO faire javadoc
+     * @return
+     */
     public SaveDAO createSave () {
         SaveDAO save = new SaveDAO();
         save.setTimer(timer.getTimeLeft());
@@ -273,7 +292,7 @@ public class Level {
         // Parcours des monstres
         for(Position p : monsters.keySet()) {
             Monster m = monsters.get(p);
-            gs.addElement(m.getClass().getSimpleName(),p);
+            gs.addElement(m.getClass().getSimpleName(), p);
         }
 
         //Parcours des tuiles
@@ -285,5 +304,12 @@ public class Level {
         //Ajout position de l'hero*
         gs.addElement(hero.getClass().getSimpleName(), hero.getPosition());
 
+    }
+
+    /**
+     * @return life of the Hero
+     */
+    public int heroLife(){
+        return hero.getHp();
     }
 }

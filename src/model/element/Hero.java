@@ -13,10 +13,22 @@ public class Hero implements Entity{
     private Position position;
 
     /**
+     * Health points of the hero
+     */
+    private int hp;
+
+    /**
+     * Attack of the hero
+     */
+    private int atk;
+
+    /**
      * Constructor with the spawn position
      */
     public Hero(Position position) {
         this.position = position;
+        hp = 10;
+        atk = 1;
     }
 
     /**
@@ -37,5 +49,26 @@ public class Hero implements Entity{
     @Override
     public String toString() {
         return "Hero<" + position.getX() + "," + position.getY() + ">";
+    }
+
+    @Override
+    public void attack(Entity e) {
+        hp = hp - e.getAtk();
+        e.hit(atk);
+    }
+
+    @Override
+    public void hit(int atk) {
+        hp = hp - atk;
+    }
+
+    @Override
+    public int getAtk() {
+        return atk;
+    }
+
+    @Override
+    public int getHp() {
+        return hp;
     }
 }

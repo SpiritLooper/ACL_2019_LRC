@@ -9,6 +9,11 @@ import java.util.Random;
  */
 public class Zombie extends Monster {
 
+
+    public Zombie(){
+        atk = 2;
+        hp = 1;
+    }
     /**
      * Behaves randomly
      * @return random command
@@ -26,4 +31,24 @@ public class Zombie extends Monster {
         return "Zombie<>";
     }
 
+    @Override
+    public void attack(Entity e) {
+        hp = hp - e.getAtk();
+        e.hit(atk);
+    }
+
+    @Override
+    public void hit(int atk) {
+        hp = hp - atk;
+    }
+
+    @Override
+    public int getAtk() {
+        return atk;
+    }
+
+    @Override
+    public int getHp() {
+        return hp;
+    }
 }

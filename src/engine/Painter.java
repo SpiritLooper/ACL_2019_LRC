@@ -72,6 +72,8 @@ public class Painter {
 
         drawTimer(crayon, im);
 
+        drawHp(crayon);
+
         if(game.isFinished()) {
             drawWin(crayon);
         }
@@ -160,6 +162,23 @@ public class Painter {
         }
 
         g.drawString(endMessage,0 ,getHeight() - ( FONT_SIZE / 4 ));
+    }
+
+    /**
+     * Draw the hero's life
+     * @param g
+     */
+    private void drawHp(Graphics2D g){
+        int hp = game.getLevel().heroLife();
+        int timeLeft = game.getTimeLeft();
+
+        if (hp > 0 && timeLeft > 0 && !game.isGameWon()) {
+            g.setFont(STANDARD_FONT);
+            g.setColor(Color.GREEN);
+
+            g.drawString("HP: "+game.getLevel().heroLife(),0, getHeight() - (FONT_SIZE / 4));
+        }
+
     }
 
     public int getWidth() {

@@ -80,6 +80,5 @@ public class GameStatement {
     public void clear() {
         for (Set<Position> set : elements.values())
             set.clear();
-
     }
 }

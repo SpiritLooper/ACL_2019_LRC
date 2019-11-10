@@ -199,6 +199,9 @@ public class Game {
         update();
     }
 
+    /**
+     * TODO
+     */
     private void saveGame () {
         try {
             GameParser.getINSTANCE().writeSaveFile(level.createSave());
@@ -207,6 +210,9 @@ public class Game {
         }
     }
 
+    /**
+     * TODO
+     */
     private void loadSave () {
         try {
             SaveDAO save = GameParser.getINSTANCE().parseSaveFile();
@@ -216,6 +222,11 @@ public class Game {
         }
     }
 
+    /**
+     * TODO
+     * @param lvl
+     * @return
+     */
     private Level generateLevel(int lvl){
         try {
             LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl, this);
@@ -255,7 +266,7 @@ public class Game {
     private void update () {
         level.update();
 
-        if (level.getTimer().getTimeLeft()<= 0) {
+        if (level.getTimer().getTimeLeft()<= 0 || level.heroLife() <= 0) {
             finish(false);
         }
 
@@ -330,6 +341,10 @@ public class Game {
         this.engine.update();
     }
 
+    /**
+     * TODO oui je sais c'est évident mais même :-)
+     * @return
+     */
     public GameStatement getGameStatement() {
         return gameStatement;
     }

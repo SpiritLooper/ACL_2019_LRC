@@ -7,6 +7,11 @@ import controller.Command;
  */
 public class WildRose extends Monster {
 
+    public WildRose(){
+        atk = 2;
+        hp = 2;
+    }
+
     @Override
     public Command behave() {
         return Command.IDLE;
@@ -17,4 +22,24 @@ public class WildRose extends Monster {
         return "WildRose<>";
     }
 
+    @Override
+    public void attack(Entity e) {
+        hp = hp - e.getAtk();
+        e.hit(atk);
+    }
+
+    @Override
+    public void hit(int atk) {
+        hp = hp - atk;
+    }
+
+    @Override
+    public int getAtk() {
+        return atk;
+    }
+
+    @Override
+    public int getHp() {
+        return hp;
+    }
 }

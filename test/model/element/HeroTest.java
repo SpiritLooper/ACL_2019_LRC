@@ -62,6 +62,24 @@ class HeroTest {
     @Test
     void testToString(){
         assertEquals("Hero<0,0>", h0.toString());
+    }
 
+    @Test
+    void getHp() {
+        assertEquals(10,h0.getHp());
+    }
+
+    @Test
+    void attack() {
+        Monster m = new Zombie();
+        h0.attack(m);
+        assertEquals(10-m.getAtk(), h0.getHp());
+        assertEquals(1-h0.getAtk(), m.getHp());
+    }
+
+    @Test
+    void hit() {
+        h0.hit(1);
+        assertEquals(9,h0.getHp());
     }
 }
