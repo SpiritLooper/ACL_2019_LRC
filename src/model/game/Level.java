@@ -97,14 +97,6 @@ public class Level {
      * @return the generated level
      */
     protected Level generateDefaultLevel(){
-        /*
-          0   1   2
-         _____________
-      0  |_H_|___|___|
-      1  |___|___|_W_|
-      2  |___|___|_M_|
-
-         */
 
         Position p = PositionPool.getInstance().getPosition(2,2);
         addMonster(p, new Zombie());
@@ -334,5 +326,13 @@ public class Level {
      */
     public int heroLife(){
         return hero.getHp();
+    }
+
+    /**
+     * change the life of the hero
+     * @param life
+     */
+    public void setHeroLife(int life){
+        hero.setLife(life);
     }
 }

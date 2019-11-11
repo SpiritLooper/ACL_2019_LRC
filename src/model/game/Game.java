@@ -287,7 +287,9 @@ public class Game {
      * Put the current level to the next level
      */
     public void nextLevel() {
+        int lifeHero = level.heroLife();
         level = level.nextLevel();
+        level.setHeroLife(lifeHero);
     }
 
     /**

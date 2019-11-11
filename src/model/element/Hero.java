@@ -71,4 +71,8 @@ public class Hero implements Entity{
     public int getHp() {
         return hp;
     }
+
+    public void setLife(int l){
+        hp = l;
+    }
 }
