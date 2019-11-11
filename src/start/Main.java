@@ -1,10 +1,7 @@
 package start;
 
-import engine.Engine;
-import model.GameParser;
+import view.Engine;
 import model.game.Game;
-
-import java.io.IOException;
 
 /**
  * lancement du moteur avec le jeu

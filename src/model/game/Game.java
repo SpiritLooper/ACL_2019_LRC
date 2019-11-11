@@ -1,12 +1,15 @@
 package model.game;
 
 import controller.Command;
-import engine.Engine;
+import model.element.tiles.Tile;
+import view.Engine;
 import model.*;
-import model.element.Monster;
 import model.element.Position;
-import model.element.Stairs;
-import model.element.Treasure;
+import model.element.tiles.Treasure;
+import model.menu.Menu;
+import model.persistency.GameParser;
+import model.persistency.LevelDAO;
+import model.persistency.SaveDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,6 +72,7 @@ public class Game {
         this.engine = null;
         this.finished = false;
         this.won = false;
+        EventManager.getINSTANCE().setGame(this);
     }
 
     /**
@@ -171,6 +175,7 @@ public class Game {
 
                 case SAVE:
                     saveGame();
+                    menu.close();
                     break;
 
                 case LOAD:
@@ -315,7 +320,7 @@ public class Game {
 
         //Ajout Tresor
         p = PositionPool.getInstance().getPosition(5,4);
-        level2.addTile(p, new Treasure(this));
+        level2.addTile(p, new Treasure());
 
 
         level1.setNextLevel(level2);
@@ -370,6 +375,10 @@ public class Game {
             indiceLevel = indiceLevel.nextLevel();
         }
         return res;
+    }
+
+    public void destroyTile (Tile tile) {
+        level.destroyTile(tile);
     }
 }
 

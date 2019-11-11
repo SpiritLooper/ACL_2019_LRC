@@ -1,10 +1,17 @@
 package model.game;
 
 import controller.Command;
-import model.LevelDAO;
+import model.element.entities.Status;
+import model.element.entities.buffs.Buff;
+import model.element.tiles.bufftiles.BuffTile;
+import model.persistency.LevelDAO;
 import model.PositionPool;
-import model.SaveDAO;
+import model.persistency.SaveDAO;
 import model.element.*;
+import model.element.entities.Hero;
+import model.element.entities.Monster;
+import model.element.entities.Zombie;
+import model.element.tiles.*;
 
 import java.util.*;
 
@@ -91,6 +98,18 @@ public class Level {
      * @param p position identifying the tile
      */
     protected void removeTile(Position p){ tiles.remove(p);}
+
+    public void destroyTile (Tile tile) {
+        List<Position> tilesPositions = new ArrayList<>(tiles.keySet());
+
+        for (Position p : tilesPositions) {
+            if (tiles.get(p).equals(tile)) {
+                System.out.println("Destruction de la tile" + p);
+                tiles.remove(p);
+                return;
+            }
+        }
+    }
 
     /**
      * Generates a default level
@@ -180,9 +199,15 @@ public class Level {
      */
     public void update () {
         //test d'un évènement à déclencher
-        if (tiles.containsKey(hero.getPosition()) && tiles.get(hero.getPosition()).hasEvent()) {
-            ((EventTile)tiles.get(hero.getPosition())).fireEvent();
+        if (tiles.containsKey(hero.getPosition())) {
+            if (tiles.get(hero.getPosition()).hasEvent()) {
+                ((EventTile)tiles.get(hero.getPosition())).fireEvent(); //launch the event if the hero steps on an EventTile
+            } else if (tiles.get(hero.getPosition()).hasBuff()) {
+                ((BuffTile)tiles.get(hero.getPosition())).buff(hero); //buffs the hero if he walks onto a BuffTile
+            }
         }
+
+        hero.update();
 
         //mise à jour des monstres
 
@@ -195,23 +220,39 @@ public class Level {
             Monster m = monsters.get(p); //sauvegarde du monstre
             Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre par rapport à son comportement
 
+            //if the monster is frozen, it will pass its turn
+            if (m.getStatus() == Status.FROZEN) {
+                continue;
+            }
+
             if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
                 //si la case est libre ET le hero n'y est pas on se déplace
+
                 monsters.remove(p);
-                if(m.getHp() > 0) {//si le monstre a encore des HP alors on le remet dans la HashMap
-                    monsters.put(newPosition, m);
-                } //sinon il est implicitement remove de la hashmap
-            }else if(newPosition.equals(hero.getPosition())){
+                monsters.put(newPosition, m);
+
+                //si la case contient un buff, on l'applique au monstre
+                if (tiles.containsKey(newPosition) && tiles.get(newPosition).hasBuff()) {
+                    ((BuffTile)tiles.get(newPosition)).buff(m);
+                }
+
+            } else if(newPosition.equals(hero.getPosition())) {
+                //si la case est occupée par le héro
+
                 m.attack(hero); //le monstre peut perdre des pv ici
                 //Debug combat
                 System.out.println("Attaque du monstre");
                 System.out.println("hero hp:"+hero.getHp());
                 System.out.println("monstre hp:" + m.getHp());
+
                 if(m.getHp() <= 0) {//si le monstre n'a plus de hp
                     System.out.println("===DEBUG==remove monster : =" + m.getHp());
                     removeMonster(newPosition);
                 }
+
             }
+
+            m.update();
 
         }
         //mise à jour du timer
@@ -233,7 +274,8 @@ public class Level {
             System.out.println("ATTAQUE!");
             System.out.println("hero hp:"+hero.getHp());
             System.out.println("monstre hp:" + m.getHp());
-            if(m.getHp()<=0){
+
+            if(m.getHp() <= 0){
                 removeMonster(newPosition);
             }
         }

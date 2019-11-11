@@ -1,6 +1,12 @@
 package model.game;
 
 import model.element.*;
+import model.element.entities.Hero;
+import model.element.entities.WildRose;
+import model.element.entities.Zombie;
+import model.element.tiles.Stairs;
+import model.element.tiles.Treasure;
+import model.element.tiles.Wall;
 
 import java.util.*;
 

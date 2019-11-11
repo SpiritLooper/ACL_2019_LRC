@@ -1,13 +1,16 @@
 package model.element;
 
 import model.PositionPool;
+import model.element.entities.Hero;
+import model.element.entities.Monster;
+import model.element.entities.Zombie;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HeroTest {
 
-    private static  Hero h0;
+    private static Hero h0;
 
     @BeforeAll
     static void init(){
