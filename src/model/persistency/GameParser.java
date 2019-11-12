@@ -6,6 +6,7 @@ import model.game.Game;
 
 import java.io.*;
 
+
 public class GameParser {
 
     private static GameParser INSTANCE = new GameParser();
@@ -70,11 +71,10 @@ public class GameParser {
     /**
      * parse un fichier levelX.lyt pour générer un niveau dans le modèle
      * @param lvl : l'indice du niveau (1,2,3...N)
-     * @param game : le  jeu car sinon problème lors d'ajout d'eventTile
      * @return LevelDAO qui va servir à generer le niveau depuis le fichier
      */
-    public LevelDAO parseLevelFile(int lvl, Game game) throws IOException{
-        LevelDAO level = new LevelDAO(game);
+    public LevelDAO parseLevelFile(int lvl) throws IOException{
+        LevelDAO level = new LevelDAO();
         File file = new File(LEVEL_FILENAME+lvl+EXTENSION);
         BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -94,13 +94,13 @@ public class GameParser {
                 String[] zombies = line.substring(7).split(";");
                 for(String position : zombies){
                     String[] tmp = position.split(",");
-                    level.addZombie(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+                    level.addBasicMonster(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
                 }
             } else if (line.startsWith("WILDROSE:")) {
                 String[] roses = line.substring(9).split(";");
                 for(String position : roses){
                     String[] tmp = position.split(",");
-                    level.addWildrose(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
+                    level.addImmovableMonster(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
                 }
             } else if (line.startsWith("TREASURE:")){
                 String[] position = line.substring(9).split(",");

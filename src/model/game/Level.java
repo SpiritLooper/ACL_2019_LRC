@@ -2,15 +2,14 @@ package model.game;
 
 import controller.Command;
 import model.element.entities.Status;
-import model.element.entities.buffs.Buff;
-import model.element.tiles.bufftiles.BuffTile;
+import model.element.tiles.buffTiles.BuffTile;
 import model.persistency.LevelDAO;
 import model.PositionPool;
 import model.persistency.SaveDAO;
 import model.element.*;
 import model.element.entities.Hero;
 import model.element.entities.Monster;
-import model.element.entities.Zombie;
+import model.element.entities.BasicMonster;
 import model.element.tiles.*;
 
 import java.util.*;
@@ -118,7 +117,7 @@ public class Level {
     protected Level generateDefaultLevel(){
 
         Position p = PositionPool.getInstance().getPosition(2,2);
-        addMonster(p, new Zombie());
+        addMonster(p, new BasicMonster());
 
         //Ajout mur
         p = PositionPool.getInstance().getPosition(2,1);
@@ -157,36 +156,6 @@ public class Level {
     }
 
     /**
-     * Returns the position of the treasure
-     * TODO retirer le instanceof!
-     * @return position of the treasure
-     */
-    public Position getPositionTresor() {
-        for (Position p : tiles.keySet()) {
-            Tile t = tiles.get(p);
-            if(t instanceof Treasure){
-                return p;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns the position of the stairs
-     * TODO retirer le instanceof
-     * @return
-     */
-    public Position getPositionStairs() {
-        for (Position p : tiles.keySet()) {
-            Tile t = tiles.get(p);
-            if(t instanceof Stairs){
-                return p;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Sets the next level
      * @param level next level
      */
@@ -221,33 +190,33 @@ public class Level {
             Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre par rapport à son comportement
 
             //if the monster is frozen, it will pass its turn
-            if (m.getStatus() == Status.FROZEN) {
-                continue;
-            }
+            if (m.getStatus() != Status.FROZEN) {
 
-            if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
-                //si la case est libre ET le hero n'y est pas on se déplace
+                if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
+                    //si la case est libre ET le hero n'y est pas on se déplace
 
-                monsters.remove(p);
-                monsters.put(newPosition, m);
+                    monsters.remove(p);
+                    monsters.put(newPosition, m);
 
-                //si la case contient un buff, on l'applique au monstre
-                if (tiles.containsKey(newPosition) && tiles.get(newPosition).hasBuff()) {
-                    ((BuffTile)tiles.get(newPosition)).buff(m);
-                }
+                    //si la case contient un buff, on l'applique au monstre
+                    if (tiles.containsKey(newPosition) && tiles.get(newPosition).hasBuff()) {
+                        ((BuffTile) tiles.get(newPosition)).buff(m);
+                    }
 
-            } else if(newPosition.equals(hero.getPosition())) {
-                //si la case est occupée par le héro
+                } else if (newPosition.equals(hero.getPosition())) {
+                    //si la case est occupée par le héro
 
-                m.attack(hero); //le monstre peut perdre des pv ici
-                //Debug combat
-                System.out.println("Attaque du monstre");
-                System.out.println("hero hp:"+hero.getHp());
-                System.out.println("monstre hp:" + m.getHp());
+                    m.attack(hero); //le monstre peut perdre des pv ici
+                    //Debug combat
+                    System.out.println("Attaque du monstre");
+                    System.out.println("hero hp:" + hero.getHp());
+                    System.out.println("monstre hp:" + m.getHp());
 
-                if(m.getHp() <= 0) {//si le monstre n'a plus de hp
-                    System.out.println("===DEBUG==remove monster : =" + m.getHp());
-                    removeMonster(newPosition);
+                    if (m.getHp() <= 0) {//si le monstre n'a plus de hp
+                        System.out.println("===DEBUG==remove monster : =" + m.getHp());
+                        removeMonster(newPosition);
+                    }
+
                 }
 
             }

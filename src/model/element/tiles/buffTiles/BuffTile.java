@@ -1,8 +1,11 @@
-package model.element.tiles.bufftiles;
+package model.element.tiles.buffTiles;
 
 import model.element.entities.Entity;
 import model.element.tiles.Tile;
 
+/**
+ * Tiles containing a buff for the entity walking onto it
+ */
 public abstract class BuffTile extends Tile {
 
     /**
@@ -12,6 +15,10 @@ public abstract class BuffTile extends Tile {
         super(true, false, true);
     }
 
+    /**
+     * buffs the entity
+     * @param entity entity to buff
+     */
     public abstract void buff (Entity entity);
 
 }

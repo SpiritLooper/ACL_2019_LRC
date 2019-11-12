@@ -2,8 +2,8 @@ package model.game;
 
 import model.element.*;
 import model.element.entities.Hero;
-import model.element.entities.WildRose;
-import model.element.entities.Zombie;
+import model.element.entities.ImmovableMonster;
+import model.element.entities.BasicMonster;
 import model.element.tiles.Stairs;
 import model.element.tiles.Treasure;
 import model.element.tiles.Wall;
@@ -22,8 +22,8 @@ public class GameStatement {
     public static final String HERO = Hero.class.getSimpleName();
     public static final String STAIRS = Stairs.class.getSimpleName();
     public static final String TREASURE = Treasure.class.getSimpleName();
-    public static final String WILD_ROSE = WildRose.class.getSimpleName();
-    public static final String ZOMBIE = Zombie.class.getSimpleName();
+    public static final String WILD_ROSE = ImmovableMonster.class.getSimpleName();
+    public static final String ZOMBIE = BasicMonster.class.getSimpleName();
     public static final String WALL = Wall.class.getSimpleName() ;
     /**
      * Stockage des elements

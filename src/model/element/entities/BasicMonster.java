@@ -5,12 +5,11 @@ import controller.Command;
 import java.util.Random;
 
 /**
- * A Zombie is a monster that moves randomly around
+ * A BasicMonster is a monster that moves randomly around
  */
-public class Zombie extends Monster {
-
-
-    public Zombie(){
+public class BasicMonster extends Monster {
+    
+    public BasicMonster(){
         super(2,1);
     }
     /**

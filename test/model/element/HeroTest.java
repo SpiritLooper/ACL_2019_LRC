@@ -3,7 +3,7 @@ package model.element;
 import model.PositionPool;
 import model.element.entities.Hero;
 import model.element.entities.Monster;
-import model.element.entities.Zombie;
+import model.element.entities.BasicMonster;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +74,7 @@ class HeroTest {
 
     @Test
     void attack() {
-        Monster m = new Zombie();
+        Monster m = new BasicMonster();
         h0.attack(m);
         assertEquals(10-m.getAtk(), h0.getHp());
         assertEquals(1-h0.getAtk(), m.getHp());

@@ -120,48 +120,6 @@ public class Game {
     }
 
     /**
-     * @return a collection of the position of each monsters
-     */
-    public Collection<Position> getMonstersPosition() {
-        return level.getMonstersPosition();
-    }
-
-    /**
-     * @return a collection of the position of each walls
-     */
-    public Collection<Position> getWallsPosition() { //TODO : a corriger il faut choisir les murs seulement
-        return level.getTilesEventPosition();
-    }
-
-    /**
-     * @return a collection of the position of each event tiles
-     */
-    public Collection<Position> getEventTilesPosition() {
-        return level.getTilesEventPosition();
-    }
-
-    /**
-     * @return position of the hero
-     */
-    public Position getHeroPosition () {
-        return level.getHero().getPosition();
-    }
-
-    /**
-     * @return position of the treasure in the level
-     */
-    public Position getTreasurePosition() {
-        return level.getPositionTresor();
-    }
-
-    /**
-     * @return position of the set of stairs in the level
-     */
-    public Position getStairsPosition() {
-        return level.getPositionStairs();
-    }
-
-    /**
      * Executes the received command for the menu of open or the hero
      * @param command user input
      */
@@ -237,7 +195,7 @@ public class Game {
      */
     private Level generateLevel(int lvl){
         try {
-            LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl, this);
+            LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl);
             Level level = new Level();
             level.generate(lvlDAO);
             return level;
@@ -246,6 +204,7 @@ public class Game {
         }
         return new Level(); //astuce pour le try catch normalement on ne retourne jamais un lvl vide
     }
+
     /**
      * @return true if the menu is open, false else
      */

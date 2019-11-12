@@ -5,9 +5,9 @@ import controller.Command;
 /**
  * A wild rose never moves, it only acts as a living obstacle
  */
-public class WildRose extends Monster {
+public class ImmovableMonster extends Monster {
 
-    public WildRose(){
+    public ImmovableMonster(){
         super(2,2);
     }
 
