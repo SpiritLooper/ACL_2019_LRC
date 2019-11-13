@@ -12,16 +12,16 @@ import java.util.ArrayList;
 public abstract class Monster implements Entity {
 
     /**
-     * Health points of the monster
+     * health points
      */
     protected int hp;
     /**
-     * Attack of the monster
+     * attack value
      */
     protected int atk;
 
     /**
-     * status of the hero
+     * status
      */
     private Status status;
 
@@ -36,18 +36,10 @@ public abstract class Monster implements Entity {
     private ArrayList<Buff> buffs;
 
     /**
-     * constructeur par defaut d'un monstre qui aura des attributs par defaut
-     * hp = 4
-     * atk = 1
+     * Constructor of a monster with its hp and atk
+     * @param hp health points
+     * @param atk attack values
      */
-    public Monster(){
-        this.hp = 4;
-        this.atk = 1;
-        status = Status.ABLE;
-        statusDuration = 0;
-        buffs = new ArrayList<>();
-    }
-
     public Monster(int hp, int atk){
         this.hp = hp;
         this.atk = atk;
@@ -62,50 +54,109 @@ public abstract class Monster implements Entity {
      */
     public abstract Command behave();
 
+    /**
+     * This monster attacks the given entity
+     * @param e entity attacked
+     */
     @Override
     public void attack(Entity e) {
         hp = hp - e.getAtk();
         e.hit(atk);
     }
 
+    /**
+     * This monster takes a hit
+     * @param atk attack's force
+     */
     @Override
     public void hit(int atk) {
         hp = hp - atk;
     }
 
-    @Override
-    public int getAtk() {
-        return atk;
-    }
-
+    /**
+     * @return health points
+     */
     @Override
     public int getHp() {
         return hp;
     }
 
+    /**
+     * @return attack value
+     */
+    @Override
+    public int getAtk() {
+        return atk;
+    }
+
+    /**
+     * Sets the health points of the monster
+     * @param hp health points
+     */
+    @Override
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    /**
+     * Sets the attack value of the monster
+     * @param atk attack value
+     */
+    @Override
+    public void setAtk(int atk) {
+        this.atk = atk;
+    }
+
+    /**
+     * @return status
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Applies a status to the monster
+     * @param status status to apply
+     * @param duration duration of the status
+     */
     @Override
     public void applyStatus(Status status, int duration) {
         this.status = status;
         statusDuration = duration;
     }
 
+    /**
+     * Buffs the monster
+     * @param buff buff used on the entity
+     */
     @Override
     public void buff(Buff buff) {
         buff.setEntity(this);
         buffs.add(buff);
     }
 
+    /**
+     * Heals the monster
+     * @param amount amount to heal
+     */
     @Override
     public void heal(int amount) {
         hp += amount;
     }
 
+    /**
+     * Updates the status and buffs of the monster
+     */
     @Override
     public void update() {
+        updateStatus();
+        updateBuffs();
+    }
+
+    /**
+     * Updates the status
+     */
+    private void updateStatus() {
         if (statusDuration <= 0) {
             status = Status.ABLE;
             statusDuration = 0;
@@ -114,7 +165,12 @@ public abstract class Monster implements Entity {
         if (status == Status.FROZEN) {
             statusDuration--;
         }
+    }
 
+    /**
+     * Updates the buffs
+     */
+    private void updateBuffs () {
         //copy of the list to avoid a concurrent modification
         ArrayList<Buff> buffsCopy = new ArrayList<>(buffs);
 
@@ -125,7 +181,6 @@ public abstract class Monster implements Entity {
                 b.apply();
             }
         }
-
     }
 
 }

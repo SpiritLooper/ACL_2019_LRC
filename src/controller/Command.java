@@ -1,7 +1,7 @@
 package controller;
 
 /**
- * enum representing the different possible actions for the hero to input
+ * Different possible actions for the hero and monsters to move
  */
 public enum Command {
 

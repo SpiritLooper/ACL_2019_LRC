@@ -1,5 +1,8 @@
 package model.game;
 
+/**
+ * The timer limits the number of moves the hero can do on each levels
+ */
 public class Timer {
 
     /**
@@ -8,7 +11,7 @@ public class Timer {
     private final int DEFAULT_TIME = 30;
 
     /**
-     * Remaining time (rounds) until the game finishes
+     * remaining time (rounds) until the game finishes
      */
     private int timeLeft;
 
@@ -40,13 +43,6 @@ public class Timer {
      */
     public void tick () {
         timeLeft--;
-    }
-
-    /**
-     * Resets the timer to the default time
-     */
-    public void reset () {
-        timeLeft = DEFAULT_TIME;
     }
 
     /**

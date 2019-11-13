@@ -86,11 +86,11 @@ public class Position {
         return this;
     }
 
-    @Override
-    public String toString(){
-        return "<" + x + "," + y + ">";
-    }
-
+    /**
+     * todo à revoir
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) { //peut mieux faire ?
         if(this == obj) return true;
@@ -98,6 +98,11 @@ public class Position {
         if(this.getClass() != obj.getClass()) return false;
         Position tmp = (Position) obj;
         return this.getX() == tmp.getX() && this.getY() == tmp.getY();
+    }
+
+    @Override
+    public String toString(){
+        return "<" + x + "," + y + ">";
     }
 
 }

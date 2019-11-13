@@ -1,7 +1,7 @@
 package model.menu;
 
 /**
- * enum of the different items of the menu
+ * Different items being used in the menu
  */
 public enum MenuItem {
 

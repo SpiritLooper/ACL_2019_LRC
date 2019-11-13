@@ -97,6 +97,10 @@ public class InputManager implements KeyListener {
             case IDLE_KEY:
                 currentCommand = Command.IDLE;
                 break;
+
+            default:
+                return;
+
         }
 
         controller.execute(currentCommand);

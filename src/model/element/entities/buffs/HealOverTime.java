@@ -1,13 +1,21 @@
 package model.element.entities.buffs;
 
-import model.element.entities.Entity;
-
+/**
+ * A heal over time highers the entity health points every turn for a set duration
+ */
 public class HealOverTime extends Buff {
 
+    /**
+     * Constructor to super with a given duration
+     * @param duration duration of the heal
+     */
     public HealOverTime(int duration) {
         super(duration);
     }
 
+    /**
+     * Heals the entity for 2 health points every turn for its duration
+     */
     @Override
     public void apply() {
         entity.heal(2);

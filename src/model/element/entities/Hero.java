@@ -90,38 +90,82 @@ public class Hero implements Entity{
         return atk;
     }
 
+    /**
+     * @return health points of the hero
+     */
     @Override
     public int getHp() {
         return hp;
     }
 
-    public void setLife(int l){
-        hp = l;
+    /**
+     * Sets the health points of the hero
+     * @param hp health points
+     */
+    @Override
+    public void setHp(int hp){
+        this.hp = hp;
     }
 
+    /**
+     * Sets the attack value of the hero
+     * @param atk attack value
+     */
+    @Override
+    public void setAtk(int atk) {
+        this.atk = atk;
+    }
+
+    /**
+     * @return current status of the hero
+     */
     public Status getStatus () {
         return status;
     }
 
+    /**
+     * Applies a status to the hero
+     * @param status status to apply
+     * @param duration duration of the status
+     */
     @Override
     public void applyStatus(Status status, int duration) {
         this.status = status;
         statusDuration = duration;
     }
 
+    /**
+     * Buffs the hero
+     * @param buff buff used on the entity
+     */
     @Override
     public void buff(Buff buff) {
         buff.setEntity(this);
         buffs.add(buff);
     }
 
+    /**
+     * Heals the hero
+     * @param amount amount to heal
+     */
     @Override
     public void heal (int amount) {
         hp += amount;
     }
 
+    /**
+     * Updates the status and buffs
+     */
     @Override
     public void update() {
+        updateStatus();
+        updateBuffs();
+    }
+
+    /**
+     * Updates the status
+     */
+    private void updateStatus() {
         if (statusDuration <= 0) {
             status = Status.ABLE;
             statusDuration = 0;
@@ -130,7 +174,12 @@ public class Hero implements Entity{
         if (status == Status.FROZEN) {
             statusDuration--;
         }
+    }
 
+    /**
+     * Updates the buffs
+     */
+    private void updateBuffs () {
         //copy of the list to avoid a concurrent modification
         ArrayList<Buff> buffsCopy = new ArrayList<>(buffs);
 
@@ -141,7 +190,6 @@ public class Hero implements Entity{
                 b.apply();
             }
         }
-
     }
 
 }

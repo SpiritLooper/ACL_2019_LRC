@@ -1,7 +1,6 @@
 package model.element.tiles;
 
 import model.game.EventManager;
-import model.game.Game;
 
 /**
  * A Stair tile is used to move the hero to the next level

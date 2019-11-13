@@ -67,8 +67,8 @@ public class SaveDAO {
      */
     public void setHero (int x, int y, int hp, int atk) {
         hero = new Hero(PositionPool.getInstance().getPosition(x, y));
-        //hero.setHP(hp);
-        //hero.setATK(atk);
+        hero.setHp(hp);
+        hero.setAtk(atk);
     }
 
     /**
@@ -102,8 +102,8 @@ public class SaveDAO {
                 return;
         }
 
-        //m.setHP(hp);
-        //m.setATK(atk);
+        m.setHp(hp);
+        m.setAtk(atk);
         monsters.put(PositionPool.getInstance().getPosition(x, y), m);
     }
 

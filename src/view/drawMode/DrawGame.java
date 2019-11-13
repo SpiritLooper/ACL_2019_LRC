@@ -75,14 +75,14 @@ public class DrawGame implements DrawMode {
      * @param g Image sur laquelle dessinnee
      */
     private void drawHp(Graphics2D g) {
-        int hp = game.getLevel().heroLife();
+        int hp = game.getLevel().getHeroHp();
         int timeLeft = game.getTimeLeft();
 
         if (hp > 0 && timeLeft > 0 && !game.isGameWon()) {
             g.setFont(STANDARD_FONT);
             g.setColor(Color.GREEN);
 
-            g.drawString("HP: "+game.getLevel().heroLife(),0, Painter.getHeight() - (FONT_SIZE / 4));
+            g.drawString("HP: "+game.getLevel().getHeroHp(),0, Painter.getHeight() - (FONT_SIZE / 4));
         }
     }
 

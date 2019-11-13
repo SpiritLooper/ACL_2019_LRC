@@ -12,6 +12,7 @@ public class BasicMonster extends Monster {
     public BasicMonster(){
         super(2,1);
     }
+
     /**
      * Behaves randomly
      * @return random command

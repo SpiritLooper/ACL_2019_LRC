@@ -16,7 +16,7 @@ public abstract class BuffTile extends Tile {
     }
 
     /**
-     * buffs the entity
+     * Buffs the entity
      * @param entity entity to buff
      */
     public abstract void buff (Entity entity);

@@ -6,25 +6,49 @@ import model.game.Game;
 
 import java.io.*;
 
-
+/**
+ * todo finir le chargement d'un game et de TOUS ses levels
+ * The game parser is used to write and read game files, i.e saves the game and loads the game
+ */
 public class GameParser {
 
+    /**
+     * static instance of the singleton
+     */
     private static GameParser INSTANCE = new GameParser();
 
+    /**
+     * extension of the levels layout files
+     */
     private final String EXTENSION      = ".lyt";
+
+    /**
+     * filename of the game layout file
+     */
     private final String GAME_FILENAME  = "res/saves/game"+EXTENSION;
+
+    /**
+     * filename of the save file
+     */
     private final String SAVE_FILENAME  = "res/saves/save.sav";
+
+    /**
+     * filename of a level layout file without its number and extension
+     */
     private final String LEVEL_FILENAME = "res/saves/level";
-    private String[] levelsFilenames;
 
-    private GameParser() {
-
-    }
-
+    /**
+     * @return static instance of the singleton
+     */
     public static GameParser getINSTANCE () {
         return INSTANCE;
     }
 
+    /**
+     * Writes to the save file the current state of the game regarding the hero
+     * @param save save DAO object to save
+     * @throws IOException
+     */
     public void writeSaveFile (SaveDAO save) throws IOException {
         File file = new File(SAVE_FILENAME);
         FileWriter writer = new FileWriter(file);
@@ -43,6 +67,11 @@ public class GameParser {
         writer.close();
     }
 
+    /**
+     * Parses the save file to return a save DAO object
+     * @return save DAO object
+     * @throws IOException
+     */
     public SaveDAO parseSaveFile () throws IOException {
         SaveDAO save = new SaveDAO();
         File file = new File(SAVE_FILENAME);
@@ -69,6 +98,7 @@ public class GameParser {
     }
 
     /**
+     * todo pis on changera en dynamique sur les noms de monstres
      * parse un fichier levelX.lyt pour générer un niveau dans le modèle
      * @param lvl : l'indice du niveau (1,2,3...N)
      * @return LevelDAO qui va servir à generer le niveau depuis le fichier

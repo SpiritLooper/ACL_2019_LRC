@@ -37,6 +37,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Enables the controller to listen for inputs
+     */
     public void listen () {
         listening = true;
     }

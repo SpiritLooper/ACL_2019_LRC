@@ -93,18 +93,18 @@ public class Level {
     protected void removeMonster(Position p){ monsters.remove(p);}
 
     /**
-     * Removes the tile indentified by its position
-     * @param p position identifying the tile
+     * Destroys a given tile from the map of tiles
+     * @param tile tile to remove
      */
-    protected void removeTile(Position p){ tiles.remove(p);}
-
     public void destroyTile (Tile tile) {
+        //copie des positions de la hashmap
         List<Position> tilesPositions = new ArrayList<>(tiles.keySet());
 
+        //parcours des positions copiées
         for (Position p : tilesPositions) {
+            //si la position p contient la tile à supprimer
             if (tiles.get(p).equals(tile)) {
-                System.out.println("Destruction de la tile" + p);
-                tiles.remove(p);
+                tiles.remove(p); //suppression de la tile
                 return;
             }
         }
@@ -114,31 +114,16 @@ public class Level {
      * Generates a default level
      * @return the generated level
      */
-    protected Level generateDefaultLevel(){
+    protected Level generateDefaultLevel() {
 
-        Position p = PositionPool.getInstance().getPosition(2,2);
+        Position p = PositionPool.getInstance().getPosition(2, 2);
         addMonster(p, new BasicMonster());
 
         //Ajout mur
-        p = PositionPool.getInstance().getPosition(2,1);
+        p = PositionPool.getInstance().getPosition(2, 1);
         addTile(p, new Wall());
 
         return this;
-    }
-
-    /**
-     * @return a collection of the monsters' positions
-     */
-    public Collection<Position> getMonstersPosition() {
-
-        return monsters.keySet();
-    }
-
-    /**
-     * @return a collection of the tiles' positions
-     */
-    public Collection<Position> getTilesEventPosition() { //A corriger plus tard, il faudra filtrer les murs et les autres tiles a partir de la hashmap Tiles
-        return tiles.keySet();                // c'est juste pour test la vue
     }
 
     /**
@@ -164,68 +149,108 @@ public class Level {
     }
 
     /**
-     * Updates the level, firing the event of the hero position if any and updates each monsters using their behaviors
+     * Updates the level, thus updating the hero and monsters
      */
     public void update () {
+        //mise à jour du héro
+        updateHero();
+
+        //mise à jour des monstres
+        updateMonsters();
+
+        //mise à jour du timer
+        timer.tick();
+    }
+
+    /**
+     * Updates the hero
+     */
+    private void updateHero() {
         //test d'un évènement à déclencher
         if (tiles.containsKey(hero.getPosition())) {
+            //si la tile où se trouve le héro contient un évènement
             if (tiles.get(hero.getPosition()).hasEvent()) {
-                ((EventTile)tiles.get(hero.getPosition())).fireEvent(); //launch the event if the hero steps on an EventTile
+
+                //déclenchement de l'évènement
+                ((EventTile)tiles.get(hero.getPosition())).fireEvent();
+
+            //sinon si la tile où se trouve le héro contient un buff
             } else if (tiles.get(hero.getPosition()).hasBuff()) {
-                ((BuffTile)tiles.get(hero.getPosition())).buff(hero); //buffs the hero if he walks onto a BuffTile
+
+                //déclenchement du buff
+                ((BuffTile)tiles.get(hero.getPosition())).buff(hero);
+
             }
         }
 
+        //mise à jour du héro
         hero.update();
+    }
 
-        //mise à jour des monstres
-
+    /**
+     * Updates the monsters of the level
+     */
+    private void updateMonsters () {
         //on récupère les positions avant changement de la hashmap
         List<Position> monstersPositions = new ArrayList<>(monsters.keySet());
 
-        for (Position p : monstersPositions) { //parcours des monstres
+        //parcours des positions des monstres
+        for (Position p : monstersPositions) {
 
-            Command monsterCommand = monsters.get(p).behave(); //sauvegarde du comportement du monstre
-            Monster m = monsters.get(p); //sauvegarde du monstre
-            Position newPosition = p.applyCommand(monsterCommand); //nouvelle position du monstre par rapport à son comportement
-
-            //if the monster is frozen, it will pass its turn
-            if (m.getStatus() != Status.FROZEN) {
-
-                if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
-                    //si la case est libre ET le hero n'y est pas on se déplace
-
-                    monsters.remove(p);
-                    monsters.put(newPosition, m);
-
-                    //si la case contient un buff, on l'applique au monstre
-                    if (tiles.containsKey(newPosition) && tiles.get(newPosition).hasBuff()) {
-                        ((BuffTile) tiles.get(newPosition)).buff(m);
-                    }
-
-                } else if (newPosition.equals(hero.getPosition())) {
-                    //si la case est occupée par le héro
-
-                    m.attack(hero); //le monstre peut perdre des pv ici
-                    //Debug combat
-                    System.out.println("Attaque du monstre");
-                    System.out.println("hero hp:" + hero.getHp());
-                    System.out.println("monstre hp:" + m.getHp());
-
-                    if (m.getHp() <= 0) {//si le monstre n'a plus de hp
-                        System.out.println("===DEBUG==remove monster : =" + m.getHp());
-                        removeMonster(newPosition);
-                    }
-
-                }
-
-            }
-
-            m.update();
+            //mise à jour du monstre à la position donnée
+            updateMonsterAtPosition(p);
 
         }
-        //mise à jour du timer
-        timer.tick();
+    }
+
+    /**
+     * Updates a monster at a given position
+     * @param p position referencing the monster
+     */
+    private void updateMonsterAtPosition (Position p) {
+        //comportement voulu du monstre
+        Command monsterCommand = monsters.get(p).behave();
+
+        //retenue du monstre
+        Monster m = monsters.get(p);
+
+        //nouvelle position du monstre par rapport à son comportement
+        Position newPosition = p.applyCommand(monsterCommand);
+
+        //si la case cible est libre ET le hero n'y est pas on se déplace
+        if (isEmpty(newPosition) && hero.getPosition() != newPosition) {
+
+            monsters.remove(p);
+            monsters.put(newPosition, m);
+
+            //si la case cible contient un buff
+            if (tiles.containsKey(newPosition) && tiles.get(newPosition).hasBuff()) {
+                //application du buff au monstre
+                ((BuffTile) tiles.get(newPosition)).buff(m);
+            }
+
+        //si la case cible est occupée par le héro
+        } else if (newPosition.equals(hero.getPosition())) {
+
+            //le monstre attaque le hero
+            m.attack(hero);
+
+            //Debug combat
+            System.out.println("Attaque du monstre");
+            System.out.println("hero hp:" + hero.getHp());
+            System.out.println("monstre hp:" + m.getHp());
+
+            //si le monstre n'a plus de hp
+            if (m.getHp() <= 0) {
+                System.out.println("===DEBUG==remove monster : =" + m.getHp());
+                //on supprime le monstre de la map -> il meurt
+                removeMonster(newPosition);
+            }
+
+        }
+
+        //mise à jour du monstre
+        m.update();
     }
 
     /**
@@ -271,17 +296,25 @@ public class Level {
 
 
     /**
-     * TODO faire javadoc
-     * @return
+     * Creates a save DAO object regarding the current state of the game
+     * @return save DAO object
      */
     public SaveDAO createSave () {
+        //création de la sauvegarde
         SaveDAO save = new SaveDAO();
+
+        //sauvegarde du timer
         save.setTimer(timer.getTimeLeft());
-        save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), 1, 1);
+
+        //sauvegarde du héro
+        save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), hero.getHp(), hero.getAtk());
+
+        //sauvegarde des monstres
         for (Position p : monsters.keySet()) {
-            save.addMonster(monsters.get(p).getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), 1, 1);
+            Monster m = monsters.get(p);
+            save.addMonster(m.getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), m.getHp(), m.getAtk());
         }
-        System.out.println(save);
+
         return save;
     }
 
@@ -333,17 +366,17 @@ public class Level {
     }
 
     /**
-     * @return life of the Hero
+     * @return health points of the hero
      */
-    public int heroLife(){
+    public int getHeroHp(){
         return hero.getHp();
     }
 
     /**
-     * change the life of the hero
-     * @param life
+     * Sets the health points of the hero
+     * @param hp health points
      */
-    public void setHeroLife(int life){
-        hero.setLife(life);
+    public void setHeroHp(int hp){
+        hero.setHp(hp);
     }
 }

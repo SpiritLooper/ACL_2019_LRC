@@ -13,11 +13,11 @@ import model.persistency.SaveDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 /**
+ * todo nettoyer ca
  * Facade connecting the Model to the View for the MVC architecture
  * @author gouth
  */
@@ -143,6 +143,7 @@ public class Game {
 
                 case EXIT:
                     finish(false);
+                    menu.close();
                     break;
 
                 case IDLE:
@@ -233,7 +234,7 @@ public class Game {
     private void update () {
         level.update();
 
-        if (level.getTimer().getTimeLeft()<= 0 || level.heroLife() <= 0) {
+        if (level.getTimer().getTimeLeft()<= 0 || level.getHeroHp() <= 0) {
             finish(false);
         }
 
@@ -251,9 +252,9 @@ public class Game {
      * Put the current level to the next level
      */
     public void nextLevel() {
-        int lifeHero = level.heroLife();
+        int lifeHero = level.getHeroHp();
         level = level.nextLevel();
-        level.setHeroLife(lifeHero);
+        level.setHeroHp(lifeHero);
     }
 
     /**

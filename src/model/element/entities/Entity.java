@@ -20,21 +20,47 @@ public interface Entity {
     void hit(int atk);
 
     /**
+     * Sets the health points
+     */
+    void setHp (int hp);
+
+    /**
+     * @return health points
+     */
+    int getHp();
+
+    /**
+     * Sets the attack value
+     */
+    void setAtk (int atk);
+
+    /**
      * @return attack oh the Entity
      */
     int getAtk();
 
     /**
-     * @return health point of the Entity
+     * Applies a status to the entity
+     * @param status status to apply
+     * @param duration duration of the status
      */
-    int getHp();
-
     void applyStatus (Status status, int duration);
 
+    /**
+     * Buffs the entity
+     * @param buff buff used on the entity
+     */
     void buff (Buff buff);
 
+    /**
+     * Heals the entity
+     * @param amount amount to heal
+     */
     void heal (int amount);
 
+    /**
+     * Updates the entity (updates its status and buffs)
+     */
     void update ();
 
 }

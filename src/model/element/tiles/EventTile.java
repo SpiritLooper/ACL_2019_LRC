@@ -8,7 +8,7 @@ import model.game.Game;
 public abstract class EventTile extends Tile{
 
     /**
-     * Game to fire the event to
+     * game to fire the event to
      */
     protected Game game;
 

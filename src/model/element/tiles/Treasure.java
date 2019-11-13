@@ -1,7 +1,6 @@
 package model.element.tiles;
 
 import model.game.EventManager;
-import model.game.Game;
 
 /**
  * A Treasure tile is designed to win the game
