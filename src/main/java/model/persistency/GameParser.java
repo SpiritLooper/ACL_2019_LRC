@@ -189,4 +189,26 @@ public class GameParser {
         return level;
     }
 
+    /**
+     * Parse the first line of game.lyt in order to retrieve the information to the Game class
+     * @return : the amount of level in the game
+     */
+    public int getNbLevel() {
+        int nbLevel = 0;
+        try{
+            File file = new File(GAME_FILENAME);
+            BufferedReader buffer = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = buffer.readLine()) != null) {
+                if (line.startsWith("LEVELS:")) {
+                    nbLevel = Integer.parseInt(line.substring(7));
+                    break; //moche mais efficace ça evite de parser le reste
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return nbLevel;
+    }
 }

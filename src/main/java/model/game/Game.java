@@ -261,31 +261,33 @@ public class Game {
      * Generates a basic game
      */
     public void generateGame() {
-        Level level1 = new Level();
-        Position p;
-        /*
-        //Génération par défaut
-
-        level1 = level1.generateDefaultLevel();
-
-        //Ajout stairs
-        Position p = PositionPool.getInstance().getPosition(4,4);
-        level1.addTile(p, new Stairs(this));
-        */
-
-        //generation du level1 par fichier
-        level1 = generateLevel(1);
-        Level level2 = new Level();
-        level2 = level2.generateDefaultLevel();
-
-        //Ajout Tresor
-        p = PositionPool.getInstance().getPosition(5,4);
-        level2.addTile(p, new Treasure());
 
 
-        level1.setNextLevel(level2);
+        int nbLevel = GameParser.getINSTANCE().getNbLevel();
 
-        this.setLevel(level1);//on bind la game au level
+        //on instancie les niveaux du plus grand au plus petit
+        //en effet le level_i étant bindé au level_i+1
+        //il faut bien avoir déjà instancié le level_i+1
+        //le parcours dans l'autre sens résoud ce problème
+        //je les stocks dans un tableau histoire de pouvoir bien
+        //les binder sans trop de prise de tête
+
+        Level[] arrayLevels = new Level[nbLevel];
+
+        for(int i = nbLevel; i!=0; i--){
+            System.out.println("generating level"+i);
+            arrayLevels[i-1] = generateLevel(i);
+            System.out.println(arrayLevels[i-1]);
+        }
+
+        setLevel(arrayLevels[0]); //on commence au premier niveau
+
+        for(int i = 0; i<nbLevel-1; i++){ //on bind les niveaux entre eux
+            arrayLevels[i].setNextLevel(arrayLevels[i+1]);
+            arrayLevels[i] = null;//on libère la mémoire, on en a plus besoin
+            //l'idée est que les niveaux se connaissent entre eux mtnt plus besoin de tabs
+        }
+
 
         level.updateGameStatement(this.gameStatement); // Mis a jour de l'instance de jeu
     }
@@ -316,8 +318,8 @@ public class Game {
     }
 
     /**
-     * TODO oui je sais c'est évident mais même :-)
-     * @return
+     * getter
+     * @return : the current state of the game, id est every Entity or Tile but the walls
      */
     public GameStatement getGameStatement() {
         return gameStatement;
@@ -325,7 +327,7 @@ public class Game {
 
     /**
      * Utilisé à la vue de build les images de fond de chaque level
-     * @return List d'ensemble de position de chaque level
+     * @return List d'ensemble de position des murs de chaque level
      */
     public List<Set<Position>> getAllWallsOfEachLevels() {
         ArrayList<Set<Position>> res = new ArrayList<>();
