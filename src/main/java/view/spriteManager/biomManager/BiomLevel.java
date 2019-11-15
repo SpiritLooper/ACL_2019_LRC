@@ -95,9 +95,9 @@ public abstract class BiomLevel {
             boolean wallUp, wallDown, wallLeft, wallRight;
 
             wallUp = p.getY() == 0 || wallPositions.contains(pool.getPosition(p.getX() , p.getY() - 1));
-            wallDown = p.getY() == Game.HEIGHT || wallPositions.contains(pool.getPosition(p.getX() , p.getY() + 1));
+            wallDown = p.getY() + 1 == Game.HEIGHT || wallPositions.contains(pool.getPosition(p.getX() , p.getY() + 1));
             wallLeft = p.getX() == 0 || wallPositions.contains(pool.getPosition(p.getX() - 1 , p.getY()));
-            wallRight = p.getX() == Game.WIDTH || wallPositions.contains(pool.getPosition(p.getX() + 0 , p.getY())); //todo le +1 fait tout buger
+            wallRight = p.getX() + 1 == Game.WIDTH || wallPositions.contains(pool.getPosition(p.getX() + 1 , p.getY()));
 
             BufferedImage wall = getWall(p , wallUp, wallDown, wallLeft, wallRight);
             g.drawImage(wall, (p.getX() + 1 ) * Painter.WORLD_UNIT, (p.getY() + 1 ) * Painter.WORLD_UNIT, null);
