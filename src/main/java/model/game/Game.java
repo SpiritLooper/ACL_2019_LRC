@@ -167,7 +167,7 @@ public class Game {
     }
 
     /**
-     * TODO
+     * Method that makes a save of the game
      */
     private void saveGame () {
         try {
@@ -178,7 +178,7 @@ public class Game {
     }
 
     /**
-     * TODO
+     * Method that load a level and set the current level to it
      */
     private void loadSave () {
         try {
@@ -190,9 +190,9 @@ public class Game {
     }
 
     /**
-     * TODO
-     * @param lvl
-     * @return
+     * Generate the levelX.lyt in the game
+     * @param lvl : the indice of the file levelX.lyt
+     * @return : a Level class, which correspond to the levelX.lyt
      */
     private Level generateLevel(int lvl){
         try {
