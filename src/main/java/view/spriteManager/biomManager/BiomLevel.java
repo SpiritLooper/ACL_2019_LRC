@@ -93,13 +93,19 @@ public abstract class BiomLevel {
         PositionPool pool = PositionPool.getInstance();
         for (Position p : wallPositions) {
             boolean wallUp, wallDown, wallLeft, wallRight;
+            boolean wallTopLeft, wallTopRight, wallBottomLeft, wallBottomRight;
 
             wallUp = p.getY() == 0 || wallPositions.contains(pool.getPosition(p.getX() , p.getY() - 1));
             wallDown = p.getY() + 1 == Game.HEIGHT || wallPositions.contains(pool.getPosition(p.getX() , p.getY() + 1));
             wallLeft = p.getX() == 0 || wallPositions.contains(pool.getPosition(p.getX() - 1 , p.getY()));
             wallRight = p.getX() + 1 == Game.WIDTH || wallPositions.contains(pool.getPosition(p.getX() + 1 , p.getY()));
 
-            BufferedImage wall = getWall(p , wallUp, wallDown, wallLeft, wallRight);
+            wallBottomLeft = p.getX() - 1 < 0 || p.getY() + 1 >= Game.HEIGHT || wallPositions.contains( pool.getPosition( p.getX() - 1 , p.getY() + 1) );
+            wallBottomRight = p.getX() + 1 >= Game.WIDTH || p.getY() + 1 >= Game.HEIGHT || wallPositions.contains(pool.getPosition( p.getX() + 1 , p.getY() + 1)  );
+            wallTopLeft = p.getX() - 1 < 0 || p.getY() - 1 < 0 || wallPositions.contains(pool.getPosition( p.getX() - 1, p.getY() -  1) );
+            wallTopRight = p.getX() + 1 >= Game.WIDTH  || p.getY() - 1 < 0 || wallPositions.contains(pool.getPosition( p.getX() + 1, p.getY() - 1) );
+
+            BufferedImage wall = getWall(p , wallUp, wallDown, wallLeft, wallRight, wallTopLeft, wallTopRight, wallBottomLeft, wallBottomRight);
             g.drawImage(wall, (p.getX() + 1 ) * Painter.WORLD_UNIT, (p.getY() + 1 ) * Painter.WORLD_UNIT, null);
         }
 
@@ -166,51 +172,66 @@ public abstract class BiomLevel {
     }
 
     /**
-     * Donne le mur en fonction des murs qui l'entoure
-     * @param p Position du mur
-     * @param wallUp vrai si un mur est au dessus
-     * @param wallDown vrai si un mur est en dessous
-     * @param wallLeft vrai si un mur est a gauche
-     * @param wallRight vrai si un mur est a droite
+     * Give sprite of a wall
+     * @param p wall position
+     * @param wallUp true if wall top of p
+     * @param wallDown true if wall bottom of p
+     * @param wallLeft true if wall left of p
+     * @param wallRight true if wall right of p
+     * @param topLeft true if no wall top left
+     * @param topRight true if no wall top right
+     * @param bottomLeft true if no wall bottom left
+     * @param bottomRight true if no wall bottom right
      */
-    private BufferedImage getWall(Position p, boolean wallUp, boolean wallDown, boolean wallLeft, boolean wallRight) {
+    private BufferedImage getWall(Position p, boolean wallUp, boolean wallDown, boolean wallLeft, boolean wallRight, 
+                                  boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight) {
      // On traite tout les cas possible : Liste par suite binaire (Je pleure en ecrivant ce commentaire)
 
         BufferedImage wallSelected = null ;
         if(!wallUp && !wallDown && !wallLeft && !wallRight) { // 0  0  0  0
             wallSelected = wallAlone;
-        } else if (!wallUp && !wallDown && !wallLeft && wallRight) { // 0  0  0  1
+        } else if (!wallUp && !wallDown && !wallLeft && wallRight ) { // 0  0  0  1
             wallSelected = wallCross[CROSS_MARGIN_LEFT];
         } else if (!wallUp && !wallDown && wallLeft && !wallRight) { // 0  0  1  0
             wallSelected = wallCross[CROSS_MARGIN_RIGHT];
         } else if (!wallUp && !wallDown && wallLeft && wallRight) { // 0  0  1  1
             wallSelected = wallCross[CROSS_SIDE_HORIZONTAL];
-        } else if (!wallUp && wallDown && !wallLeft && !wallRight) { // 0  1  0  0
+        } else if (!wallUp && wallDown && !wallLeft && !wallRight ) { // 0  1  0  0
             wallSelected = wallCross[CROSS_MARGIN_TOP];
         } else if (!wallUp && wallDown && !wallLeft && wallRight) { // 0  1  0  1
             wallSelected = wallSquare[SQUARE_TOP_LEFT];
         } else if (!wallUp && wallDown && wallLeft && !wallRight) { // 0  1  1  0
             wallSelected = wallSquare[SQUARE_TOP_RIGHT];
-        } else if (!wallUp && wallDown && wallLeft && wallRight) { // 0  1  1  1
+        } else if (!wallUp && wallDown && wallLeft && wallRight  ) { // 0  1  1  1
             wallSelected = wallSquare[SQUARE_TOP_MID];
-        } else if (wallUp && !wallDown && !wallLeft && !wallRight) { // 1  0  0  0
+        } else if (wallUp && !wallDown && !wallLeft && !wallRight ) { // 1  0  0  0
             wallSelected = wallCross[CROSS_MARGIN_BOTTOM];
-        } else if (wallUp && !wallDown && !wallLeft && wallRight) { // 1  0  0  1
+        } else if (wallUp && !wallDown && !wallLeft && wallRight ) { // 1  0  0  1
             wallSelected = wallSquare[SQUARE_BOTTOM_LEFT];
-        } else if (wallUp && !wallDown && wallLeft && !wallRight) { // 1  0  1  0
+        } else if (wallUp && !wallDown && wallLeft && !wallRight ) { // 1  0  1  0
             wallSelected = wallSquare[SQUARE_BOTTOM_RIGHT];
-        } else if (wallUp && !wallDown && wallLeft && wallRight) { // 1  0  1  1
+        } else if (wallUp && !wallDown && wallLeft && wallRight ) { // 1  0  1  1
             wallSelected = wallSquare[SQUARE_BOTTOM_MID];
         } else if (wallUp && wallDown && !wallLeft && !wallRight) { // 1  1  0  0
             wallSelected = wallCross[CROSS_SIDE_VERTICAL];
-        } else if (wallUp && wallDown && !wallLeft && wallRight) { // 1  1  0  1
+        } else if (wallUp && wallDown && !wallLeft && wallRight ) { // 1  1  0  1
             wallSelected = wallSquare[SQUARE_MID_LEFT];
-        } else if (wallUp && wallDown && wallLeft && !wallRight) { // 1  1  1  0
+        } else if (wallUp && wallDown && wallLeft && !wallRight ) { // 1  1  1  0
             wallSelected = wallSquare[SQUARE_MID_RIGHT];
-        } else if (wallUp && wallDown && wallLeft && wallRight) { // 1  1  1  1
-            wallSelected = wallSquare[SQUARE_MID_MID];
-        }
+        } else if (wallUp && wallDown && wallLeft && wallRight ) { // 1  1  1  1
 
+            if(!bottomLeft && bottomRight && topLeft && topRight) {
+                wallSelected = wallCorner[CORNER_TOP_RIGHT];
+            } else if( bottomLeft && !bottomRight && topLeft && topRight) {
+                wallSelected = wallCorner[CORNER_TOP_LEFT];
+            } else if( bottomLeft && bottomRight && !topLeft && topRight) {
+                wallSelected = wallCorner[CORNER_BOTTOM_RIGHT];
+            } else if( bottomLeft && bottomRight && topLeft && !topRight) {
+                wallSelected = wallCorner[CORNER_BOTTOM_LEFT];
+            } else {
+                wallSelected = wallSquare[SQUARE_MID_MID];
+            }
+        }
 
         return wallSelected;
     }
