@@ -106,32 +106,60 @@ public abstract class BiomLevel {
 
         //Dessin de l'enceinte de mur
             // Ajout des murs angles
-            g.drawImage(wallCorner[CORNER_TOP_LEFT], 0 * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Gauche
-            g.drawImage(wallCorner[CORNER_TOP_RIGHT], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Droite
-            g.drawImage(wallCorner[CORNER_BOTTOM_LEFT], 0 * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Gauche
-            g.drawImage(wallCorner[CORNER_BOTTOM_RIGHT], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Droite
+            BufferedImage cornerTopLeftSprite, cornerTopRightSprite, cornerBottomLeftSprite, cornerBottomRightSprite;
+
+            cornerTopRightSprite = (wallPositions.contains(pool.getPosition(0,0))) ? wallSquare[SQUARE_MID_MID] : wallCorner[CORNER_TOP_LEFT];
+            cornerTopLeftSprite = (wallPositions.contains(pool.getPosition( Game.WIDTH - 1,0))) ? wallSquare[SQUARE_MID_MID] : wallCorner[CORNER_TOP_RIGHT];
+            cornerBottomRightSprite = (wallPositions.contains(pool.getPosition(0,Game.HEIGHT - 1))) ? wallSquare[SQUARE_MID_MID] : wallCorner[CORNER_BOTTOM_LEFT];
+            cornerBottomLeftSprite = (wallPositions.contains(pool.getPosition(Game.WIDTH - 1,Game.HEIGHT - 1 ))) ? wallSquare[SQUARE_MID_MID] : wallCorner[CORNER_BOTTOM_RIGHT];
+
+            g.drawImage(cornerTopRightSprite, 0 * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Gauche
+            g.drawImage(cornerTopLeftSprite, ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null ); // Haut Droite
+            g.drawImage(cornerBottomRightSprite, 0 * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Gauche
+            g.drawImage(cornerBottomLeftSprite, ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null ); // Bas Droite
 
             // Ajout des murs qui vont jusque ces angles
         for(int i = 1 ; i <= Game.WIDTH ; i++ ) {
+            BufferedImage topWallSprite, bottomWallSprite;
+
             // Murs haut
-            g.drawImage(( i == Game.WIDTH ||  !wallPositions.contains(pool.getPosition( i - 1, 0 )) ) ?
-                    wallSquare[SQUARE_BOTTOM_MID] :
-                    wallSquare[SQUARE_MID_MID], i * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null );
+            topWallSprite = spriteBorderTop(
+                    ( i - 2 <= 0 ) || wallPositions.contains(pool.getPosition(i - 2 ,0)),
+                    wallPositions.contains(pool.getPosition(i - 1 ,0)),
+                    (i == Game.WIDTH) || wallPositions.contains(pool.getPosition(i ,0))
+            );
+            g.drawImage(topWallSprite, i * Painter.WORLD_UNIT , 0 * Painter.WORLD_UNIT, null );
+
             // Murs bas
-            g.drawImage(( i == Game.WIDTH || !wallPositions.contains(pool.getPosition(i - 1 , Game.HEIGHT - 1 )) ) ?
-                    wallSquare[SQUARE_TOP_MID] :
-                    wallSquare[SQUARE_MID_MID], i * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null );
+            bottomWallSprite = spriteBorderBottom(
+                    ( i - 1 == 0 ) || wallPositions.contains(pool.getPosition(i - 2 ,Game.HEIGHT - 1)),
+                    wallPositions.contains(pool.getPosition(i - 1 ,Game.HEIGHT - 1)),
+                    (i == Game.WIDTH) || wallPositions.contains(pool.getPosition(i ,Game.HEIGHT - 1))
+
+            );
+            g.drawImage(bottomWallSprite, i * Painter.WORLD_UNIT , ( Game.HEIGHT + 1 ) * Painter.WORLD_UNIT, null );
         }
 
         for(int j = 1 ; j <= Game.HEIGHT ; j++) {
+            BufferedImage leftWallSprite, rightWallSprite;
+
             // Murs gauche
-            g.drawImage(( j == Game.HEIGHT || !wallPositions.contains(pool.getPosition(0 , j - 1 )) ) ?
-                    wallSquare[SQUARE_MID_RIGHT] :
-                    wallSquare[SQUARE_MID_MID], 0 * Painter.WORLD_UNIT , j  * Painter.WORLD_UNIT, null );
+            leftWallSprite = spriteBorderLeft(
+                    j - 2 <= 0  || wallPositions.contains(pool.getPosition(0, j - 2)),
+                    wallPositions.contains(pool.getPosition(0, j - 1)),
+                    j  == Game.HEIGHT  || wallPositions.contains(pool.getPosition(0, j ))
+            );
+
+            g.drawImage(leftWallSprite, 0 * Painter.WORLD_UNIT , j  * Painter.WORLD_UNIT, null );
+
             // Murs droite
-            g.drawImage(( j == Game.HEIGHT || !wallPositions.contains(pool.getPosition(Game.WIDTH - 1, j - 1 )) ) ?
-                    wallSquare[SQUARE_MID_LEFT] :
-                    wallSquare[SQUARE_MID_MID], ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , j  * Painter.WORLD_UNIT, null );
+            rightWallSprite = spriteBorderRight(
+                    j - 2 <= 0  || wallPositions.contains(pool.getPosition( Game.WIDTH - 1 , j - 2)),
+                    wallPositions.contains(pool.getPosition(Game.WIDTH - 1 , j - 1)),
+                    j  == Game.HEIGHT  || wallPositions.contains(pool.getPosition(Game.WIDTH - 1 , j ))
+            );
+
+            g.drawImage(rightWallSprite, ( Game.WIDTH + 1 ) * Painter.WORLD_UNIT , j  * Painter.WORLD_UNIT, null );
         }
 
         return levelDesign;
@@ -216,5 +244,85 @@ public abstract class BiomLevel {
      * @return tableau d'image organise comme les constante CORNER_*
      */
     protected abstract BufferedImage[] defineWallCorners();
+
+    /**
+     * Give top border sprite of level
+     * @param wallBottomLeft true if is there a wall bottom left of the sprite
+     * @param wallBottom true if is there a wall bottom of the sprite
+     * @param wallBottomRight true if is there a wall bottom right of the sprite
+     * @return good sprite
+     */
+    private BufferedImage spriteBorderTop(boolean wallBottomLeft, boolean wallBottom, boolean wallBottomRight) {
+       if (wallBottom && wallBottomLeft && wallBottomRight) {
+            return wallSquare[SQUARE_MID_MID];
+       } else if(wallBottom && !wallBottomLeft && wallBottomRight ) {
+            return wallCorner[CORNER_TOP_RIGHT];
+        } else if(wallBottom && wallBottomLeft && !wallBottomRight ) {
+            return wallCorner[CORNER_TOP_LEFT];
+        } else {
+            return wallSquare[SQUARE_BOTTOM_MID];
+        }
+    }
+
+
+    /**
+     * Give bottom border sprite of level
+     * @param wallTopLeft true if is there a wall bottom left of the sprite
+     * @param wallTop true if is there a wall bottom of the sprite
+     * @param wallTopRight true if is there a wall bottom right of the sprite
+     * @return good sprite
+     */
+    private BufferedImage spriteBorderBottom(boolean wallTopLeft, boolean wallTop, boolean wallTopRight) {
+        if (wallTop && wallTopLeft && wallTopRight) {
+            return wallSquare[SQUARE_MID_MID];
+        } else if(wallTop && !wallTopLeft && wallTopRight ) {
+            return wallCorner[CORNER_BOTTOM_RIGHT];
+        } else if(wallTop && wallTopLeft && !wallTopRight ) {
+            return wallCorner[CORNER_BOTTOM_LEFT];
+        } else {
+            return wallSquare[SQUARE_TOP_MID];
+        }
+    }
+
+
+    /**
+     * Give left border sprite of level
+     * @param wallRightTop true if is there a wall right top of the sprite
+     * @param wallRightMid true if is there a wall right of the sprite
+     * @param wallRightBottom true if is there a wall right  bottom of the sprite
+     * @return good sprite
+     */
+    private BufferedImage spriteBorderLeft(boolean wallRightTop, boolean wallRightMid, boolean wallRightBottom) {
+       if (wallRightMid && wallRightTop && wallRightBottom) {
+            return wallSquare[SQUARE_MID_MID];
+       } else if(wallRightMid && !wallRightTop && wallRightBottom ) {
+            return wallCorner[CORNER_BOTTOM_LEFT];
+        } else if(wallRightMid && wallRightTop && !wallRightBottom ) {
+            return wallCorner[CORNER_TOP_LEFT];
+        } else {
+            return wallSquare[SQUARE_MID_RIGHT];
+        }
+    }
+
+
+    /**
+     * Give right border sprite of level
+     * @param wallLeftTop true if is there a wall top left of the sprite
+     * @param wallLeft true if is there a wall left of the sprite
+     * @param wallLeftBottom true if is there a wall left bottom of the sprite
+     * @return good sprite
+     */
+    private BufferedImage spriteBorderRight(boolean wallLeftTop, boolean wallLeft, boolean wallLeftBottom) {
+        if (wallLeft && wallLeftTop && wallLeftBottom) {
+            return wallSquare[SQUARE_MID_MID];
+        } else if(wallLeft && !wallLeftTop && wallLeftBottom ) {
+            return wallCorner[CORNER_BOTTOM_RIGHT];
+        } else if(wallLeft && wallLeftTop && !wallLeftBottom ) {
+            return wallCorner[CORNER_TOP_RIGHT];
+        } else {
+            return wallSquare[SQUARE_MID_LEFT];
+        }
+    }
+
 
 }
