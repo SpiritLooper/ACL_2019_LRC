@@ -6,7 +6,6 @@ import main.java.model.element.Position;
 import java.io.*;
 
 /**
- * todo finir le chargement d'un game et de TOUS ses levels
  * The game parser is used to write and read game files, i.e saves the game and loads the game
  */
 public class GameParser {
