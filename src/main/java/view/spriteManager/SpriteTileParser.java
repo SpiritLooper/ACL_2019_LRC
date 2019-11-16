@@ -30,6 +30,8 @@ public class SpriteTileParser {
     private static BasicSprite zombieSprite;
     private static BasicSprite wildRoseSprite;
     private static BasicSprite heroSprite;
+    private static BasicSprite healSprite;
+    private static BasicSprite healOverTimeSprite;
 
 private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
 
@@ -45,6 +47,8 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
         zombieSprite = new Zombie();
         wildRoseSprite = new WildRose();
         heroSprite = new Hero();
+        healSprite = new HealTile();
+        healOverTimeSprite = new HealOverTimeTile();
     }
 
     public static void loadLevels( Game game ) {
@@ -101,5 +105,13 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
     public static BufferedImage nextLevel() {
         imagesLevel = imagesLevel.next();
         return imagesLevel.getImage();
+    }
+
+    public static BufferedImage getHealTileSprite() {
+        return healSprite.getSprite();
+    }
+
+    public static BufferedImage getOverTimeTileSprite() {
+        return healOverTimeSprite.getSprite();
     }
 }

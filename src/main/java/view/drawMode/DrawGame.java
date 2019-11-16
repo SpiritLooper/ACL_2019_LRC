@@ -26,6 +26,8 @@ public class DrawGame implements DrawMode {
     private BufferedImage stairsSprite;
     private BufferedImage zombieSprite;
     private BufferedImage wildRoseSprite;
+    private BufferedImage healTile;
+    private BufferedImage healOverTimeTile;
 
     private BufferedImage levelBackground ; // Contient le sol et les murs dessinee
 
@@ -41,6 +43,8 @@ public class DrawGame implements DrawMode {
             stairsSprite = SpriteTileParser.getStairsSprite();
             zombieSprite = SpriteTileParser.getZombieSprite();
             wildRoseSprite = SpriteTileParser.getWildRoseSprite();
+            healTile = SpriteTileParser.getHealTileSprite();
+            healOverTimeTile = SpriteTileParser.getOverTimeTileSprite();
 
             levelBackground = SpriteTileParser.nextLevel();
 
@@ -56,6 +60,8 @@ public class DrawGame implements DrawMode {
         GameStatement gameStat = game.getGameStatement();
 
         drawLabyrinth(g, gameStat);
+
+        drawEventTiles(g,gameStat);
 
         drawHero(g, gameStat);
 
@@ -98,17 +104,6 @@ public class DrawGame implements DrawMode {
 
         //Dessin du sol
         g.drawImage(levelBackground, 0,0, null);
-
-        //Dessin escalier ou trésor
-        Position p;
-        if(gameStat.hasATresure()){
-            p = gameStat.getFirstPosition(GameStatement.TREASURE);
-            g.drawImage(treasureSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
-        } else {
-            p = gameStat.getFirstPosition(GameStatement.STAIRS);
-            g.drawImage(stairsSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
-        }
-
     }
 
     /**
@@ -151,6 +146,28 @@ public class DrawGame implements DrawMode {
                 Color.WHITE );
 
         g.drawString("Moves Left : "+timeLeft , 0, Painter.getHeight() - ( FONT_SIZE / 4 * 6));
+    }
+
+    private void drawEventTiles(Graphics2D g, GameStatement gameStat) {
+        //Dessin escalier ou trésor
+        Position p;
+        if(gameStat.hasATresure()){
+            p = gameStat.getFirstPosition(GameStatement.TREASURE);
+            g.drawImage(treasureSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+        } else {
+            p = gameStat.getFirstPosition(GameStatement.STAIRS);
+            g.drawImage(stairsSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+        }
+
+        //Dessin tiles buffer
+        for( Position pos : gameStat.getAllPosition(GameStatement.HEAL)) {
+            g.drawImage(healTile, ( pos.getX() + 1 ) * WORLD_UNIT, ( pos.getY() + 1 ) * WORLD_UNIT , null);
+        }
+
+        for( Position pos : gameStat.getAllPosition(GameStatement.HEALOVERTIME)) {
+            g.drawImage(healOverTimeTile, ( pos.getX() + 1 ) * WORLD_UNIT, ( pos.getY() + 1 ) * WORLD_UNIT , null);
+        }
+
     }
 
     private void drawWin(Graphics2D g) {

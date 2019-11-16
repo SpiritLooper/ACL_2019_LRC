@@ -7,6 +7,8 @@ import main.java.model.element.entities.BasicMonster;
 import main.java.model.element.tiles.Stairs;
 import main.java.model.element.tiles.Treasure;
 import main.java.model.element.tiles.Wall;
+import main.java.model.element.tiles.buffTiles.HealOverTimeTile;
+import main.java.model.element.tiles.buffTiles.HealTile;
 
 import java.util.*;
 
@@ -25,6 +27,8 @@ public class GameStatement {
     public static final String WILD_ROSE = ImmovableMonster.class.getSimpleName();
     public static final String ZOMBIE = BasicMonster.class.getSimpleName();
     public static final String WALL = Wall.class.getSimpleName() ;
+    public static final String HEAL = HealTile.class.getSimpleName();
+    public static final String HEALOVERTIME = HealOverTimeTile.class.getSimpleName();
     /**
      * Stockage des elements
      */
@@ -39,6 +43,8 @@ public class GameStatement {
         elements.put(WALL, new HashSet<>());
         elements.put(WILD_ROSE, new HashSet<>());
         elements.put(ZOMBIE, new HashSet<>());
+        elements.put(HEAL, new HashSet<>());
+        elements.put(HEALOVERTIME, new HashSet<>());
     }
 
     /**
