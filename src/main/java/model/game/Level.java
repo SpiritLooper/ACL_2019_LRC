@@ -63,10 +63,63 @@ public class Level {
     }
 
     /**
+     * @return health points of the hero
+     */
+    public int getHeroHp(){
+        return hero.getHp();
+    }
+
+    /**
+     * Sets the health points of the hero
+     * @param hp health points
+     */
+    public void setHeroHp(int hp){
+        hero.setHp(hp);
+    }
+
+    /**
+     * Moves the hero given a command
+     * @param command command representing the move to make
+     */
+    public void moveHero (Command command) {
+        Position newPosition = hero.getPosition().applyCommand(command);
+        if (isEmpty(newPosition)) {//si c'est libre
+            hero.setPosition(newPosition);
+        }else if( monsters.containsKey(newPosition)){//si un monstre s'y trouve
+            Monster m = monsters.get(newPosition);
+            hero.attack(m);
+            //Debug combat
+            System.out.println("ATTAQUE!");
+            System.out.println("hero hp:"+hero.getHp());
+            System.out.println("monstre hp:" + m.getHp());
+
+            if(m.getHp() <= 0){
+                removeMonster(newPosition);
+            }
+        }
+    }
+
+    /**
      * @return timer of the level
      */
     public Timer getTimer () {
         return timer;
+    }
+
+    /**
+     * @return true if the level contains a treasure, false else
+     */
+    public boolean hasATreasure() {
+        return nextLevel == null;
+    }
+
+    /**
+     * Checks if a position is empty and enables someone to walk onto it
+     * @param p position to check
+     * @return true if someone can walk onto it, false else
+     */
+    private boolean isEmpty (Position p) {
+        return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
     }
 
     /**
@@ -79,6 +132,21 @@ public class Level {
     }
 
     /**
+     * TODO
+     * @param m
+     * @return
+     */
+    protected boolean containsMonster(Monster m){
+        return monsters.containsValue(m);
+    }
+
+    /**
+     * Removes the monster identified by its position
+     * @param p position identifying the monster
+     */
+    protected void removeMonster(Position p){ monsters.remove(p);}
+
+    /**
      * Adds a tile to the level at a given position
      * @param p position to put the tile at
      * @param t tile to put
@@ -86,10 +154,13 @@ public class Level {
     protected void addTile(Position p, Tile t) { tiles.put(p, t); }
 
     /**
-     * Removes the monster identified by its position
-     * @param p position identifying the monster
+     * TODO
+     * @param t
+     * @return
      */
-    protected void removeMonster(Position p){ monsters.remove(p);}
+    protected boolean constainsTile(Tile t){
+        return tiles.containsValue(t);
+    }
 
     /**
      * Destroys a given tile from the map of tiles
@@ -110,6 +181,31 @@ public class Level {
     }
 
     /**
+     * Permet d'obtenir la postion de chaque mur du niveau
+     * @return Ensemble de position
+     */
+    public Set<Position> getWallsPosition() {
+        Set<Position> res = new HashSet<>();
+        for (Position p : tiles.keySet() ) {
+            Tile t = tiles.get(p);
+            if (t.getClass().getName().equals(Wall.class.getName())) {
+                res.add(p);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * generate a level from a LevelDAO
+     * @param lvl ; LevelDAO which was read from a file
+     */
+    public void generate(LevelDAO lvl) {
+        this.monsters = lvl.getMonsters();
+        this.tiles = lvl.getTiles();
+        this.hero = lvl.getHero();
+    }
+
+    /**
      * Generates a default level
      * @return the generated level
      */
@@ -123,13 +219,6 @@ public class Level {
         addTile(p, new Wall());
 
         return this;
-    }
-
-    /**
-     * @return true if the level contains a treasure, false else
-     */
-    public boolean hasATreasure() {
-        return nextLevel == null;
     }
 
     /**
@@ -253,81 +342,6 @@ public class Level {
     }
 
     /**
-     * Moves the hero given a command
-     * @param command command representing the move to make
-     */
-    public void moveHero (Command command) {
-        Position newPosition = hero.getPosition().applyCommand(command);
-        if (isEmpty(newPosition)) {//si c'est libre
-            hero.setPosition(newPosition);
-        }else if( monsters.containsKey(newPosition)){//si un monstre s'y trouve
-            Monster m = monsters.get(newPosition);
-            hero.attack(m);
-            //Debug combat
-            System.out.println("ATTAQUE!");
-            System.out.println("hero hp:"+hero.getHp());
-            System.out.println("monstre hp:" + m.getHp());
-
-            if(m.getHp() <= 0){
-                removeMonster(newPosition);
-            }
-        }
-    }
-
-    /**
-     * Checks if a position is empty and enables someone to walk onto it
-     * @param p position to check
-     * @return true if someone can walk onto it, false else
-     */
-    private boolean isEmpty (Position p) {
-        return (!tiles.containsKey(p) || (tiles.containsKey(p) && tiles.get(p).isWalkable())) && !monsters.containsKey(p);
-    }
-
-    /**
-     * Loads a save given by the game containing the data of the hero and monsters
-     * @param save save DAO containing the data to load
-     */
-    public void loadSave (SaveDAO save) {
-        timer.reset(save.getTimer());
-        hero = save.getHero();
-        monsters = save.getMonsters();
-    }
-
-
-    /**
-     * Creates a save DAO object regarding the current state of the game
-     * @return save DAO object
-     */
-    public SaveDAO createSave () {
-        //création de la sauvegarde
-        SaveDAO save = new SaveDAO();
-
-        //sauvegarde du timer
-        save.setTimer(timer.getTimeLeft());
-
-        //sauvegarde du héro
-        save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), hero.getHp(), hero.getAtk());
-
-        //sauvegarde des monstres
-        for (Position p : monsters.keySet()) {
-            Monster m = monsters.get(p);
-            save.addMonster(m.getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), m.getHp(), m.getAtk());
-        }
-
-        return save;
-    }
-
-    /**
-     * generate a level from a LevelDAO
-     * @param lvl ; LevelDAO which was read from a file
-     */
-    public void generate(LevelDAO lvl) {
-        this.monsters = lvl.getMonsters();
-        this.tiles = lvl.getTiles();
-        this.hero = lvl.getHero();
-    }
-
-    /**
      * Met a jour l'etat du jeu a renvoyer a la vue
      * @param gs objet stockant les etats du jeu
      */
@@ -350,32 +364,35 @@ public class Level {
     }
 
     /**
-     * Permet d'obtenir la postion de chaque mur du niveau
-     * @return Ensemble de position
+     * Loads a save given by the game containing the data of the hero and monsters
+     * @param save save DAO containing the data to load
      */
-    public Set<Position> getWallsPosition() {
-        Set<Position> res = new HashSet<>();
-         for (Position p : tiles.keySet() ) {
-             Tile t = tiles.get(p);
-             if (t.getClass().getName().equals(Wall.class.getName())) {
-                 res.add(p);
-             }
-         }
-        return res;
+    public void loadSave (SaveDAO save) {
+        timer.reset(save.getTimer());
+        hero = save.getHero();
+        monsters = save.getMonsters();
     }
 
     /**
-     * @return health points of the hero
+     * Creates a save DAO object regarding the current state of the game
+     * @return save DAO object
      */
-    public int getHeroHp(){
-        return hero.getHp();
-    }
+    public SaveDAO createSave () {
+        //création de la sauvegarde
+        SaveDAO save = new SaveDAO();
 
-    /**
-     * Sets the health points of the hero
-     * @param hp health points
-     */
-    public void setHeroHp(int hp){
-        hero.setHp(hp);
+        //sauvegarde du timer
+        save.setTimer(timer.getTimeLeft());
+
+        //sauvegarde du héro
+        save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), hero.getHp(), hero.getAtk());
+
+        //sauvegarde des monstres
+        for (Position p : monsters.keySet()) {
+            Monster m = monsters.get(p);
+            save.addMonster(m.getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), m.getHp(), m.getAtk());
+        }
+
+        return save;
     }
 }

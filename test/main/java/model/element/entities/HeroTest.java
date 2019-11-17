@@ -1,4 +1,4 @@
-package main.java.model.element;
+package main.java.model.element.entities;
 
 import main.java.model.PositionPool;
 import main.java.model.element.entities.Hero;
@@ -34,7 +34,6 @@ class HeroTest {
 
     @Test
     void getPositionRight() {
-
         assertEquals(PositionPool.getInstance().getPosition(0,0),h0.getPosition());
     }
 
@@ -51,7 +50,6 @@ class HeroTest {
 
     @Test
     void setPosition() {
-
         h0.setPosition(PositionPool.getInstance().getPosition(1,1));
         assertEquals(PositionPool.getInstance().getPosition(1,1),h0.getPosition());
     }
@@ -68,21 +66,25 @@ class HeroTest {
     }
 
     @Test
-    void getHp() {
-        assertEquals(10,h0.getHp());
-    }
-
-    @Test
     void attack() {
         Monster m = new BasicMonster();
+        int hpMonsterBeforeHit = m.getHp();
+        int hpHeroBeforeHit = h0.getHp();
         h0.attack(m);
-        assertEquals(10-m.getAtk(), h0.getHp());
-        assertEquals(1-h0.getAtk(), m.getHp());
+        assertSame(hpHeroBeforeHit-m.getAtk(), h0.getHp());
+        assertSame(hpMonsterBeforeHit-h0.getAtk(), m.getHp());
     }
 
     @Test
     void hit() {
         h0.hit(1);
-        assertEquals(9,h0.getHp());
+        assertSame(9,h0.getHp());
+    }
+
+    @Test
+    void heal() {
+        int hpBeforeHeal = h0.getHp();
+        h0.heal(1);
+        assertSame(hpBeforeHeal+1, h0.getHp());
     }
 }

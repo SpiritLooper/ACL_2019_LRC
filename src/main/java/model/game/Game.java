@@ -340,6 +340,10 @@ public class Game {
         return res;
     }
 
+    /**
+     * //TODO
+     * @param tile
+     */
     public void destroyTile (Tile tile) {
         level.destroyTile(tile);
     }
