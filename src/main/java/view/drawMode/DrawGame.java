@@ -84,7 +84,7 @@ public class DrawGame implements DrawMode {
         int hp = game.getLevel().getHeroHp();
         int timeLeft = game.getTimeLeft();
 
-        if (hp > 0 && timeLeft > 0 && !game.isGameWon()) {
+        if (hp > 0 && timeLeft > 0 && !game.isFinished() ) {
             g.setFont(STANDARD_FONT);
             g.setColor(Color.GREEN);
 
