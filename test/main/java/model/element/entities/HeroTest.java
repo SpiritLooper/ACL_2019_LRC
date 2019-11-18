@@ -1,4 +1,4 @@
-package main.java.model.element.entities;
+package model.element.entities;
 
 import model.PositionPool;
 import model.element.entities.Hero;

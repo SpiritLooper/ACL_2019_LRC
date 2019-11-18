@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 import model.PositionPool;
 import model.game.Game;

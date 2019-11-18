@@ -1,4 +1,4 @@
-package main.java.model.element;
+package model.element;
 
 import controller.Command;
 import model.element.Position;
