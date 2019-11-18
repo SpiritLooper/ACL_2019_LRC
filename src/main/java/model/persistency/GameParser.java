@@ -1,7 +1,7 @@
-package main.java.model.persistency;
+package model.persistency;
 
-import main.java.model.element.entities.Monster;
-import main.java.model.element.Position;
+import model.element.entities.Monster;
+import model.element.Position;
 
 import java.io.*;
 

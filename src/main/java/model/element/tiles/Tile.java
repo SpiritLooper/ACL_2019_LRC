@@ -1,4 +1,4 @@
-package main.java.model.element.tiles;
+package model.element.tiles;
 
 /**
  * Abstract class representing a tile, being walkable or not and having an event to fire or not

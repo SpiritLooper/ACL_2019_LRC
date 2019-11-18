@@ -1,6 +1,6 @@
-package main.java.view.spriteManager.basicSprite;
+package view.spriteManager.basicSprite;
 
-import main.java.view.spriteManager.SpriteTileParser;
+import view.spriteManager.SpriteTileParser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

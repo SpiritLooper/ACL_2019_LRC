@@ -1,15 +1,15 @@
-package main.java.model.game;
+package model.game;
 
-import main.java.controller.Command;
-import main.java.model.element.tiles.buffTiles.BuffTile;
-import main.java.model.persistency.LevelDAO;
-import main.java.model.PositionPool;
-import main.java.model.persistency.SaveDAO;
-import main.java.model.element.*;
-import main.java.model.element.entities.Hero;
-import main.java.model.element.entities.Monster;
-import main.java.model.element.entities.BasicMonster;
-import main.java.model.element.tiles.*;
+import controller.Command;
+import model.element.tiles.buffTiles.BuffTile;
+import model.persistency.LevelDAO;
+import model.PositionPool;
+import model.persistency.SaveDAO;
+import model.element.*;
+import model.element.entities.Hero;
+import model.element.entities.Monster;
+import model.element.entities.BasicMonster;
+import model.element.tiles.*;
 
 import java.util.*;
 
@@ -127,7 +127,7 @@ public class Level {
      * @param p position to spawn the monster at
      * @param m monster to spawn
      */
-    protected void addMonster(Position p, Monster m){
+    public void addMonster(Position p, Monster m){
         monsters.put(p, m);
     }
 
@@ -136,7 +136,7 @@ public class Level {
      * @param m
      * @return
      */
-    protected boolean containsMonster(Monster m){
+    public boolean containsMonster(Monster m){
         return monsters.containsValue(m);
     }
 
@@ -144,21 +144,21 @@ public class Level {
      * Removes the monster identified by its position
      * @param p position identifying the monster
      */
-    protected void removeMonster(Position p){ monsters.remove(p);}
+    public void removeMonster(Position p){ monsters.remove(p);}
 
     /**
      * Adds a tile to the level at a given position
      * @param p position to put the tile at
      * @param t tile to put
      */
-    protected void addTile(Position p, Tile t) { tiles.put(p, t); }
+    public void addTile(Position p, Tile t) { tiles.put(p, t); }
 
     /**
      * TODO
      * @param t
      * @return
      */
-    protected boolean constainsTile(Tile t){
+    public boolean constainsTile(Tile t){
         return tiles.containsValue(t);
     }
 

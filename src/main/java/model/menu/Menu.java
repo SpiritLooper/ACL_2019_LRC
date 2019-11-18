@@ -1,6 +1,6 @@
-package main.java.model.menu;
+package model.menu;
 
-import main.java.controller.Command;
+import controller.Command;
 
 /**
  * Is used to select between 4 items : CONTINUE, SAVE, LOAD or EXIT

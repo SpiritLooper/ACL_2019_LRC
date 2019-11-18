@@ -1,10 +1,10 @@
-package main.java.view.spriteManager;
+package view.spriteManager;
 
-import main.java.view.Painter;
-import main.java.view.spriteManager.basicSprite.*;
-import main.java.view.spriteManager.biomManager.*;
-import main.java.model.element.Position;
-import main.java.model.game.Game;
+import view.Painter;
+import view.spriteManager.basicSprite.*;
+import view.spriteManager.biomManager.*;
+import model.element.Position;
+import model.game.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -52,7 +52,7 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
     }
 
     public static void loadLevels( Game game ) {
-        // TODO Ajouter au main.java.model la lecture du type de biome
+        // TODO Ajouter au model la lecture du type de biome
         List<Set<Position>> levels =  game.getAllWallsOfEachLevels();
 
         imagesLevel = new ImageLevelLinked(null);

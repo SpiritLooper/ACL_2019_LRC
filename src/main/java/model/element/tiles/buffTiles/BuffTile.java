@@ -1,7 +1,7 @@
-package main.java.model.element.tiles.buffTiles;
+package model.element.tiles.buffTiles;
 
-import main.java.model.element.entities.Entity;
-import main.java.model.element.tiles.Tile;
+import model.element.entities.Entity;
+import model.element.tiles.Tile;
 
 /**
  * Tiles containing a buff for the entity walking onto it

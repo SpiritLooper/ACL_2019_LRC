@@ -1,4 +1,4 @@
-package main.java.model.element.entities.buffs;
+package model.element.entities.buffs;
 
 /**
  * A heal over time highers the entity health points every turn for a set duration

@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 /**
  * Different possible actions for the hero and monsters to move

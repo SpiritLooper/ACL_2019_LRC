@@ -1,4 +1,4 @@
-package main.java.model.game;
+package model.game;
 
 /**
  * The timer limits the number of moves the hero can do on each levels

@@ -1,6 +1,6 @@
-package main.java.model.element.tiles;
+package model.element.tiles;
 
-import main.java.model.game.Game;
+import model.game.Game;
 
 /**
  * An EventTile is a tile with a special event attached to it, fired when the hero walks onto it

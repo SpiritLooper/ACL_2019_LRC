@@ -1,4 +1,4 @@
-package main.java.view.spriteManager.biomManager;
+package view.spriteManager.biomManager;
 
 public class DarkWasteland extends PokemonTileset {
     public DarkWasteland() {

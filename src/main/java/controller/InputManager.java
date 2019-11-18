@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -54,8 +54,8 @@ public class InputManager implements KeyListener {
     private final int SPACE_KEY = ' ';
 
     /**
-     * Constructor linking the main.java.controller
-     * @param controller main.java.controller to link
+     * Constructor linking the controller
+     * @param controller controller to link
      */
     public InputManager (Controller controller) {
         this.controller = controller;
@@ -63,7 +63,7 @@ public class InputManager implements KeyListener {
     }
 
     /**
-     * Launched whenever a key is pressed then released by the user on the keyboard, scanning the input and sending the corresponding command to the main.java.controller
+     * Launched whenever a key is pressed then released by the user on the keyboard, scanning the input and sending the corresponding command to the controller
      * @param e keyboard input event
      */
     @Override

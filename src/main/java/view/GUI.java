@@ -1,7 +1,7 @@
-package main.java.view;
+package view;
 
-import main.java.controller.Controller;
-import main.java.controller.InputManager;
+import controller.Controller;
+import controller.InputManager;
 
 import javax.swing.*;
 
@@ -34,7 +34,7 @@ public class GUI {
 
         //Creation du keyListener
 
-        // attacher main.java.controller au panel du game
+        // attacher controller au panel du game
         this.panel.addKeyListener(new InputManager(gameController));
 
         f.pack();

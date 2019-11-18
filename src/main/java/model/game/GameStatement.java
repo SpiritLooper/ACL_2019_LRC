@@ -1,14 +1,14 @@
-package main.java.model.game;
+package model.game;
 
-import main.java.model.element.*;
-import main.java.model.element.entities.Hero;
-import main.java.model.element.entities.ImmovableMonster;
-import main.java.model.element.entities.BasicMonster;
-import main.java.model.element.tiles.Stairs;
-import main.java.model.element.tiles.Treasure;
-import main.java.model.element.tiles.Wall;
-import main.java.model.element.tiles.buffTiles.HealOverTimeTile;
-import main.java.model.element.tiles.buffTiles.HealTile;
+import model.element.*;
+import model.element.entities.Hero;
+import model.element.entities.ImmovableMonster;
+import model.element.entities.BasicMonster;
+import model.element.tiles.Stairs;
+import model.element.tiles.Treasure;
+import model.element.tiles.Wall;
+import model.element.tiles.buffTiles.HealOverTimeTile;
+import model.element.tiles.buffTiles.HealTile;
 
 import java.util.*;
 

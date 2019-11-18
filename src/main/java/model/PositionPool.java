@@ -1,7 +1,7 @@
-package main.java.model;
+package model;
 
-import main.java.model.element.Position;
-import main.java.model.game.Game;
+import model.element.Position;
+import model.game.Game;
 
 /**
  * Pool of the positions of the game grid

@@ -1,8 +1,8 @@
-package main.java.model.element.tiles.buffTiles;
+package model.element.tiles.buffTiles;
 
-import main.java.model.element.entities.Entity;
-import main.java.model.element.entities.buffs.Heal;
-import main.java.model.game.EventManager;
+import model.element.entities.Entity;
+import model.element.entities.buffs.Heal;
+import model.game.EventManager;
 
 /**
  * Tile healing the entity walking onto it

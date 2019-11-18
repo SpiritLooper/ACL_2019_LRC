@@ -1,6 +1,6 @@
-package main.java.model.element.entities.buffs;
+package model.element.entities.buffs;
 
-import main.java.model.element.entities.Entity;
+import model.element.entities.Entity;
 
 /**
  * A buff is applied on an entity to strengthen or weaken it

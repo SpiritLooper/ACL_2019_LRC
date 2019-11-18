@@ -1,6 +1,6 @@
-package main.java.model.game;
+package model.game;
 
-import main.java.model.element.tiles.Tile;
+import model.element.tiles.Tile;
 
 /**
  * The event manager manages the event launched by the event tiles and gives the hero position to the monsters for their behaviors

@@ -1,4 +1,4 @@
-package main.java.view.drawMode;
+package view.drawMode;
 
 import java.awt.*;
 

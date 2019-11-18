@@ -1,9 +1,9 @@
 package main.java.model.element.entities;
 
-import main.java.model.PositionPool;
-import main.java.model.element.entities.Hero;
-import main.java.model.element.entities.Monster;
-import main.java.model.element.entities.BasicMonster;
+import model.PositionPool;
+import model.element.entities.Hero;
+import model.element.entities.Monster;
+import model.element.entities.BasicMonster;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,17 +1,17 @@
-package main.java.model.persistency;
+package model.persistency;
 
-import main.java.model.PositionPool;
-import main.java.model.element.*;
-import main.java.model.element.entities.Hero;
-import main.java.model.element.entities.Monster;
-import main.java.model.element.entities.ImmovableMonster;
-import main.java.model.element.entities.BasicMonster;
-import main.java.model.element.tiles.Stairs;
-import main.java.model.element.tiles.Tile;
-import main.java.model.element.tiles.Treasure;
-import main.java.model.element.tiles.Wall;
-import main.java.model.element.tiles.buffTiles.HealOverTimeTile;
-import main.java.model.element.tiles.buffTiles.HealTile;
+import model.PositionPool;
+import model.element.*;
+import model.element.entities.Hero;
+import model.element.entities.Monster;
+import model.element.entities.ImmovableMonster;
+import model.element.entities.BasicMonster;
+import model.element.tiles.Stairs;
+import model.element.tiles.Tile;
+import model.element.tiles.Treasure;
+import model.element.tiles.Wall;
+import model.element.tiles.buffTiles.HealOverTimeTile;
+import model.element.tiles.buffTiles.HealTile;
 
 import java.util.HashMap;
 import java.util.Map;

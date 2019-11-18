@@ -1,16 +1,16 @@
-package main.java.view.drawMode;
+package view.drawMode;
 
-import main.java.view.Painter;
-import main.java.view.spriteManager.SpriteTileParser;
-import main.java.model.element.Position;
-import main.java.model.game.Game;
-import main.java.model.game.GameStatement;
+import view.Painter;
+import view.spriteManager.SpriteTileParser;
+import model.element.Position;
+import model.game.Game;
+import model.game.GameStatement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static main.java.view.Painter.*;
+import static view.Painter.*;
 
 /**
  * Dessine le jeu vu dans le level

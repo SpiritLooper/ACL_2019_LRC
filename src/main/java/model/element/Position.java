@@ -1,11 +1,11 @@
-package main.java.model.element;
+package model.element;
 
-import main.java.controller.Command;
-import main.java.model.PositionPool;
+import controller.Command;
+import model.PositionPool;
 
 /**
  * Represents a position in a 2-dimensional integer world
- * Immutable objects being managed by the main.java.model.PositionPool
+ * Immutable objects being managed by the model.PositionPool
  */
 public class Position {
 

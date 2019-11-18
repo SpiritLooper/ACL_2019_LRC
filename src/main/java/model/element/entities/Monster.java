@@ -1,7 +1,7 @@
-package main.java.model.element.entities;
+package model.element.entities;
 
-import main.java.controller.Command;
-import main.java.model.element.entities.buffs.Buff;
+import controller.Command;
+import model.element.entities.buffs.Buff;
 
 import java.util.ArrayList;
 

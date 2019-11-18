@@ -1,6 +1,6 @@
-package main.java.model.element.entities;
+package model.element.entities;
 
-import main.java.controller.Command;
+import controller.Command;
 
 import java.util.Random;
 

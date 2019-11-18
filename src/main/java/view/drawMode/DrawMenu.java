@@ -1,12 +1,12 @@
-package main.java.view.drawMode;
+package view.drawMode;
 
-import main.java.view.Painter;
-import main.java.model.menu.MenuItem;
-import main.java.model.game.Game;
+import view.Painter;
+import model.menu.MenuItem;
+import model.game.Game;
 
 import java.awt.*;
 
-import static main.java.view.Painter.*;
+import static view.Painter.*;
 
 /**
  * Dessine le menu du jeu

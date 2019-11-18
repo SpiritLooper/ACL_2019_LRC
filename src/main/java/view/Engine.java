@@ -1,11 +1,11 @@
-package main.java.view;
+package view;
 
 /**
  * Classe permettant de faire un rendu graphique du jeu
  * @author Horatiu Cirstea, Vincent Thomas, Julien Claisse
  */
-import main.java.controller.Controller;
-import main.java.model.game.Game;
+import controller.Controller;
+import model.game.Game;
 
 public class Engine {
 

@@ -1,6 +1,6 @@
-package main.java.controller;
+package controller;
 
-import main.java.model.game.Game;
+import model.game.Game;
 
 /**
  * Controller of the game acting as a bridge between the game facade and the input manager
@@ -13,7 +13,7 @@ public class Controller {
     private Game game;
 
     /**
-     * states if the main.java.controller can throw in input in the game or not
+     * states if the controller can throw in input in the game or not
      */
     private boolean listening;
 
@@ -38,7 +38,7 @@ public class Controller {
     }
 
     /**
-     * Enables the main.java.controller to listen for inputs
+     * Enables the controller to listen for inputs
      */
     public void listen () {
         listening = true;

@@ -1,8 +1,8 @@
-package main.java.model.element.entities;
+package model.element.entities;
 
 
-import main.java.model.element.Position;
-import main.java.model.element.entities.buffs.Buff;
+import model.element.Position;
+import model.element.entities.buffs.Buff;
 
 import java.util.ArrayList;
 

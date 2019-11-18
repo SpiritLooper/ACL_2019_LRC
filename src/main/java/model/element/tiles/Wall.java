@@ -1,4 +1,4 @@
-package main.java.model.element.tiles;
+package model.element.tiles;
 
 /**
  * A wall is a non walkable tile

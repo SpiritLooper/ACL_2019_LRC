@@ -1,15 +1,15 @@
-package main.java.model.game;
+package model.game;
 
-import main.java.controller.Command;
-import main.java.model.element.tiles.Tile;
-import main.java.view.Engine;
-import main.java.model.*;
-import main.java.model.element.Position;
-import main.java.model.element.tiles.Treasure;
-import main.java.model.menu.Menu;
-import main.java.model.persistency.GameParser;
-import main.java.model.persistency.LevelDAO;
-import main.java.model.persistency.SaveDAO;
+import controller.Command;
+import model.element.tiles.Tile;
+import view.Engine;
+import model.*;
+import model.element.Position;
+import model.element.tiles.Treasure;
+import model.menu.Menu;
+import model.persistency.GameParser;
+import model.persistency.LevelDAO;
+import model.persistency.SaveDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;

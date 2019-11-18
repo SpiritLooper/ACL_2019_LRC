@@ -1,8 +1,8 @@
-package main.java.view.spriteManager.biomManager;
-import main.java.view.Painter;
-import main.java.model.PositionPool;
-import main.java.model.element.Position;
-import main.java.model.game.Game;
+package view.spriteManager.biomManager;
+import view.Painter;
+import model.PositionPool;
+import model.element.Position;
+import model.game.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

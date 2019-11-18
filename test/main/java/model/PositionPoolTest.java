@@ -1,10 +1,11 @@
 package main.java.model;
 
-import main.java.model.game.Game;
-import org.junit.jupiter.api.BeforeAll;
+import model.PositionPool;
+import model.game.Game;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PositionPoolTest {
 

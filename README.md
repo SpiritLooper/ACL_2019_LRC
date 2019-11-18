@@ -11,7 +11,7 @@ JDK installé sur son ordinateur
     `dir /s /B *.java > sources.txt` puis
     `javac @sources.txt`
 3. Executer avec la commande :
-    `java main.java.start.Main`
+    `java start.Main`
 4. Vous pouvez clean les fichiers .class avec la commande :
     `del /S *.class`
 
@@ -21,6 +21,6 @@ JDK installé sur son ordinateur
     `find -name "*.java" > sources.txt` puis
     `javac @sources.txt`
 3. Executer avec la commande :
-    `java main.java.start.Main`
+    `java start.Main`
 4. Vous pouvez clean les fichiers .class avec la commande :
      `rm -r *.class`

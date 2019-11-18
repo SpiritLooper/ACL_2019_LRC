@@ -1,4 +1,4 @@
-package main.java.view.spriteManager;
+package view.spriteManager;
 
 import java.awt.image.BufferedImage;
 

@@ -1,4 +1,4 @@
-package main.java.view.spriteManager.biomManager;
+package view.spriteManager.biomManager;
 
 public class TemporalTower extends PokemonTileset {
     public TemporalTower() {

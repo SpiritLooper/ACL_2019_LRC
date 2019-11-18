@@ -1,6 +1,6 @@
-package main.java.model.element.entities;
+package model.element.entities;
 
-import main.java.model.element.entities.buffs.Buff;
+import model.element.entities.buffs.Buff;
 
 /**
  * Interface regrouping the different entities of the game

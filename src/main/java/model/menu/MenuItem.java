@@ -1,4 +1,4 @@
-package main.java.model.menu;
+package model.menu;
 
 /**
  * Different items being used in the menu

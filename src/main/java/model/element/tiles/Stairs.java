@@ -1,6 +1,6 @@
-package main.java.model.element.tiles;
+package model.element.tiles;
 
-import main.java.model.game.EventManager;
+import model.game.EventManager;
 
 /**
  * A Stair tile is used to move the hero to the next level

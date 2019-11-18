@@ -1,13 +1,11 @@
 package main.java.model.element;
 
-import main.java.controller.Command;
-import main.java.model.PositionPool;
-import main.java.model.element.entities.Hero;
-import main.java.model.game.Game;
+import controller.Command;
+import model.element.Position;
+import model.game.Game;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 class PositionTest {
 

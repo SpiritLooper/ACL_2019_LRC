@@ -1,20 +1,15 @@
 package main.java.model.game;
 
-import main.java.controller.Command;
-import main.java.model.PositionPool;
-import main.java.model.element.Position;
-import main.java.model.element.entities.BasicMonster;
-import main.java.model.element.entities.Hero;
-import main.java.model.element.entities.ImmovableMonster;
-import main.java.model.element.entities.Monster;
-import main.java.model.element.tiles.EventTile;
-import main.java.model.element.tiles.Tile;
-import main.java.model.element.tiles.Wall;
-import main.java.view.spriteManager.basicSprite.Stairs;
-import org.easymock.EasyMock;
+import model.PositionPool;
+import model.element.entities.BasicMonster;
+import model.element.entities.ImmovableMonster;
+import model.element.entities.Monster;
+import model.element.tiles.Wall;
+import model.game.Level;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LevelTest {
 

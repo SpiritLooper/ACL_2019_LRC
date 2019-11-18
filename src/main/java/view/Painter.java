@@ -1,9 +1,9 @@
-package main.java.view;
+package view;
 
-import main.java.view.drawMode.DrawGame;
-import main.java.view.drawMode.DrawMenu;
-import main.java.view.drawMode.DrawMode;
-import main.java.model.game.Game;
+import view.drawMode.DrawGame;
+import view.drawMode.DrawMenu;
+import view.drawMode.DrawMode;
+import model.game.Game;
 
 
 import java.awt.*;

@@ -1,7 +1,7 @@
-package main.java.start;
+package start;
 
-import main.java.view.Engine;
-import main.java.model.game.Game;
+import view.Engine;
+import model.game.Game;
 
 /**
  * lancement du moteur avec le jeu

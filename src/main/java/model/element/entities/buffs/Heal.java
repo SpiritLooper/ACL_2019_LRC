@@ -1,4 +1,4 @@
-package main.java.model.element.entities.buffs;
+package model.element.entities.buffs;
 
 /**
  * A heal highers an entoty health points

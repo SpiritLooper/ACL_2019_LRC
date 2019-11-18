@@ -1,6 +1,6 @@
-package main.java.view.spriteManager.biomManager;
+package view.spriteManager.biomManager;
 
-import main.java.view.spriteManager.SpriteTileParser;
+import view.spriteManager.SpriteTileParser;
 
 import java.awt.image.BufferedImage;
 
