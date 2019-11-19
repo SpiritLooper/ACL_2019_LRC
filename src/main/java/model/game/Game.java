@@ -272,13 +272,13 @@ public class Game {
         //je les stocks dans un tableau histoire de pouvoir bien
         //les binder sans trop de prise de tête
 
-        System.out.println("Will generate " + nbLevel + " levels....");
+        //System.out.println("Will generate " + nbLevel + " levels....");
         Level[] arrayLevels = new Level[nbLevel];
 
         for(int i = nbLevel; i!=0; i--){
-            System.out.println("generating level"+i);
+            //System.out.println("generating level"+i);
             arrayLevels[i-1] = generateLevel(i);
-            System.out.println(arrayLevels[i-1]);
+            //System.out.println(arrayLevels[i-1]);
         }
 
         setLevel(arrayLevels[0]); //on commence au premier niveau

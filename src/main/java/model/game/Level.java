@@ -89,9 +89,9 @@ public class Level {
             Monster m = monsters.get(newPosition);
             hero.attack(m);
             //Debug combat
-            System.out.println("ATTAQUE!");
-            System.out.println("hero hp:"+hero.getHp());
-            System.out.println("monstre hp:" + m.getHp());
+            //System.out.println("ATTAQUE!");
+            //System.out.println("hero hp:"+hero.getHp());
+            //System.out.println("monstre hp:" + m.getHp());
 
             if(m.getHp() <= 0){
                 removeMonster(newPosition);
@@ -324,13 +324,13 @@ public class Level {
             m.attack(hero);
 
             //Debug combat
-            System.out.println("Attaque du monstre");
-            System.out.println("hero hp:" + hero.getHp());
-            System.out.println("monstre hp:" + m.getHp());
+            //System.out.println("Attaque du monstre");
+            //System.out.println("hero hp:" + hero.getHp());
+            //System.out.println("monstre hp:" + m.getHp());
 
             //si le monstre n'a plus de hp
             if (m.getHp() <= 0) {
-                System.out.println("===DEBUG==remove monster : =" + m.getHp());
+                //System.out.println("===DEBUG==remove monster : =" + m.getHp());
                 //on supprime le monstre de la map -> il meurt
                 removeMonster(newPosition);
             }

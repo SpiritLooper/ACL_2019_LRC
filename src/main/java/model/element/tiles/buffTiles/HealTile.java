@@ -15,7 +15,7 @@ public class HealTile extends BuffTile {
      */
     @Override
     public void buff(Entity entity) {
-        System.out.println("WALKED ON HEAL TILE");
+        //System.out.println("WALKED ON HEAL TILE");
         entity.buff(new Heal());
         EventManager.getINSTANCE().destroyTile(this);
     }
