@@ -54,10 +54,11 @@ public class GameParser {
         StringBuilder sb = new StringBuilder();
 
         sb.append("TIMER:" + save.getTimer() + "\n");
-        sb.append("HERO:" + save.getHero().getPosition().getX() + "," + save.getHero().getPosition().getY() + "," + 1 + "," + 1 + "\n");
+        sb.append("HERO:" + save.getHero().getPosition().getX() + "," + save.getHero().getPosition().getY() + "," + save.getHero().getHp() + "," + save.getHero().getAtk() + "\n");
         for (Position p : save.getMonsters().keySet()) {
+            System.out.println("monstre");
             Monster m = save.getMonsters().get(p);
-            sb.append("MONSTER:" + m.getClass().getSimpleName().toUpperCase() + "," + p.getX() + "," + p.getY() + "," + 1 + "," + 1 + "\n");
+            sb.append("MONSTER:" + m.getClass().getSimpleName().toUpperCase() + "," + p.getX() + "," + p.getY() + "," + m.getHp() + "," + m.getAtk() + "\n");
         }
 
         writer.write(sb.toString());

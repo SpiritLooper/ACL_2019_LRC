@@ -90,11 +90,11 @@ public class SaveDAO {
         Monster m;
 
         switch (name) {
-            case "ZOMBIE":
+            case "BASICMONSTER":
                 m = new BasicMonster();
                 break;
 
-            case "WILDROSE":
+            case "IMMOVABLEMONSTER":
                 m = new ImmovableMonster();
                 break;
 
