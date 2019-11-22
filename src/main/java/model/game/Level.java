@@ -10,6 +10,7 @@ import model.element.entities.Hero;
 import model.element.entities.Monster;
 import model.element.entities.BasicMonster;
 import model.element.tiles.*;
+import view.AudioPlayer;
 
 import java.util.*;
 

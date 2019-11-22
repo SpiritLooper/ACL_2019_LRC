@@ -1,5 +1,6 @@
 package start;
 
+import view.AudioPlayer;
 import view.Engine;
 import model.game.Game;
 
@@ -19,6 +20,7 @@ public class Main {
 		game.setEngine(engine);
 
 		engine.run();
+		AudioPlayer.playSoundtrack();
 	}
 
 }
