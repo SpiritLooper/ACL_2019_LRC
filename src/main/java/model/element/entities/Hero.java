@@ -76,14 +76,13 @@ public class Hero implements Entity{
 
     @Override
     public void attack(Entity e) {
-        hp = hp - e.getAtk();
+        //si modif des points d'attaque ICI
         e.hit(atk);
-        //e.hit(atk, this); //todo passer le hero pour se faire attaquer par le monstre
-        //hit(e.getAtk());
     }
 
     @Override
     public void hit(int atk) {
+        //si modif de la défence ICI
         hp = hp - atk;
     }
 

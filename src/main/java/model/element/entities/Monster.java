@@ -60,7 +60,7 @@ public abstract class Monster implements Entity {
      */
     @Override
     public void attack(Entity e) {
-        hp = hp - e.getAtk();
+        //hp = hp - e.getAtk();
         e.hit(atk);
     }
 

@@ -1,6 +1,7 @@
 package model.game;
 
 import controller.Command;
+import model.element.entities.Entity;
 import model.element.tiles.buffTiles.BuffTile;
 import model.persistency.LevelDAO;
 import model.PositionPool;
@@ -88,7 +89,8 @@ public class Level {
             hero.setPosition(newPosition);
         }else if( monsters.containsKey(newPosition)){//si un monstre s'y trouve
             Monster m = monsters.get(newPosition);
-            hero.attack(m);
+            combat(hero,m);
+            //hero.attack(m);
             //Debug combat
             //System.out.println("ATTAQUE!");
             //System.out.println("hero hp:"+hero.getHp());
@@ -98,6 +100,11 @@ public class Level {
                 removeMonster(newPosition);
             }
         }
+    }
+
+    void combat(Entity e1, Entity e2){
+        e1.attack(e2);
+        e2.attack(e1);
     }
 
     /**
