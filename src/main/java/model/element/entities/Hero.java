@@ -1,6 +1,8 @@
 package model.element.entities;
 
 
+import controller.Command;
+import controller.Orientation;
 import model.element.Position;
 import model.element.entities.buffs.Buff;
 
@@ -45,6 +47,9 @@ public class Hero implements Entity{
     /**
      * Constructor with the spawn position
      */
+
+    private Orientation orientation;
+
     public Hero(Position position) {
         this.position = position;
         hp = 10;
@@ -52,6 +57,7 @@ public class Hero implements Entity{
         status = Status.ABLE;
         statusDuration = 0;
         buffs = new ArrayList<>();
+        orientation = Orientation.UP;
     }
 
     /**
@@ -163,6 +169,30 @@ public class Hero implements Entity{
         updateBuffs();
     }
 
+    @Override
+    public void rotate(Command command) {
+        switch (command){
+            case UP:
+                setOrientation(Orientation.UP);
+            break;
+
+            case DOWN:
+                setOrientation(Orientation.DOWN);
+            break;
+
+            case LEFT:
+                setOrientation(Orientation.LEFT);
+            break;
+
+            case RIGHT:
+                setOrientation(Orientation.RIGHT);
+            break;
+
+            default:
+        }
+        System.out.println("I'm hero" + this.getClass() + "and i'm rotating to the " + getOrientation().name());
+    }
+
     /**
      * Updates the status
      */
@@ -191,6 +221,14 @@ public class Hero implements Entity{
                 b.apply();
             }
         }
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
     }
 
 }

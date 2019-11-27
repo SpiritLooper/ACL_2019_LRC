@@ -30,10 +30,11 @@ public class Controller {
      * Telling the game to move the hero following the received command
      * @param command received command
      */
-    public void execute (Command command) {
+    public void execute (Command command, long delta) {
+        boolean duration_key = delta > 150;
         if(!game.isFinished() && listening) {
             listening = false;
-            game.execute(command);
+            game.execute(command, duration_key);
         }
     }
 

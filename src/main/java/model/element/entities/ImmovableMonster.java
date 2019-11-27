@@ -41,6 +41,8 @@ public class ImmovableMonster extends Monster {
         super.hit(atk);
     }
 
+
+
     @Override
     public String toString() {
         return "WildRose<>";

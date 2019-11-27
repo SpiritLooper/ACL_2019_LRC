@@ -1,6 +1,7 @@
 package model.element.entities;
 
 import controller.Command;
+import controller.Orientation;
 import model.element.entities.buffs.Buff;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public abstract class Monster implements Entity {
      */
     private ArrayList<Buff> buffs;
 
+    private Orientation orientation;
+
     /**
      * Constructor of a monster with its hp and atk
      * @param hp health points
@@ -46,6 +49,7 @@ public abstract class Monster implements Entity {
         status = Status.ABLE;
         statusDuration = 0;
         buffs = new ArrayList<>();
+        orientation = Orientation.DOWN;
     }
 
     /**
@@ -183,4 +187,34 @@ public abstract class Monster implements Entity {
         }
     }
 
+    @Override
+    public void rotate(Command command) {
+        switch (command){
+            case UP:
+                setOrientation(Orientation.UP);
+                break;
+
+            case DOWN:
+                setOrientation(Orientation.DOWN);
+                break;
+
+            case LEFT:
+                setOrientation(Orientation.LEFT);
+                break;
+
+            case RIGHT:
+                setOrientation(Orientation.RIGHT);
+                break;
+
+            default:
+        }
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
 }

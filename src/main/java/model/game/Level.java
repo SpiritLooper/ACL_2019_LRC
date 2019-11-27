@@ -403,4 +403,8 @@ public class Level {
 
         return save;
     }
+
+    public void rotateHero(Command command) {
+        hero.rotate(command);
+    }
 }

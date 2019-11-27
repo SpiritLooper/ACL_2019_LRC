@@ -123,7 +123,7 @@ public class Game {
      * Executes the received command for the menu of open or the hero
      * @param command user input
      */
-    public void execute (Command command) {
+    public void execute (Command command, boolean duration) {
         //controls the menu if it is open
         if (menu.isOpen()) {
             switch (menu.control(command)) {
@@ -162,8 +162,17 @@ public class Game {
             return;
         }
 
-        moveHero(command);
-        update();
+        if(duration){
+            moveHero(command);
+            update();
+        } else {
+            rotateHero(command);
+        }
+        notifyEngine();
+    }
+
+    private void rotateHero(Command command) {
+        level.rotateHero(command);
     }
 
     /**
@@ -238,7 +247,7 @@ public class Game {
             finish(false);
         }
 
-        notifyEngine();
+
     }
 
     /**

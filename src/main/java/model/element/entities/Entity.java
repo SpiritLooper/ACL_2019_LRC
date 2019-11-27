@@ -1,5 +1,6 @@
 package model.element.entities;
 
+import controller.Command;
 import model.element.entities.buffs.Buff;
 
 /**
@@ -63,4 +64,5 @@ public interface Entity {
      */
     void update ();
 
+    void rotate(Command command);
 }

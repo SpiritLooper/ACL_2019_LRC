@@ -40,4 +40,5 @@ public class BasicMonster extends Monster {
         super.hit(atk);
     }
 
+
 }

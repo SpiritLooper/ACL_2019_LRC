@@ -54,12 +54,26 @@ public class InputManager implements KeyListener {
     private final int SPACE_KEY = ' ';
 
     /**
+     * used to determine the amount of time the key is pressed
+     * in order to rotate or move the hero
+     */
+    private long previous_time;
+
+    private long delta;
+
+    private boolean pressed;
+
+    /**
      * Constructor linking the controller
      * @param controller controller to link
      */
     public InputManager (Controller controller) {
         this.controller = controller;
         this.currentCommand = Command.IDLE;
+        previous_time = 0;
+        delta = 0;
+        pressed = false;
+
     }
 
     /**
@@ -69,6 +83,31 @@ public class InputManager implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 
+
+    }
+
+    /**
+     * Launched when pressing a key start the timer
+     * @param e keyboard input event
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (!pressed){
+            pressed = true;
+            previous_time = System.currentTimeMillis();
+            //System.out.println("KEYPRESSED : previous_time " + previous_time);
+        }
+    }
+
+    /**
+     * Launched when releasing a key, stop the timer
+     * @param e keyboard input event
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //System.out.println("KEYRELEASED TIME : " + System.currentTimeMillis());
+        delta = System.currentTimeMillis() - previous_time;
+        pressed = false;
         switch (e.getKeyChar()) {
             case UP_KEY:
                 currentCommand = Command.UP;
@@ -103,27 +142,10 @@ public class InputManager implements KeyListener {
 
         }
 
-        controller.execute(currentCommand);
+        controller.execute(currentCommand, delta);
 
         currentCommand = Command.IDLE;
-    }
 
-    /**
-     * Launched when pressing a key, not used
-     * @param e keyboard input event
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        return;
-    }
-
-    /**
-     * Launched when releasing a key, not used
-     * @param e keyboard input event
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-        return;
     }
 
 }
