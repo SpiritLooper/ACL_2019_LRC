@@ -2,6 +2,8 @@ package controller;
 
 import model.game.Game;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Controller of the game acting as a bridge between the game facade and the input manager
  */
@@ -34,7 +36,19 @@ public class Controller {
         boolean duration_key = delta > 150;
         if(!game.isFinished() && listening) {
             listening = false;
-            game.execute(command, duration_key);
+            try {
+                game.execute(command, duration_key);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 

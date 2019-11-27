@@ -25,10 +25,10 @@ public abstract class Tile{
      * @param walkable is the tile walkable?
      * @param hasEvent does the tile has an event?
      */
-    public Tile(boolean walkable, boolean hasEvent, boolean hashBuff){
+    public Tile(boolean walkable, boolean hasEvent, boolean hasBuff){
         this.walkable = walkable;
         this.hasEvent = hasEvent;
-        this.hasBuff = hashBuff;
+        this.hasBuff = hasBuff;
     }
 
     /**

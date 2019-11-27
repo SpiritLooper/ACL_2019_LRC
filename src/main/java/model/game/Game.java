@@ -12,6 +12,7 @@ import model.persistency.LevelDAO;
 import model.persistency.SaveDAO;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -123,7 +124,7 @@ public class Game {
      * Executes the received command for the menu of open or the hero
      * @param command user input
      */
-    public void execute (Command command, boolean duration) {
+    public void execute (Command command, boolean duration) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         //controls the menu if it is open
         if (menu.isOpen()) {
             switch (menu.control(command)) {
@@ -162,15 +163,21 @@ public class Game {
             return;
         }
 
+        // si la touche est tapée rapidement, on s'oriente, sinon on bouge
         if(duration){
             moveHero(command);
             update();
         } else {
             rotateHero(command);
         }
+
         notifyEngine();
     }
 
+    /**
+     * Rotates the hero depending on the given commend
+     * @param command command to ocnsult for the orientation change
+     */
     private void rotateHero(Command command) {
         level.rotateHero(command);
     }
@@ -178,7 +185,7 @@ public class Game {
     /**
      * Method that makes a save of the game
      */
-    private void saveGame () {
+    private void saveGame () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         try {
             GameParser.getINSTANCE().writeSaveFile(level.createSave());
         } catch (IOException e) {
@@ -189,7 +196,7 @@ public class Game {
     /**
      * Method that load a level and set the current level to it
      */
-    private void loadSave () {
+    private void loadSave () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         try {
             SaveDAO save = GameParser.getINSTANCE().parseSaveFile();
             level.loadSave(save);
@@ -203,7 +210,7 @@ public class Game {
      * @param lvl : the indice of the file levelX.lyt
      * @return : a Level class, which correspond to the levelX.lyt
      */
-    private Level generateLevel(int lvl){
+    private Level generateLevel(int lvl) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         try {
             LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl);
             Level level = new Level();
@@ -269,7 +276,7 @@ public class Game {
     /**
      * Generates a basic game
      */
-    public void generateGame() {
+    public void generateGame() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
 
         int nbLevel = GameParser.getINSTANCE().getNbLevel();
@@ -350,8 +357,8 @@ public class Game {
     }
 
     /**
-     * //TODO
-     * @param tile
+     * Destroys a tile form the hashMap
+     * @param tile tile to destroy
      */
     public void destroyTile (Tile tile) {
         level.destroyTile(tile);

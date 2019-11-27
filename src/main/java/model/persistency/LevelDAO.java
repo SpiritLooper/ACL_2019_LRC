@@ -4,15 +4,9 @@ import model.PositionPool;
 import model.element.*;
 import model.element.entities.Hero;
 import model.element.entities.Monster;
-import model.element.entities.ImmovableMonster;
-import model.element.entities.BasicMonster;
-import model.element.tiles.Stairs;
 import model.element.tiles.Tile;
-import model.element.tiles.Treasure;
 import model.element.tiles.Wall;
-import model.element.tiles.buffTiles.HealOverTimeTile;
-import model.element.tiles.buffTiles.HealTile;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,31 +31,11 @@ public class LevelDAO {
     private HashMap<Position, Tile> tiles;
 
     /**
-     * width of the level
-     */
-    private int width;
-
-    /**
-     * height of the level
-     */
-    private int height;
-
-    /**
      * Constructor initializing the lists
      */
     public LevelDAO(){
         monsters = new HashMap<>();
         tiles = new HashMap<>();
-    }
-
-    /**
-     * Sets the dimensions of the level
-     * @param w width
-     * @param h height
-     */
-    public void setDimension(int w, int h) {
-        width = w;
-        height = h;
     }
 
     /**
@@ -75,43 +49,39 @@ public class LevelDAO {
     }
 
     /**
-     * Adds a zombie to the list of monsters
-     * @param x x coordiante
-     * @param y y coordinate
-     */
-    public void addBasicMonster(int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x,y);
-        monsters.put(pos, new BasicMonster());
-    }
-
-    /**
-     * Adds an immovable monster to the list of monsters
+     * Generic method to add a monster to the level
+     * @param name name of the type of the monster
      * @param x x coordinate
      * @param y y coordinate
      */
-    public void addImmovableMonster(int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x,y);
-        monsters.put(pos, new ImmovableMonster());
+    public void addMonster (String name, int x, int y) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Monster m = (Monster) Class.forName(GameParser.ENTITY_PATH + name).getDeclaredConstructor().newInstance();
+        Position pos = PositionPool.getInstance().getPosition(x, y);
+        monsters.put(pos, m);
     }
 
     /**
-     * Adds a treasure to the list of tiles
+     * Generic method to add a tile to the level
+     * @param name name of the type of the tile
      * @param x x coordinate
      * @param y y coordinate
      */
-    public void addTreasure(int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x,y);
-        tiles.put(pos, new Treasure());
+    public void addTile (String name, int x, int y) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Tile t = (Tile) Class.forName(GameParser.TILE_PATH + name).getDeclaredConstructor().newInstance();
+        Position pos = PositionPool.getInstance().getPosition(x, y);
+        tiles.put(pos, t);
     }
 
     /**
-     * Adds stairs to the list of tiles
+     * Generic method to add a buff tile to the level
+     * @param name name of the type of the buff tile
      * @param x x coordinate
      * @param y y coordinate
      */
-    public void addStairs(int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x,y);
-        tiles.put(pos, new Stairs());
+    public void addBuffTile (String name, int x, int y) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Tile t = (Tile) Class.forName(GameParser.BUFF_TILE_PATH + name).getDeclaredConstructor().newInstance();
+        Position pos = PositionPool.getInstance().getPosition(x, y);
+        tiles.put(pos, t);
     }
 
     /**
@@ -122,26 +92,6 @@ public class LevelDAO {
     public void addWall(int x, int y) {
         Position pos = PositionPool.getInstance().getPosition(x,y);
         tiles.put(pos, new Wall());
-    }
-
-    /**
-     * Adds a healing tile to the list of tile
-     * @param x x coordinate
-     * @param y y coordinate
-     */
-    public void addHeal (int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x, y);
-        tiles.put(pos, new HealTile());
-    }
-
-    /**
-     * Adds a heal over time tile to the list of tile
-     * @param x x coordinate
-     * @param y y coordinate
-     */
-    public void addHealOverTime (int x, int y) {
-        Position pos = PositionPool.getInstance().getPosition(x, y);
-        tiles.put(pos, new HealOverTimeTile());
     }
 
     /**

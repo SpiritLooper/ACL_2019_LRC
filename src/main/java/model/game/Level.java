@@ -11,8 +11,7 @@ import model.element.entities.Hero;
 import model.element.entities.Monster;
 import model.element.entities.BasicMonster;
 import model.element.tiles.*;
-import view.AudioPlayer;
-
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -379,13 +378,16 @@ public class Level {
         timer.reset(save.getTimer());
         hero = save.getHero();
         monsters = save.getMonsters();
+        for (Position p : save.getBuffTiles().keySet()) {
+            tiles.put(p, save.getBuffTiles().get(p));
+        }
     }
 
     /**
      * Creates a save DAO object regarding the current state of the game
      * @return save DAO object
      */
-    public SaveDAO createSave () {
+    public SaveDAO createSave () throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         //création de la sauvegarde
         SaveDAO save = new SaveDAO();
 
@@ -394,17 +396,30 @@ public class Level {
 
         //sauvegarde du héro
         save.setHero(hero.getPosition().getX(), hero.getPosition().getY(), hero.getHp(), hero.getAtk());
+        save.setHeroBuffs(hero.getBuffs());
 
         //sauvegarde des monstres
         for (Position p : monsters.keySet()) {
             Monster m = monsters.get(p);
-            save.addMonster(m.getClass().getSimpleName().toUpperCase(), p.getX(), p.getY(), m.getHp(), m.getAtk());
+            save.addMonster(m.getClass().getSimpleName(), p.getX(), p.getY(), m.getHp(), m.getAtk());
+            save.setMonsterBuffs(p, m.getBuffs());
+        }
+        for (Position p : tiles.keySet()) {
+            Tile t = tiles.get(p);
+            if (t.hasBuff()) {
+                save.addBuffTile(t.getClass().getSimpleName(), p.getX(), p.getY());
+            }
         }
 
         return save;
     }
 
+    /**
+     * Rotates the hero depending on the given command
+     * @param command command to consult for the rotation
+     */
     public void rotateHero(Command command) {
         hero.rotate(command);
     }
+
 }

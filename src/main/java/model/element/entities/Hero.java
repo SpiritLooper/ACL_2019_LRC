@@ -45,11 +45,13 @@ public class Hero implements Entity{
     private ArrayList<Buff> buffs;
 
     /**
-     * Constructor with the spawn position
+     * current orientation of the hero
      */
-
     private Orientation orientation;
 
+    /**
+     * Constructor with the spawn position
+     */
     public Hero(Position position) {
         this.position = position;
         hp = 10;
@@ -80,18 +82,29 @@ public class Hero implements Entity{
         return "Hero<" + position.getX() + "," + position.getY() + ">";
     }
 
+    /**
+     * Attacks the given entity
+     * @param e entity attacked
+     */
     @Override
     public void attack(Entity e) {
         //si modif des points d'attaque ICI
         e.hit(atk);
     }
 
+    /**
+     * Get hit for a given attack value
+     * @param atk attack's force
+     */
     @Override
     public void hit(int atk) {
         //si modif de la défence ICI
         hp = hp - atk;
     }
 
+    /**
+     * @return attack value of the hero
+     */
     @Override
     public int getAtk() {
         return atk;
@@ -152,6 +165,23 @@ public class Hero implements Entity{
     }
 
     /**
+     * @return a list of the buffs currently applied to the hero
+     */
+    @Override
+    public ArrayList<Buff> getBuffs () {
+        return buffs;
+    }
+
+    /**
+     * Sets the buffs of the hero
+     * @param buffs buffs to add
+     */
+    @Override
+    public void setBuffs (ArrayList<Buff> buffs) {
+        this.buffs = buffs;
+    }
+
+    /**
      * Heals the hero
      * @param amount amount to heal
      */
@@ -169,6 +199,10 @@ public class Hero implements Entity{
         updateBuffs();
     }
 
+    /**
+     * Rotates the hero depending on the command received
+     * @param command command to where to rotate to
+     */
     @Override
     public void rotate(Command command) {
         switch (command){
@@ -223,10 +257,19 @@ public class Hero implements Entity{
         }
     }
 
+    /**
+     * @return current orientation of the hero
+     */
+    @Override
     public Orientation getOrientation() {
         return orientation;
     }
 
+    /**
+     * Sets the orientation of the hero
+     * @param orientation orientation to set the hero to
+     */
+    @Override
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }

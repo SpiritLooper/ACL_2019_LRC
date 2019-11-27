@@ -3,7 +3,6 @@ package model.element.entities;
 import controller.Command;
 import controller.Orientation;
 import model.element.entities.buffs.Buff;
-
 import java.util.ArrayList;
 
 /**
@@ -36,6 +35,9 @@ public abstract class Monster implements Entity {
      */
     private ArrayList<Buff> buffs;
 
+    /**
+     * current orientation of the monster
+     */
     private Orientation orientation;
 
     /**
@@ -140,6 +142,23 @@ public abstract class Monster implements Entity {
     }
 
     /**
+     * @return a list of the buffs currently applied to the hero
+     */
+    @Override
+    public ArrayList<Buff> getBuffs () {
+        return buffs;
+    }
+
+    /**
+     * Sets the buffs of the monster
+     * @param buffs buffs to add
+     */
+    @Override
+    public void setBuffs (ArrayList<Buff> buffs) {
+        this.buffs = buffs;
+    }
+
+    /**
      * Heals the monster
      * @param amount amount to heal
      */
@@ -187,6 +206,10 @@ public abstract class Monster implements Entity {
         }
     }
 
+    /**
+     * Rotates the monster depending of the received command
+     * @param command command to where to rotate to
+     */
     @Override
     public void rotate(Command command) {
         switch (command){
@@ -210,10 +233,19 @@ public abstract class Monster implements Entity {
         }
     }
 
+    /**
+     * @return current orientation of the monster
+     */
+    @Override
     public Orientation getOrientation() {
         return orientation;
     }
 
+    /**
+     * Sets the orientation of the monster
+     * @param orientation orientation to set the entity to
+     */
+    @Override
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }

@@ -9,7 +9,7 @@ public class HealOverTime extends Buff {
      * Constructor to super with a given duration
      * @param duration duration of the heal
      */
-    public HealOverTime(int duration) {
+    public HealOverTime(Integer duration) {
         super(duration);
     }
 

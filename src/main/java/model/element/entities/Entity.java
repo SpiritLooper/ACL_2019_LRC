@@ -1,7 +1,10 @@
 package model.element.entities;
 
 import controller.Command;
+import controller.Orientation;
 import model.element.entities.buffs.Buff;
+
+import java.util.ArrayList;
 
 /**
  * Interface regrouping the different entities of the game
@@ -54,6 +57,17 @@ public interface Entity {
     void buff (Buff buff);
 
     /**
+     * @return buffs applied on the entity
+     */
+    ArrayList<Buff> getBuffs ();
+
+    /**
+     * Sets the current buffs of the entity
+     * @param buffs buffs to add
+     */
+    void setBuffs (ArrayList<Buff> buffs);
+
+    /**
      * Heals the entity
      * @param amount amount to heal
      */
@@ -64,5 +78,20 @@ public interface Entity {
      */
     void update ();
 
+    /**
+     * Rotate the entity
+     * @param command command to where to rotate to
+     */
     void rotate(Command command);
+
+    /**
+     * @return current orientation of the entity
+     */
+    Orientation getOrientation ();
+
+    /**
+     * Sets the orientation of the entity
+     * @param orientation orientation to set the entity to
+     */
+    void setOrientation (Orientation orientation);
 }

@@ -4,6 +4,8 @@ import view.AudioPlayer;
 import view.Engine;
 import model.game.Game;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * lancement du moteur avec le jeu
  */
@@ -13,7 +15,19 @@ public class Main {
 
 		//Création et génération du jeu
 		Game game = new Game();
-		game.generateGame();
+		try {
+			game.generateGame();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
 		// classe qui lance le moteur de jeu generique
 		Engine engine = new Engine(game);
