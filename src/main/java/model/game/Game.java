@@ -253,8 +253,6 @@ public class Game {
         if (level.getTimer().getTimeLeft()<= 0 || level.getHeroHp() <= 0) {
             finish(false);
         }
-
-
     }
 
     /**

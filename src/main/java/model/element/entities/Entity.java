@@ -44,13 +44,6 @@ public interface Entity {
     int getAtk();
 
     /**
-     * Applies a status to the entity
-     * @param status status to apply
-     * @param duration duration of the status
-     */
-    void applyStatus (Status status, int duration);
-
-    /**
      * Buffs the entity
      * @param buff buff used on the entity
      */
@@ -94,4 +87,16 @@ public interface Entity {
      * @param orientation orientation to set the entity to
      */
     void setOrientation (Orientation orientation);
+
+    /**
+     * @return status of the entity
+     */
+    Status getStatus ();
+
+    /**
+     * Updates the status of the entity
+     * @param status status to apply
+     */
+    void updateStatus(Status status);
+
 }

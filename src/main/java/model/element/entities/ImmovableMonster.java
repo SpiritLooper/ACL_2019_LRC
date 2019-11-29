@@ -23,29 +23,4 @@ public class ImmovableMonster extends Monster {
         return Command.IDLE;
     }
 
-    /**
-     * This monster attacks an entity
-     * @param e entity attacked
-     */
-    @Override
-    public void attack(Entity e) {
-        super.attack(e);
-    }
-
-    /**
-     * This monster takes a hit
-     * @param atk attack's force
-     */
-    @Override
-    public void hit(int atk) {
-        super.hit(atk);
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "WildRose<>";
-    }
-
 }

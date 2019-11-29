@@ -26,11 +26,6 @@ public abstract class Monster implements Entity {
     private Status status;
 
     /**
-     * duration of the status
-     */
-    private int statusDuration;
-
-    /**
      * current buffs of the monster
      */
     private ArrayList<Buff> buffs;
@@ -48,8 +43,7 @@ public abstract class Monster implements Entity {
     public Monster(int hp, int atk){
         this.hp = hp;
         this.atk = atk;
-        status = Status.ABLE;
-        statusDuration = 0;
+        status = Status.STANDING;
         buffs = new ArrayList<>();
         orientation = Orientation.DOWN;
     }
@@ -66,7 +60,6 @@ public abstract class Monster implements Entity {
      */
     @Override
     public void attack(Entity e) {
-        //hp = hp - e.getAtk();
         e.hit(atk);
     }
 
@@ -116,19 +109,18 @@ public abstract class Monster implements Entity {
     /**
      * @return status
      */
+    @Override
     public Status getStatus() {
         return status;
     }
 
     /**
-     * Applies a status to the monster
+     * Updates the status of the monster
      * @param status status to apply
-     * @param duration duration of the status
      */
     @Override
-    public void applyStatus(Status status, int duration) {
+    public void updateStatus(Status status) {
         this.status = status;
-        statusDuration = duration;
     }
 
     /**
@@ -172,22 +164,7 @@ public abstract class Monster implements Entity {
      */
     @Override
     public void update() {
-        updateStatus();
         updateBuffs();
-    }
-
-    /**
-     * Updates the status
-     */
-    private void updateStatus() {
-        if (statusDuration <= 0) {
-            status = Status.ABLE;
-            statusDuration = 0;
-        }
-
-        if (status == Status.FROZEN) {
-            statusDuration--;
-        }
     }
 
     /**
@@ -248,5 +225,10 @@ public abstract class Monster implements Entity {
     @Override
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 }

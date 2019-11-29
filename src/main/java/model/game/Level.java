@@ -1,15 +1,12 @@
 package model.game;
 
 import controller.Command;
-import model.element.entities.Entity;
+import model.element.entities.*;
 import model.element.tiles.buffTiles.BuffTile;
 import model.persistency.LevelDAO;
 import model.PositionPool;
 import model.persistency.SaveDAO;
 import model.element.*;
-import model.element.entities.Hero;
-import model.element.entities.Monster;
-import model.element.entities.BasicMonster;
 import model.element.tiles.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -101,9 +98,19 @@ public class Level {
         }
     }
 
-    void combat(Entity e1, Entity e2){
-        e1.attack(e2);
-        e2.attack(e1);
+    /**
+     * Starts a fight between two entities
+     * @param attacker attacking entity
+     * @param defendant defending entity
+     */
+    private void combat(Entity attacker, Entity defendant){
+        System.out.println("Fight between " + attacker + " and " + defendant + "!");
+
+        attacker.attack(defendant);
+        defendant.attack(attacker);
+
+        attacker.updateStatus(Status.ATTACKING);
+        defendant.updateStatus(Status.ATTACKING);
     }
 
     /**
@@ -261,6 +268,9 @@ public class Level {
      * Updates the hero
      */
     private void updateHero() {
+        //reset du statut du héro
+        hero.updateStatus(Status.STANDING);
+
         //test d'un évènement à déclencher
         if (tiles.containsKey(hero.getPosition())) {
             //si la tile où se trouve le héro contient un évènement
@@ -309,6 +319,9 @@ public class Level {
         //retenue du monstre
         Monster m = monsters.get(p);
 
+        //reset du statut du monstre
+        m.updateStatus(Status.STANDING);
+
         //nouvelle position du monstre par rapport à son comportement
         Position newPosition = p.applyCommand(monsterCommand);
 
@@ -328,7 +341,7 @@ public class Level {
         } else if (newPosition.equals(hero.getPosition())) {
 
             //le monstre attaque le hero
-            m.attack(hero);
+            combat(m, hero);
 
             //Debug combat
             //System.out.println("Attaque du monstre");

@@ -25,20 +25,4 @@ public class BasicMonster extends Monster {
         return Command.values()[rand];
     }
 
-    @Override
-    public String toString() {
-        return "Zombie<>";
-    }
-
-    @Override
-    public void attack(Entity e) {
-        super.attack(e);
-    }
-
-    @Override
-    public void hit(int atk) {
-        super.hit(atk);
-    }
-
-
 }

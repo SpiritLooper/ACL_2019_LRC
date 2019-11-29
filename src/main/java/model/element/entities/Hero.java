@@ -35,11 +35,6 @@ public class Hero implements Entity{
     private Status status;
 
     /**
-     * duration of the status
-     */
-    private int statusDuration;
-
-    /**
      * current buffs of the hero
      */
     private ArrayList<Buff> buffs;
@@ -56,8 +51,7 @@ public class Hero implements Entity{
         this.position = position;
         hp = 10;
         atk = 1;
-        status = Status.ABLE;
-        statusDuration = 0;
+        status = Status.STANDING;
         buffs = new ArrayList<>();
         orientation = Orientation.UP;
     }
@@ -77,18 +71,12 @@ public class Hero implements Entity{
         this.position = position;
     }
 
-    @Override
-    public String toString() {
-        return "Hero<" + position.getX() + "," + position.getY() + ">";
-    }
-
     /**
      * Attacks the given entity
      * @param e entity attacked
      */
     @Override
     public void attack(Entity e) {
-        //si modif des points d'attaque ICI
         e.hit(atk);
     }
 
@@ -98,7 +86,6 @@ public class Hero implements Entity{
      */
     @Override
     public void hit(int atk) {
-        //si modif de la défence ICI
         hp = hp - atk;
     }
 
@@ -144,14 +131,12 @@ public class Hero implements Entity{
     }
 
     /**
-     * Applies a status to the hero
+     * Updates the status of the hero
      * @param status status to apply
-     * @param duration duration of the status
      */
     @Override
-    public void applyStatus(Status status, int duration) {
+    public void updateStatus(Status status) {
         this.status = status;
-        statusDuration = duration;
     }
 
     /**
@@ -195,7 +180,6 @@ public class Hero implements Entity{
      */
     @Override
     public void update() {
-        updateStatus();
         updateBuffs();
     }
 
@@ -225,20 +209,6 @@ public class Hero implements Entity{
             default:
         }
         System.out.println("I'm hero" + this.getClass() + "and i'm rotating to the " + getOrientation().name());
-    }
-
-    /**
-     * Updates the status
-     */
-    private void updateStatus() {
-        if (statusDuration <= 0) {
-            status = Status.ABLE;
-            statusDuration = 0;
-        }
-
-        if (status == Status.FROZEN) {
-            statusDuration--;
-        }
     }
 
     /**
@@ -272,6 +242,11 @@ public class Hero implements Entity{
     @Override
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    @Override
+    public String toString() {
+        return "Hero<" + position.getX() + "," + position.getY() + ">";
     }
 
 }
