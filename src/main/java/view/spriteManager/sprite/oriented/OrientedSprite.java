@@ -5,6 +5,7 @@ import model.element.entities.Status;
 import view.spriteManager.SpriteTileParser;
 import view.spriteManager.sprite.BasicSprite;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -126,14 +127,23 @@ public abstract class OrientedSprite extends BasicSprite {
      * @return image flipped
      */
     protected BufferedImage createFlipped(BufferedImage image) {
-        for (int j = 0; j < image.getHeight(); j++) {
-            for (int i = 0; i < image.getWidth() / 2; i++) {
-                int tmp = image.getRGB(i, j);
-                image.setRGB(i, j, image.getRGB(image.getWidth() - i - 1, j));
-                image.setRGB(image.getWidth() - i - 1, j, tmp);
+        BufferedImage clone = this.deepCopy(image);
+        for (int j = 0; j < clone.getHeight(); j++) {
+            for (int i = 0; i < clone.getWidth() / 2; i++) {
+                int tmp = clone.getRGB(i, j);
+                clone.setRGB(i, j, clone.getRGB(clone.getWidth() - i - 1, j));
+                clone.setRGB(clone.getWidth() - i - 1, j, tmp);
             }
         }
-        return image;
+        return clone;
+    }
+
+   private BufferedImage deepCopy(BufferedImage bi) {
+       BufferedImage b = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+       Graphics g = b.getGraphics();
+       g.drawImage(bi, 0, 0, null);
+       g.dispose();
+       return b;
     }
 
 }

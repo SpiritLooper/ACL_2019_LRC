@@ -48,11 +48,11 @@ public class Zombie extends OrientedSprite{
         // BAS
         idleSprite[Orientation.DOWN.ordinal()] = this.sprite.getSubimage(92,58,28,28);
 
-        // GAUCHE
+        // GAUCH
         idleSprite[Orientation.LEFT.ordinal()] = this.sprite.getSubimage(86,123,29,29);
 
         // DROITE
-        idleSprite[Orientation.RIGHT.ordinal()] = createFlipped( idleSprite[Orientation.LEFT.ordinal()] );
+        idleSprite[Orientation.RIGHT.ordinal()] = createFlipped( idleSprite[Orientation.LEFT.ordinal()]);
     }
 
     @Override

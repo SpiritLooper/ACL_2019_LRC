@@ -81,6 +81,7 @@ public class Level {
      */
     public void moveHero (Command command) {
         Position newPosition = hero.getPosition().applyCommand(command);
+        hero.rotate(command);
         if (isEmpty(newPosition)) {//si c'est libre
             hero.setPosition(newPosition);
         }else if( monsters.containsKey(newPosition)){//si un monstre s'y trouve
