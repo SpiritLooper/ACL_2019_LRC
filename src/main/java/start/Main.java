@@ -1,6 +1,7 @@
 package start;
 
 import model.game.Game;
+import view.AudioPlayer;
 import view.Engine;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +34,7 @@ public class Main {
 		game.setEngine(engine);
 
 		engine.run();
-		//AudioPlayer.playSoundtrack();
+		AudioPlayer.playSoundtrack();
 	}
 
 }
