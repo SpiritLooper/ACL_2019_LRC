@@ -8,9 +8,11 @@ import java.util.Random;
  * A BasicMonster is a monster that moves randomly around
  */
 public class BasicMonster extends Monster {
-    
+
+    public static int PV_BASE = 2;
+
     public BasicMonster(){
-        super(2,1);
+        super(PV_BASE,1);
     }
 
     /**

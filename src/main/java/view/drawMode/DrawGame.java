@@ -1,10 +1,12 @@
 package view.drawMode;
 
-import view.Painter;
-import view.spriteManager.SpriteTileParser;
 import model.element.Position;
+import model.element.entities.BasicMonster;
+import model.element.entities.ImmovableMonster;
 import model.game.Game;
 import model.game.GameStatement;
+import view.Painter;
+import view.spriteManager.SpriteTileParser;
 import view.spriteManager.sprite.oriented.Hero;
 import view.spriteManager.sprite.oriented.OrientedSprite;
 import view.spriteManager.sprite.oriented.Zombie;
@@ -72,27 +74,22 @@ public class DrawGame implements DrawMode {
 
         drawTimer(g);
 
-        drawHp(g);
-
         if(game.isFinished()) {
             drawWin(g);
         }
     }
 
     /**
-     * Dessine les pv du hero
+     * Dessine les pv d'une entité
      * @param g Image sur laquelle dessinnee
      */
-    private void drawHp(Graphics2D g) {
-        int hp = game.getLevel().getHeroHp();
-        int timeLeft = game.getTimeLeft();
+    private void drawHp(Graphics2D g, Position p, double pv , double pvMax ) {
 
-        if (hp > 0 && timeLeft > 0 && !game.isFinished() ) {
-            g.setFont(STANDARD_FONT);
-            g.setColor(Color.GREEN);
+        g.setColor(Color.RED);
+        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT, 5);
+        g.setColor(Color.GREEN);
+        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
 
-            g.drawString("HP: "+game.getLevel().getHeroHp(),0, Painter.getHeight() - (FONT_SIZE / 4));
-        }
     }
 
     /**
@@ -120,11 +117,13 @@ public class DrawGame implements DrawMode {
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
             zombieSprite.setOrientation( gameStat.getMonster(p).getOrientation() );
             g.drawImage(zombieSprite.getSprite(), ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
         }
 
         //Parcours de chaque position de Wild Rose
         for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
             g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
         }
     }
 
@@ -140,6 +139,7 @@ public class DrawGame implements DrawMode {
         //Dessin du hero
         heroSprite.setOrientation(gameStat.getHeroStatement().getOrientation());
         g.drawImage(heroSprite.getSprite(), ( heroPosition.getX() + 1 )* WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
+        drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
     }
 
     private void drawTimer (Graphics2D g) {

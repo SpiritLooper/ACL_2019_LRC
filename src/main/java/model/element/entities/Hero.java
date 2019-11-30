@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class Hero implements Entity{
 
+    public static int PV_BASE = 10;
+
     /**
      * Position of the hero
      */
@@ -49,7 +51,7 @@ public class Hero implements Entity{
      */
     public Hero(Position position) {
         this.position = position;
-        hp = 10;
+        hp = PV_BASE;
         atk = 1;
         status = Status.STANDING;
         buffs = new ArrayList<>();
