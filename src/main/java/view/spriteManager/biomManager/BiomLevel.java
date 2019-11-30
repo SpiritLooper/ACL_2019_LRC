@@ -50,7 +50,6 @@ public abstract class BiomLevel {
     public BiomLevel(String path) {
        try {
            tileSet = ImageIO.read(new File(path));
-
            ground = defineGround();
            wallAlone = defineWallAlone();
            wallCross = defineWallCross();

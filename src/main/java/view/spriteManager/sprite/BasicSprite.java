@@ -17,8 +17,10 @@ import java.io.IOException;
      */
     protected BufferedImage sprite;
 
-    public BasicSprite(String path) throws IOException {
-        this.sprite = SpriteTileParser.resizeBufferedImageAsWorldUnit( ImageIO.read(new File(path)) ) ;
+    public BasicSprite(String path, boolean autoResize) throws IOException {
+        this.sprite = ImageIO.read(new File(path)) ;
+        if (autoResize)
+            this.sprite = SpriteTileParser.resizeBufferedImageAsWorldUnit(this.sprite);
     }
 
     /**

@@ -5,6 +5,9 @@ import view.spriteManager.SpriteTileParser;
 import model.element.Position;
 import model.game.Game;
 import model.game.GameStatement;
+import view.spriteManager.sprite.oriented.Hero;
+import view.spriteManager.sprite.oriented.OrientedSprite;
+import view.spriteManager.sprite.oriented.Zombie;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,10 +24,10 @@ public class DrawGame implements DrawMode {
 
     private Game game;
 
-    private BufferedImage heroSprite;
+    private OrientedSprite heroSprite;
     private BufferedImage treasureSprite;
     private BufferedImage stairsSprite;
-    private BufferedImage zombieSprite;
+    private OrientedSprite zombieSprite;
     private BufferedImage wildRoseSprite;
     private BufferedImage healTile;
     private BufferedImage healOverTimeTile;
@@ -38,10 +41,10 @@ public class DrawGame implements DrawMode {
             SpriteTileParser.loadSprites();
             SpriteTileParser.loadLevels( game );
 
-            heroSprite = SpriteTileParser.getHeroSprite();
+            heroSprite = new Hero();
             treasureSprite = SpriteTileParser.getTreasureSprite();
             stairsSprite = SpriteTileParser.getStairsSprite();
-            zombieSprite = SpriteTileParser.getZombieSprite();
+            zombieSprite = new Zombie();
             wildRoseSprite = SpriteTileParser.getWildRoseSprite();
             healTile = SpriteTileParser.getHealTileSprite();
             healOverTimeTile = SpriteTileParser.getOverTimeTileSprite();
@@ -115,7 +118,8 @@ public class DrawGame implements DrawMode {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
-            g.drawImage(zombieSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            zombieSprite.setOrientation( gameStat.getMonster(p).getOrientation() );
+            g.drawImage(zombieSprite.getSprite(), ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
         }
 
         //Parcours de chaque position de Wild Rose
@@ -134,7 +138,8 @@ public class DrawGame implements DrawMode {
         Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        g.drawImage(heroSprite, ( heroPosition.getX() + 1 )* WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
+        heroSprite.setOrientation(gameStat.getHeroStatement().getOrientation());
+        g.drawImage(heroSprite.getSprite(), ( heroPosition.getX() + 1 )* WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
     }
 
     private void drawTimer (Graphics2D g) {

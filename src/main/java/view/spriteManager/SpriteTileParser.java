@@ -1,12 +1,11 @@
 package view.spriteManager;
 
-import view.Painter;
-import view.spriteManager.sprite.*;
-import view.spriteManager.biomManager.*;
 import model.element.Position;
 import model.game.Game;
-import view.spriteManager.sprite.oriented.Hero;
-import view.spriteManager.sprite.oriented.Zombie;
+import view.Painter;
+import view.spriteManager.biomManager.BiomLevel;
+import view.spriteManager.biomManager.MurkyForest;
+import view.spriteManager.sprite.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,9 +28,7 @@ public class SpriteTileParser {
      */
     private static BasicSprite treasureSprite;
     private static BasicSprite stairsSprite;
-    private static BasicSprite zombieSprite;
     private static BasicSprite wildRoseSprite;
-    private static BasicSprite heroSprite;
     private static BasicSprite healSprite;
     private static BasicSprite healOverTimeSprite;
 
@@ -46,9 +43,7 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
     public static void loadSprites() throws IOException {
         treasureSprite = new Treasure();
         stairsSprite = new Stairs();
-        zombieSprite = new Zombie();
         wildRoseSprite = new WildRose();
-        heroSprite = new Hero();
         healSprite = new HealTile();
         healOverTimeSprite = new HealOverTimeTile();
     }
@@ -68,20 +63,12 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
      * Getters
      */
 
-    public static BufferedImage getHeroSprite() {
-        return heroSprite.getSprite();
-    }
-
     public static BufferedImage getTreasureSprite() {
         return treasureSprite.getSprite();
     }
 
     public static BufferedImage getStairsSprite() {
         return stairsSprite.getSprite();
-    }
-
-    public static BufferedImage getZombieSprite() {
-        return zombieSprite.getSprite();
     }
 
     public static BufferedImage getWildRoseSprite() {

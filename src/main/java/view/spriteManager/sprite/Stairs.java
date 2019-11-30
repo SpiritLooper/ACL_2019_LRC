@@ -12,6 +12,6 @@ public class Stairs extends BasicSprite {
     private static final String path = SpriteTileParser.TEXTURE_PATH + "stairs2.png";
 
     public Stairs() throws IOException {
-        super(path);
+        super(path,true);
     }
 }

@@ -11,10 +11,8 @@ import java.io.IOException;
  */
 public class Hero extends OrientedSprite {
 
-    private static final String path = SpriteTileParser.TEXTURE_PATH + "hero_tileset.png";
-
     public Hero() throws IOException {
-        super(path);
+        super(SpriteTileParser.TEXTURE_PATH + "hero_tileset.png");
     }
 
     @Override

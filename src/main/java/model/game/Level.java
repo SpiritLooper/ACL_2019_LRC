@@ -322,6 +322,9 @@ public class Level {
         //reset du statut du monstre
         m.updateStatus(Status.STANDING);
 
+        //rotation du monstre
+        m.rotate(monsterCommand);
+
         //nouvelle position du monstre par rapport à son comportement
         Position newPosition = p.applyCommand(monsterCommand);
 
