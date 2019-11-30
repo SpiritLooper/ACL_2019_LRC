@@ -4,6 +4,7 @@ import model.element.*;
 import model.element.entities.Hero;
 import model.element.entities.ImmovableMonster;
 import model.element.entities.BasicMonster;
+import model.element.entities.Monster;
 import model.element.tiles.Stairs;
 import model.element.tiles.Treasure;
 import model.element.tiles.Wall;
@@ -13,7 +14,7 @@ import model.element.tiles.buffTiles.HealTile;
 import java.util.*;
 
 /**
- * Instance de letat actuel du jeu
+ * Instance de l'etat actuel du jeu
  * Utilise par la vue pour dessiner correctement les sprites
  */
 public class GameStatement {
@@ -33,6 +34,8 @@ public class GameStatement {
      * Stockage des elements
      */
     private HashMap<String, Set<Position>> elements;
+    private Map<Position, Monster> monsters;
+    private Hero hero;
 
     public GameStatement () {
         elements = new HashMap<>();
@@ -92,5 +95,21 @@ public class GameStatement {
     public void clear() {
         for (Set<Position> set : elements.values())
             set.clear();
+    }
+
+    public void setMonster(Map<Position, Monster> monsters) {
+        this.monsters = monsters;
+    }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public Hero getHeroStatement() {
+        return hero;
+    }
+
+    public  Monster getMonster(Position p){
+        return this.monsters.get(p);
     }
 }

@@ -1,4 +1,4 @@
-package view.spriteManager.basicSprite;
+package view.spriteManager.sprite;
 
 import view.spriteManager.SpriteTileParser;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
     /**
      * Image stockee
      */
-    private BufferedImage sprite;
+    protected BufferedImage sprite;
 
     public BasicSprite(String path) throws IOException {
         this.sprite = SpriteTileParser.resizeBufferedImageAsWorldUnit( ImageIO.read(new File(path)) ) ;

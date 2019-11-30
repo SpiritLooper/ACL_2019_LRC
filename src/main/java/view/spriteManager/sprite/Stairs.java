@@ -1,4 +1,4 @@
-package view.spriteManager.basicSprite;
+package view.spriteManager.sprite;
 
 import view.spriteManager.SpriteTileParser;
 

@@ -1,10 +1,12 @@
 package view.spriteManager;
 
 import view.Painter;
-import view.spriteManager.basicSprite.*;
+import view.spriteManager.sprite.*;
 import view.spriteManager.biomManager.*;
 import model.element.Position;
 import model.game.Game;
+import view.spriteManager.sprite.oriented.Hero;
+import view.spriteManager.sprite.oriented.Zombie;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

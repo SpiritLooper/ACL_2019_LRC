@@ -381,6 +381,8 @@ public class Level {
         //Ajout position de l'hero*
         gs.addElement(hero.getClass().getSimpleName(), hero.getPosition());
 
+        gs.setMonster(this.monsters);
+        gs.setHero(this.hero);
     }
 
     /**
