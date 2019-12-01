@@ -20,17 +20,17 @@ public class Zombie extends OrientedSprite{
     @Override
     protected void setSpritesMove(BufferedImage[][] spritesTab) {
         // HAUT
-        spritesTab[Orientation.UP.ordinal()][0] = this.sprite.getSubimage(88,87,28,28);
+        spritesTab[Orientation.UP.ordinal()][0] = this.sprite.getSubimage(92,89,28,28);
         spritesTab[Orientation.UP.ordinal()][1] = this.sprite.getSubimage(118,87,28,28);
         spritesTab[Orientation.UP.ordinal()][2] = this.sprite.getSubimage(152,87,28,28);
 
         // BAS
-        spritesTab[Orientation.DOWN.ordinal()][0] = this.sprite.getSubimage(95,55,28,28);
+        spritesTab[Orientation.DOWN.ordinal()][0] = this.sprite.getSubimage(92,58,28,28);
         spritesTab[Orientation.DOWN.ordinal()][1] = this.sprite.getSubimage(118,55,28,28);
         spritesTab[Orientation.DOWN.ordinal()][2] = this.sprite.getSubimage(152,55,28,28);
 
         // GAUCHE
-        spritesTab[Orientation.LEFT.ordinal()][0] = this.sprite.getSubimage(88,120,28,28);
+        spritesTab[Orientation.LEFT.ordinal()][0] = this.sprite.getSubimage(86,123,29,29);
         spritesTab[Orientation.LEFT.ordinal()][1] = this.sprite.getSubimage(118,120,28,28);
         spritesTab[Orientation.LEFT.ordinal()][2] = this.sprite.getSubimage(152,120,28,28);
 

@@ -52,7 +52,7 @@ public class Engine {
         for(int i = 0 ; i < NB_FRAME_MOVE; i++) {
             this.gui.paint(i);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
