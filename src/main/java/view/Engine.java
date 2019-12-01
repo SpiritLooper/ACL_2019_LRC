@@ -4,8 +4,11 @@ package view;
  * Classe permettant de faire un rendu graphique du jeu
  * @author Horatiu Cirstea, Vincent Thomas, Julien Claisse
  */
+import controller.Command;
 import controller.Controller;
 import model.game.Game;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class Engine {
 
@@ -38,10 +41,19 @@ public class Engine {
     /**
      * Créer l'interface graphique
      */
-    public void run() {
-        if(this.gui == null)
+    public void run() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, InterruptedException {
         this.gui = new GUI(this.gamePainter,this.gameController);
-        update();
+
+        while(!game.isFinished()) {
+
+            Command command = gameController.getCommand();
+
+            this.game.execute(command, gameController.getDuration() );
+
+            this.gui.paint();
+
+            Thread.sleep(100);
+        }
     }
 
     /**

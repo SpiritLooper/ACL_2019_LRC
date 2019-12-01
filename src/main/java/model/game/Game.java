@@ -1,15 +1,13 @@
 package model.game;
 
 import controller.Command;
-import model.element.tiles.Tile;
-import view.Engine;
-import model.*;
 import model.element.Position;
-import model.element.tiles.Treasure;
+import model.element.tiles.Tile;
 import model.menu.Menu;
 import model.persistency.GameParser;
 import model.persistency.LevelDAO;
 import model.persistency.SaveDAO;
+import view.Engine;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -325,7 +323,7 @@ public class Game {
 
         level.updateGameStatement(this.gameStatement);
 
-        this.engine.update();
+       // this.engine.update();
     }
 
     public void notifyNextLevelEngine() {

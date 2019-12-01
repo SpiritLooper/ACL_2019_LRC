@@ -92,11 +92,11 @@ public class InputManager implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!pressed){
-            pressed = true;
-            previous_time = System.currentTimeMillis();
-            //System.out.println("KEYPRESSED : previous_time " + previous_time);
-        }
+        //System.out.println("KEYRELEASED TIME : " + System.currentTimeMillis());
+       if(!pressed) {
+           previous_time = System.currentTimeMillis();
+           pressed = true;
+       }
     }
 
     /**
@@ -105,7 +105,6 @@ public class InputManager implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        //System.out.println("KEYRELEASED TIME : " + System.currentTimeMillis());
         delta = System.currentTimeMillis() - previous_time;
         pressed = false;
         switch (e.getKeyChar()) {
@@ -142,10 +141,11 @@ public class InputManager implements KeyListener {
 
         }
 
-        controller.execute(currentCommand, delta);
+        controller.setDurationKey(delta > 150);
+        controller.setCommand(currentCommand);
+
 
         currentCommand = Command.IDLE;
-
     }
 
 }

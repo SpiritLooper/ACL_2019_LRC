@@ -18,6 +18,8 @@ public class Controller {
      * states if the controller can throw in input in the game or not
      */
     private boolean listening;
+    private Command currentCommand = Command.IDLE;
+    private boolean duration_key = false;
 
     /**
      * Constructor with the game
@@ -33,7 +35,7 @@ public class Controller {
      * @param command received command
      */
     public void execute (Command command, long delta) {
-        boolean duration_key = delta > 150;
+        this.duration_key = delta > 150;
         if(!game.isFinished() && listening) {
             listening = false;
             try {
@@ -59,4 +61,23 @@ public class Controller {
         listening = true;
     }
 
+    public Command getCommand() {
+        Command res = this.currentCommand;
+        this.currentCommand = Command.IDLE;
+        return res;
+    }
+
+    public void setCommand(Command currentCommand) {
+        this.currentCommand = currentCommand;
+    }
+
+    public boolean getDuration() {
+        boolean res = duration_key;
+        duration_key = false;
+        return res;
+    }
+
+    public void setDurationKey(boolean b){
+        this.duration_key = b;
+    }
 }

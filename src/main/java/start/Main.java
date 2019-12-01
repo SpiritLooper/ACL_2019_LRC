@@ -1,7 +1,6 @@
 package start;
 
 import model.game.Game;
-import view.AudioPlayer;
 import view.Engine;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Main {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
 		//Création et génération du jeu
 		Game game = new Game();
@@ -34,7 +33,7 @@ public class Main {
 		game.setEngine(engine);
 
 		engine.run();
-		AudioPlayer.playSoundtrack();
+		//AudioPlayer.playSoundtrack();
 	}
 
 }
