@@ -202,8 +202,9 @@ public class DrawGame implements DrawMode {
         heroSprite.setStatus(s);
 
         boolean haveWallInFace = isAWallInFace(p,o,gs);
+        boolean haveMonsterInFace = isAMonsterInFace(p,o,gs) ;
 
-        if(frame >= 0 && !haveWallInFace ){
+        if(frame >= 0 && !haveWallInFace && ! haveMonsterInFace ){
 
             switch (o) {
                 case UP:
@@ -220,7 +221,24 @@ public class DrawGame implements DrawMode {
                     break;
             }
         } else {
-            g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT), null );
+            if(frame >= 0  && !haveWallInFace &&  haveMonsterInFace){
+                switch (o) {
+                    case UP:
+                        g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , (( p.getY() + 1 ) * WORLD_UNIT - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                        break;
+                    case LEFT:
+                        g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                        break;
+                    case RIGHT:
+                        g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                        break;
+                    case DOWN:
+                        g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                        break;
+                }
+            } else {
+                g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT), null );
+            }
         }
 
     }
@@ -251,6 +269,38 @@ public class DrawGame implements DrawMode {
                 ( p.getY() + 1 == Game.HEIGHT && Orientation.DOWN == o );
 
         return res;
+    }
+
+    private boolean isAMonsterInFace(Position p, Orientation o, GameStatement gs) {
+
+        if(p.getX() == 0 && o == Orientation.LEFT)
+            return false;
+        if(p.getY() == 0 && o == Orientation.UP)
+            return false;
+        if(p.getX() == Game.WIDTH - 1 && Orientation.RIGHT == o)
+            return false;
+        if(p.getY() == Game.HEIGHT - 1 && Orientation.DOWN == o)
+            return false;
+
+        switch (o) {
+            case UP:
+                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1)) ||
+                       gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1)) ||
+                        ( gs.getFirstPosition(GameStatement.HERO).getX() == p.getX() && gs.getFirstPosition(GameStatement.HERO).getY() == p.getY() - 1) ;
+            case DOWN:
+                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) ||
+                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) ||
+                        ( gs.getFirstPosition(GameStatement.HERO).getX() == p.getX() && gs.getFirstPosition(GameStatement.HERO).getY() == p.getY() + 1) ;
+            case LEFT:
+                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX() - 1, p.getY())) ||
+                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX()- 1, p.getY())) ||
+                        ( gs.getFirstPosition(GameStatement.HERO).getX() == p.getX() - 1 && gs.getFirstPosition(GameStatement.HERO).getY() == p.getY()) ;
+            case RIGHT:
+                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY())) ||
+                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY() )) ||
+                        ( gs.getFirstPosition(GameStatement.HERO).getX() == p.getX() + 1 && gs.getFirstPosition(GameStatement.HERO).getY() == p.getY()) ;
+        }
+        return false;
     }
 
 }
