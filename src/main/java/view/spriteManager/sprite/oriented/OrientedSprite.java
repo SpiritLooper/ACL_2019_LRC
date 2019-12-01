@@ -87,24 +87,26 @@ public abstract class OrientedSprite extends BasicSprite {
      * Get the good sprite en function of entity status
      * @return sprite
      */
-    public BufferedImage getSprite() {
+    public BufferedImage getSprite(int iFrame) {
 
         BufferedImage res = null;
 
-        indiceSpriteRotation = 0 ;
+        if(iFrame == -1) {
+            return idleSprite[this.orientation.ordinal()];
+        }
+
+        iFrame %= 3;
 
         switch (status) {
             case ATTACKING:
-                res = spritesAttack[this.orientation.ordinal()][indiceSpriteRotation];
+                res = spritesAttack[this.orientation.ordinal()][iFrame];
                 break;
             case SUFFERING:
                 res = sufferingSprite[this.orientation.ordinal()];
                 break;
             case STANDING:
-                res = spritesMove[this.orientation.ordinal()][indiceSpriteRotation];
-                break;
             default:
-                res = idleSprite[this.orientation.ordinal()];
+                res = spritesMove[this.orientation.ordinal()][iFrame];
         }
 
         return res;

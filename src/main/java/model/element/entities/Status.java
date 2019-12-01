@@ -7,6 +7,7 @@ public enum Status {
 
     STANDING,
     ATTACKING,
+    MOVING,
     SUFFERING;
 
 }

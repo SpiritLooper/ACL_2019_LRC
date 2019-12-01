@@ -46,13 +46,13 @@ public class Painter {
      * Dessine le jeu
      * @param im image sur laquelle dessinee
      */
-    public void draw(BufferedImage im) {
+    public void draw(BufferedImage im, int iFrame) {
 
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
         displayMode = (game.isMenuOpen()) ? MENU : GAME;
 
-        displayMode.draw(crayon);
+        displayMode.draw(crayon, iFrame);
     }
 
     public static int getWidth() {

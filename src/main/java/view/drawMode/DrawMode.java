@@ -7,5 +7,5 @@ import java.awt.*;
  */
 public interface DrawMode {
 
-    public void draw(Graphics2D g);
+    public void draw(Graphics2D g, int iFrame);
 }

@@ -63,6 +63,11 @@ public class Game {
     private final GameStatement gameStatement = new GameStatement();
 
     /**
+     * cancel all command when si true
+     */
+    private boolean lock;
+
+    /**
      * Constructor instantiating a timer and setting the game to not finished
      */
     public Game(){
@@ -71,6 +76,7 @@ public class Game {
         this.engine = null;
         this.finished = false;
         this.won = false;
+        this.lock = false;
         EventManager.getINSTANCE().setGame(this);
     }
 
@@ -123,53 +129,55 @@ public class Game {
      * @param command user input
      */
     public void execute (Command command, boolean duration) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        //controls the menu if it is open
-        if (menu.isOpen()) {
-            switch (menu.control(command)) {
-                case CONTINUE:
-                    menu.close();
-                    break;
+        if(!this.lock) {
+            //controls the menu if it is open
+            if (menu.isOpen()) {
+                switch (menu.control(command)) {
+                    case CONTINUE:
+                        menu.close();
+                        break;
 
-                case SAVE:
-                    saveGame();
-                    menu.close();
-                    break;
+                    case SAVE:
+                        saveGame();
+                        menu.close();
+                        break;
 
-                case LOAD:
-                    loadSave();
-                    menu.close();
-                    break;
+                    case LOAD:
+                        loadSave();
+                        menu.close();
+                        break;
 
-                case EXIT:
-                    finish(false);
-                    menu.close();
-                    break;
+                    case EXIT:
+                        finish(false);
+                        menu.close();
+                        break;
 
-                case IDLE:
-                default:
-                    break;
+                    case IDLE:
+                    default:
+                        break;
+                }
+
+                notifyEngine();
+                return;
+            }
+
+            //if the escape key is input while in game we open the menu
+            if (command == Command.ESCAPE) {
+                menu.open();
+                notifyEngine();
+                return;
+            }
+
+            // si la touche est tapée rapidement, on s'oriente, sinon on bouge
+            if(duration){
+                moveHero(command);
+                update();
+            } else {
+                rotateHero(command);
             }
 
             notifyEngine();
-            return;
         }
-
-        //if the escape key is input while in game we open the menu
-        if (command == Command.ESCAPE) {
-            menu.open();
-            notifyEngine();
-            return;
-        }
-
-        // si la touche est tapée rapidement, on s'oriente, sinon on bouge
-        if(duration){
-            moveHero(command);
-            update();
-        } else {
-            rotateHero(command);
-        }
-
-        notifyEngine();
     }
 
     /**
@@ -358,6 +366,14 @@ public class Game {
      */
     public void destroyTile (Tile tile) {
         level.destroyTile(tile);
+    }
+
+    public void lockGame(){
+        this.lock = true;
+    }
+
+    public void unlock() {
+        this.lock = false;
     }
 }
 

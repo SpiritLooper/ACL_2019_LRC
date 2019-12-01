@@ -58,9 +58,9 @@ public class GamePanel extends JPanel {
      * demande de mettre a jour le rendu de l'image sur le Panel. Creer une
      * nouvelle image vide sur laquelle dessiner
      */
-    public void drawGame() {
+    public void drawGame(int iFrame) {
         // generer la nouvelle image
-        this.painter.draw(this.nextImage);
+        this.painter.draw(this.nextImage, iFrame);
 
         // inverses les images doublebuffereing
         BufferedImage temp = this.currentImage;

@@ -26,7 +26,7 @@ public class DrawMenu implements DrawMode {
     }
 
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g, int Iframe) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0 , Painter.getWidth(), Painter.getHeight() );
 
