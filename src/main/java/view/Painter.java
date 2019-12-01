@@ -45,15 +45,14 @@ public class Painter {
     /**
      * Dessine le jeu
      * @param im image sur laquelle dessinee
-     * @param iFrame
      */
-    public void draw(BufferedImage im, int iFrame) {
+    public void draw(BufferedImage im) {
 
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
         displayMode = (game.isMenuOpen()) ? MENU : GAME;
 
-        displayMode.draw(crayon, iFrame);
+        displayMode.draw(crayon);
     }
 
     public static int getWidth() {

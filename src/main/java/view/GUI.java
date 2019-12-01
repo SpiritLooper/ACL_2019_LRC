@@ -46,8 +46,8 @@ public class GUI {
     /**
      * mise a jour du dessin
      */
-    public void paint(int iFrame) {
-        this.panel.drawGame(iFrame);
+    public void paint() {
+        this.panel.drawGame();
     }
 
 }

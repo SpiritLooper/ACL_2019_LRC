@@ -48,15 +48,7 @@ public class Engine {
      * Mets à jour l'affichage du jeu
      */
     public void update() {
-        // affiche le game
-        for(int i = 0 ; i < NB_FRAME_MOVE; i++) {
-            this.gui.paint(i);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        this.gui.paint();
         gameController.listen();
     }
 

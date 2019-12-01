@@ -87,11 +87,11 @@ public abstract class OrientedSprite extends BasicSprite {
      * Get the good sprite en function of entity status
      * @return sprite
      */
-    public BufferedImage getSprite(int frame) {
+    public BufferedImage getSprite() {
 
         BufferedImage res = null;
 
-        indiceSpriteRotation = ((frame + 1)% 3) ;
+        indiceSpriteRotation = 0 ;
 
         switch (status) {
             case ATTACKING:
@@ -106,10 +106,6 @@ public abstract class OrientedSprite extends BasicSprite {
             default:
                 res = idleSprite[this.orientation.ordinal()];
         }
-
-        if(this instanceof Hero)
-        System.out.println(""+status+" "+indiceSpriteRotation);
-
 
         return res;
     }
