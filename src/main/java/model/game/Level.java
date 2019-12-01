@@ -105,7 +105,7 @@ public class Level {
      * @param defendant defending entity
      */
     private void combat(Entity attacker, Entity defendant){
-        System.out.println("Fight between " + attacker + " and " + defendant + "!");
+        //System.out.println("Fight between " + attacker + " and " + defendant + "!");
 
         attacker.attack(defendant);
         defendant.attack(attacker);

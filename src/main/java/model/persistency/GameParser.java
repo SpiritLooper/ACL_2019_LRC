@@ -122,7 +122,7 @@ public class GameParser {
                 String[] buffs = {};
                 if (hero.length > 4) {
                     buffs = Arrays.copyOfRange(hero, 4, hero.length);
-                    System.out.print("Hero buffs : " + buffs[0] + " : " + hero[4] + "\n");
+                    //System.out.print("Hero buffs : " + buffs[0] + " : " + hero[4] + "\n");
                 }
 
                 save.setHero(Integer.parseInt(hero[0]), Integer.parseInt(hero[1]), Integer.parseInt(hero[2]), Integer.parseInt(hero[3]), buffs);

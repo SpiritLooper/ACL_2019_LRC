@@ -198,8 +198,8 @@ public class DrawGame implements DrawMode {
     }
 
     private void drawEntityOrientedSprite(Graphics2D g, Position p , int frame, Orientation o , OrientedSprite os, Status s, GameStatement gs){
-        heroSprite.setOrientation(o);
-        heroSprite.setStatus(s);
+        os.setOrientation(o);
+        os.setStatus(s);
 
         boolean haveWallInFace = isAWallInFace(p,o,gs);
         boolean haveMonsterInFace = isAMonsterInFace(p,o,gs) ;

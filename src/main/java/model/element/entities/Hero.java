@@ -210,7 +210,7 @@ public class Hero implements Entity{
 
             default:
         }
-        System.out.println("I'm hero" + this.getClass() + "and i'm rotating to the " + getOrientation().name());
+        //System.out.println("I'm hero" + this.getClass() + "and i'm rotating to the " + getOrientation().name());
     }
 
     /**
