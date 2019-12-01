@@ -1,6 +1,7 @@
 package view.drawMode;
 
 import controller.Orientation;
+import model.PositionPool;
 import model.element.Position;
 import model.element.entities.BasicMonster;
 import model.element.entities.ImmovableMonster;
@@ -94,6 +95,7 @@ public class DrawGame implements DrawMode {
         g.setColor(Color.GREEN);
         g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
 
+
     }
 
     /**
@@ -119,8 +121,7 @@ public class DrawGame implements DrawMode {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
-            zombieSprite.setOrientation( gameStat.getMonster(p).getOrientation() );
-            g.drawImage(zombieSprite.getSprite(iFrame), ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
             drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
         }
 
@@ -141,7 +142,7 @@ public class DrawGame implements DrawMode {
         Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        drawEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus());
+        drawEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus(), gameStat);
         drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
     }
 
@@ -196,24 +197,60 @@ public class DrawGame implements DrawMode {
         this.levelBackground = SpriteTileParser.nextLevel();
     }
 
-    private void drawEntityOrientedSprite(Graphics2D g, Position p , int frame, Orientation o , OrientedSprite os, Status s){
+    private void drawEntityOrientedSprite(Graphics2D g, Position p , int frame, Orientation o , OrientedSprite os, Status s, GameStatement gs){
         heroSprite.setOrientation(o);
         heroSprite.setStatus(s);
 
-        switch (o) {
-            case UP:
-                g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( p.getY() + 1 + (frame / Engine.NB_FRAME_MOVE)) * WORLD_UNIT, null );
-                break;
-            case LEFT:
-                g.drawImage(os.getSprite(frame), ( p.getX() + 1  + (frame / Engine.NB_FRAME_MOVE)) * WORLD_UNIT , ( p.getY() + 1) * WORLD_UNIT, null );
-                break;
-            case RIGHT:
-                g.drawImage(os.getSprite(frame), ( p.getX() + 1  - (frame / Engine.NB_FRAME_MOVE)) * WORLD_UNIT , ( p.getY() + 1) * WORLD_UNIT, null );
-                break;
-            case DOWN:
-                g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( p.getY() + 1 - (frame / Engine.NB_FRAME_MOVE)) * WORLD_UNIT, null );
-                break;
+        boolean haveWallInFace = isAWallInFace(p,o,gs);
+
+        if(frame >= 0 && !haveWallInFace ){
+
+            switch (o) {
+                case UP:
+                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , (( p.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                    break;
+                case LEFT:
+                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                    break;
+                case RIGHT:
+                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                    break;
+                case DOWN:
+                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                    break;
+            }
+        } else {
+            g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT), null );
         }
+
+    }
+
+    private boolean isAWallInFace(Position p, Orientation o, GameStatement gs) {
+
+        if (p.getY() + 1 < Game.HEIGHT && (gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) && o == Orientation.DOWN) ) {
+            return true;
+        }
+
+        if  ( p.getY() - 1 >= 0 &&  (  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1)) && o == Orientation.UP )) {
+            return true;
+        }
+
+        if ( p.getX() - 1 >= 0 ) {
+            if(  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX() - 1, p.getY())) && o == Orientation.LEFT ) {
+               return true;
+            }
+        }
+
+        if ( p.getX() + 1 < Game.WIDTH && (  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY())) && o == Orientation.RIGHT )){
+            return true;
+        }
+
+        boolean res =  ( p.getX() == 0 && Orientation.LEFT == o )||
+                ( p.getX() + 1 == Game.WIDTH && Orientation.RIGHT == o )||
+                ( p.getY() == 0 && Orientation.UP == o ) ||
+                ( p.getY() + 1 == Game.HEIGHT && Orientation.DOWN == o );
+
+        return res;
     }
 
 }
