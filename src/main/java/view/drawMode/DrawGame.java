@@ -197,6 +197,16 @@ public class DrawGame implements DrawMode {
         this.levelBackground = SpriteTileParser.nextLevel();
     }
 
+    /**
+     * Draw the great image of an oriented sprite
+     * @param g draw tool
+     * @param p new position of entity
+     * @param frame number frame (-1) if out of animation
+     * @param o orientation of entity
+     * @param os Sprite Design
+     * @param s status of entity
+     * @param gs game statment to know all position of game entity
+     */
     private void drawEntityOrientedSprite(Graphics2D g, Position p , int frame, Orientation o , OrientedSprite os, Status s, GameStatement gs){
         os.setOrientation(o);
         os.setStatus(s);
@@ -243,6 +253,13 @@ public class DrawGame implements DrawMode {
 
     }
 
+    /**
+     * Know if a wall is behind an entity
+     * @param p position of entity
+     * @param o orientation of entity
+     * @param gs game statment to know all position of game entity
+     * @return true if a wall is behind
+     */
     private boolean isAWallInFace(Position p, Orientation o, GameStatement gs) {
 
         if (p.getY() + 1 < Game.HEIGHT && (gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) && o == Orientation.DOWN) ) {
@@ -271,6 +288,13 @@ public class DrawGame implements DrawMode {
         return res;
     }
 
+    /**
+     * Know if a monster is behind an entity
+     * @param p position of entity
+     * @param o orientation of entity
+     * @param gs game statment to know all position of game entity
+     * @return true if a monster is behind
+     */
     private boolean isAMonsterInFace(Position p, Orientation o, GameStatement gs) {
 
         if(p.getX() == 0 && o == Orientation.LEFT)
