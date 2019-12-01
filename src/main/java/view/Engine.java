@@ -9,6 +9,7 @@ import model.game.Game;
 
 public class Engine {
 
+    private static final int NB_FRAME_MOVE = 3;
     //Modele du jeu
     private Game game;
 
@@ -38,6 +39,7 @@ public class Engine {
      * Créer l'interface graphique
      */
     public void run() {
+        if(this.gui == null)
         this.gui = new GUI(this.gamePainter,this.gameController);
         update();
     }
@@ -47,7 +49,14 @@ public class Engine {
      */
     public void update() {
         // affiche le game
-        this.gui.paint();
+        for(int i = 0 ; i < NB_FRAME_MOVE; i++) {
+            this.gui.paint(i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         gameController.listen();
     }
 

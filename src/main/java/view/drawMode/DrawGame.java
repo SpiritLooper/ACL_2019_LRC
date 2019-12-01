@@ -61,22 +61,25 @@ public class DrawGame implements DrawMode {
     }  
     
     @Override
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g, int iFrame) {
         GameStatement gameStat = game.getGameStatement();
 
         drawLabyrinth(g, gameStat);
 
         drawEventTiles(g,gameStat);
 
-        drawHero(g, gameStat);
+        drawHero(g, gameStat, iFrame);
 
-        drawMonsters(g,  gameStat);
+        drawMonsters(g,  gameStat, iFrame);
 
         drawTimer(g);
 
         if(game.isFinished()) {
             drawWin(g);
         }
+
+        g.setColor(Color.WHITE);
+        g.drawString("Frame : "+iFrame , 100, 100 );
     }
 
     /**
@@ -110,13 +113,14 @@ public class DrawGame implements DrawMode {
      * Dessine l'ensemble des monstres du level
      * @param g objet de dessin de l'image
      * @param gameStat
+     * @param iFrame
      */
-    private void drawMonsters(Graphics2D g, GameStatement gameStat) {
+    private void drawMonsters(Graphics2D g, GameStatement gameStat, int iFrame) {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
             zombieSprite.setOrientation( gameStat.getMonster(p).getOrientation() );
-            g.drawImage(zombieSprite.getSprite(), ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(zombieSprite.getSprite(iFrame), ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
             drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
         }
 
@@ -131,14 +135,16 @@ public class DrawGame implements DrawMode {
      * Dessine le hero dans son level
      * @param g objet de dessin de l'image
      * @param gameStat
+     * @param iFrame
      */
-    private void drawHero(Graphics2D g, GameStatement gameStat) {
+    private void drawHero(Graphics2D g, GameStatement gameStat, int iFrame) {
         //Récupération de sa position
         Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
         heroSprite.setOrientation(gameStat.getHeroStatement().getOrientation());
-        g.drawImage(heroSprite.getSprite(), ( heroPosition.getX() + 1 )* WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
+        heroSprite.setStatus(gameStat.getHeroStatement().getStatus());
+        g.drawImage(heroSprite.getSprite(iFrame), ( heroPosition.getX() + 1 ) * WORLD_UNIT , ( heroPosition.getY() + 1) * WORLD_UNIT, null );
         drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
     }
 

@@ -57,10 +57,11 @@ public class GamePanel extends JPanel {
     /**
      * demande de mettre a jour le rendu de l'image sur le Panel. Creer une
      * nouvelle image vide sur laquelle dessiner
+     * @param iFrame
      */
-    public void drawGame() {
+    public void drawGame(int iFrame) {
         // generer la nouvelle image
-        this.painter.draw(this.nextImage);
+        this.painter.draw(this.nextImage, iFrame);
 
         // inverses les images doublebuffereing
         BufferedImage temp = this.currentImage;
@@ -71,6 +72,7 @@ public class GamePanel extends JPanel {
         this.nextImage.getGraphics()
                 .fillRect(0, 0, this.width, this.height);
         // met a jour l'image a afficher sur le panel
+
         this.repaint();
     }
 
@@ -80,8 +82,8 @@ public class GamePanel extends JPanel {
      * @param g
      *            graphics pour dessiner
      */
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         g.drawImage(this.currentImage, 0, 0, getWidth(), getHeight(), 0, 0,
                 getWidth(), getHeight(), null);
     }
