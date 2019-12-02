@@ -2,6 +2,8 @@ package model.game;
 
 import controller.Command;
 import model.element.Position;
+import model.element.entities.Entity;
+import model.element.entities.Monster;
 import model.element.tiles.Tile;
 import model.menu.Menu;
 import model.persistency.GameParser;
@@ -366,6 +368,24 @@ public class Game {
      */
     public void destroyTile (Tile tile) {
         level.destroyTile(tile);
+    }
+
+    /**
+     * Returns the x coordinate of a given monster
+     * @param monster entity to look for
+     * @return x coordinate
+     */
+    public int getXofMonster (Monster monster) {
+        return level.getXofMonster(monster);
+    }
+
+    /**
+     * Returns the y coordinate of a given monster
+     * @param monster entity to look for
+     * @return y coordinate
+     */
+    public int getYofEntity (Monster monster) {
+        return level.getYofMonster(monster);
     }
 
     public void lockGame(){

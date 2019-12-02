@@ -3,6 +3,8 @@ package model.element.entities;
 import controller.Command;
 import controller.Orientation;
 import model.element.entities.buffs.Buff;
+import model.game.EventManager;
+
 import java.util.ArrayList;
 
 /**
@@ -70,6 +72,22 @@ public abstract class Monster implements Entity {
     @Override
     public void hit(int atk) {
         hp = hp - atk;
+    }
+
+    /**
+     * @return x coordinate of the monster
+     */
+    @Override
+    public int getX() {
+        return EventManager.getINSTANCE().getXofMonster(this);
+    }
+
+    /**
+     * @return y coordinate of the monster
+     */
+    @Override
+    public int getY() {
+        return EventManager.getINSTANCE().getYofMonster(this);
     }
 
     /**
@@ -231,4 +249,5 @@ public abstract class Monster implements Entity {
     public String toString() {
         return this.getClass().getSimpleName();
     }
+
 }

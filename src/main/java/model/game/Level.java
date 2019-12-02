@@ -105,7 +105,7 @@ public class Level {
      * @param defendant defending entity
      */
     private void combat(Entity attacker, Entity defendant){
-        //System.out.println("Fight between " + attacker + " and " + defendant + "!");
+        //System.out.println("Fight between " + attacker + " and " + defendant + defendant.getX() + defendant.getY() + "!");
 
         attacker.attack(defendant);
         defendant.attack(attacker);
@@ -439,6 +439,34 @@ public class Level {
      */
     public void rotateHero(Command command) {
         hero.rotate(command);
+    }
+
+    /**
+     * Returns x coordinate of the given entity
+     * @param monster entity to look for
+     * @return x coordinate
+     */
+    public int getXofMonster (Monster monster) {
+        for (Position p : monsters.keySet()) {
+            if (monster.equals(monsters.get(p))) {
+                return p.getX();
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns y coordinate of the given entity
+     * @param monster entity to look for
+     * @return y coordinate
+     */
+    public int getYofMonster (Monster monster) {
+        for (Position p : monsters.keySet()) {
+            if (monster.equals(monsters.get(p))) {
+                return p.getY();
+            }
+        }
+        return -1;
     }
 
 }

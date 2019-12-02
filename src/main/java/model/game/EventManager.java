@@ -1,5 +1,7 @@
 package model.game;
 
+import model.element.entities.Entity;
+import model.element.entities.Monster;
 import model.element.tiles.Tile;
 
 /**
@@ -60,6 +62,24 @@ public class EventManager {
      */
     public void destroyTile (Tile tile) {
         game.destroyTile(tile);
+    }
+
+    /**
+     * Returns the x coordinate of an entity
+     * @param monster entity to look for
+     * @return x coordinate
+     */
+    public int getXofMonster (Monster monster) {
+        return game.getXofMonster(monster);
+    }
+
+    /**
+     * Returns the y coordinate of an entity
+     * @param monster entity to look for
+     * @return y coordinate
+     */
+    public int getYofMonster (Monster monster) {
+        return game.getYofEntity(monster);
     }
 
 }

@@ -92,6 +92,22 @@ public class Hero implements Entity{
     }
 
     /**
+     * @return x coordinate of the hero
+     */
+    @Override
+    public int getX() {
+        return position.getX();
+    }
+
+    /**
+     * @return y coordinate of the hero
+     */
+    @Override
+    public int getY() {
+        return position.getY();
+    }
+
+    /**
      * @return attack value of the hero
      */
     @Override

@@ -24,6 +24,16 @@ public interface Entity {
     void hit(int atk);
 
     /**
+     * @return x coordinate of the entity
+     */
+    int getX ();
+
+    /**
+     * @return y coordinate of the entity
+     */
+    int getY ();
+
+    /**
      * Sets the health points
      */
     void setHp (int hp);
