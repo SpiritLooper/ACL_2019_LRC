@@ -61,6 +61,7 @@ public class Engine {
                     this.gui.paint(i);
                     Thread.sleep(100);
                 }
+                this.gamePainter.cleanCache();
             }
 
             this.gui.paint(-1);

@@ -66,4 +66,8 @@ public class Painter {
     public void updateNextLevel() {
         GAME.updateNextLevel();
     }
+
+    public void cleanCache() {
+        GAME.cleanCachePositionStock();
+    }
 }

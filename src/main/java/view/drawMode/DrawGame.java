@@ -44,7 +44,7 @@ public class DrawGame implements DrawMode {
     private BufferedImage levelBackground ; // Contient le sol et les murs dessinee
 
     private Position lastHeroPosition = null;
-    private Map<Monster, Position> zombieslastPosition = new HashMap<>();
+    private Map<Monster, Position> lastMonsterPositionMap = new HashMap<>();
 
     public DrawGame(Game g) {
         this.game = g;
@@ -126,26 +126,30 @@ public class DrawGame implements DrawMode {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
-           if(zombieslastPosition.containsKey(gameStat.getMonster(p))){
-
-               boolean haveWallInFace = isAWallInFace(zombieslastPosition.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
+           if(lastMonsterPositionMap.containsKey(gameStat.getMonster(p))){
+               boolean haveWallInFace = isAWallInFace(lastMonsterPositionMap.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
                if( !haveWallInFace ) {
                    drawMoveEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus());
                } else {
                    drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
                }
 
-               drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
+           } else {
+               drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
            }
+            drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
 
             if(iFrame == -1)
-                zombieslastPosition.put( gameStat.getMonster(p), p);
+                lastMonsterPositionMap.put( gameStat.getMonster(p), p);
         }
 
         //Parcours de chaque position de Wild Rose
         for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
             g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
             drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
+            if(iFrame == -1){
+                lastMonsterPositionMap.put( gameStat.getMonster(p), p);
+            }
         }
     }
 
@@ -163,7 +167,10 @@ public class DrawGame implements DrawMode {
         //Dessin du hero
         if(lastHeroPosition != null) {
             boolean haveWallInFace = isAWallInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),gameStat);
-            boolean haveAMonsterInFace = isAMonsterInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),gameStat);
+            boolean haveAMonsterInFace = false;
+            for(Position monsterPosition : lastMonsterPositionMap.values()){
+                haveAMonsterInFace = haveAMonsterInFace || isAMonsterInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),monsterPosition, gameStat);
+            }
             if(haveAMonsterInFace) {
                 drawAttackMoveEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus());
             } else if(!haveWallInFace ) {
@@ -375,7 +382,7 @@ public class DrawGame implements DrawMode {
      * @param gs game statment to know all position of game entity
      * @return true if a monster is behind
      */
-    private boolean isAMonsterInFace(Position p, Orientation o, GameStatement gs) {
+    private boolean isAMonsterInFace(Position p, Orientation o, Position positionMonster, GameStatement gs) {
 
         if(p.getX() == 0 && o == Orientation.LEFT)
             return false;
@@ -386,21 +393,22 @@ public class DrawGame implements DrawMode {
         if(p.getY() == Game.HEIGHT - 1 && Orientation.DOWN == o)
             return false;
 
+
         switch (o) {
             case UP:
-                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1)) ||
-                       gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1));
+                return positionMonster.getX() == p.getX() && positionMonster.getY() == p.getY() - 1;
             case DOWN:
-                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) ||
-                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) ;
+                return positionMonster.getX() == p.getX() && positionMonster.getY() == p.getY() + 1;
             case LEFT:
-                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX() - 1, p.getY())) ||
-                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX()- 1, p.getY())) ;
+                return positionMonster.getX() == p.getX() - 1 && positionMonster.getY() == p.getY();
             case RIGHT:
-                return gs.getAllPosition(GameStatement.ZOMBIE).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY())) ||
-                        gs.getAllPosition(GameStatement.WILD_ROSE).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY() )) ;
+                return positionMonster.getX() == p.getX() + 1 && positionMonster.getY() == p.getY();
         }
         return false;
+    }
+
+    public void cleanCachePositionStock() {
+        lastMonsterPositionMap.clear();
     }
 
 }
