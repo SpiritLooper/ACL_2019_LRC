@@ -5,6 +5,7 @@ import model.PositionPool;
 import model.element.Position;
 import model.element.entities.BasicMonster;
 import model.element.entities.ImmovableMonster;
+import model.element.entities.Monster;
 import model.element.entities.Status;
 import model.game.Game;
 import model.game.GameStatement;
@@ -18,6 +19,8 @@ import view.spriteManager.sprite.oriented.Zombie;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static view.Painter.*;
 
@@ -39,6 +42,9 @@ public class DrawGame implements DrawMode {
     private BufferedImage healOverTimeTile;
 
     private BufferedImage levelBackground ; // Contient le sol et les murs dessinee
+
+    private Position lastHeroPosition = null;
+    private Map<Monster, Position> zombieslastPosition = new HashMap<>();
 
     public DrawGame(Game g) {
         this.game = g;
@@ -95,7 +101,6 @@ public class DrawGame implements DrawMode {
         g.setColor(Color.GREEN);
         g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
 
-
     }
 
     /**
@@ -121,8 +126,20 @@ public class DrawGame implements DrawMode {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
-            drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
-            drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
+           if(zombieslastPosition.containsKey(gameStat.getMonster(p))){
+
+               boolean haveWallInFace = isAWallInFace(zombieslastPosition.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
+               if(!haveWallInFace ) {
+                   drawMoveEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus());
+               } else {
+                   drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
+               }
+
+               drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
+           }
+
+            if(iFrame == -1)
+                zombieslastPosition.put( gameStat.getMonster(p), p);
         }
 
         //Parcours de chaque position de Wild Rose
@@ -139,11 +156,23 @@ public class DrawGame implements DrawMode {
      */
     private void drawHero(Graphics2D g, GameStatement gameStat, int iFrame) {
         //Récupération de sa position
-        Position heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
+        Position heroPosition;
+
+        heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        drawEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus(), gameStat);
-        drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
+        if(lastHeroPosition != null) {
+            boolean haveWallInFace = isAWallInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),gameStat);
+            if(!haveWallInFace ) {
+                drawMoveEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus());
+            } else {
+                drawEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus(), gameStat);
+            }
+            drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
+        }
+
+        if(iFrame == -1)
+            lastHeroPosition = heroPosition;
     }
 
     private void drawTimer (Graphics2D g) {
@@ -195,6 +224,39 @@ public class DrawGame implements DrawMode {
 
     public void updateNextLevel() {
         this.levelBackground = SpriteTileParser.nextLevel();
+    }
+
+    /**
+     * Draw the great image of an oriented sprite
+     * @param g draw tool
+     * @param newPosition new position of entity
+     * @param frame number frame (-1) if out of animation
+     * @param o orientation of entity
+     * @param os Sprite Design
+     * @param s status of entity
+     */
+    private void drawMoveEntityOrientedSprite(Graphics2D g, Position newPosition , int frame, Orientation o , OrientedSprite os, Status s) {
+        os.setOrientation(o);
+        os.setStatus(s);
+        if(frame >= 0) {
+            switch (o) {
+                case UP:
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , (( newPosition.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                    break;
+                case LEFT:
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    break;
+                case RIGHT:
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    break;
+                case DOWN:
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                    break;
+            }
+        } else {
+            g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
+        }
+
     }
 
     /**
