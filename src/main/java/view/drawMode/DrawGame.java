@@ -102,7 +102,7 @@ public class DrawGame implements DrawMode {
             g.setColor(Color.GREEN);
             g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
         } else {
-            g.setColor(Color.BLUE);
+            g.setColor(Color.CYAN);
             g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT), 5);
 
         }
