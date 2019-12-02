@@ -98,8 +98,14 @@ public class DrawGame implements DrawMode {
 
         g.setColor(Color.RED);
         g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT, 5);
-        g.setColor(Color.GREEN);
-        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
+        if(pv <= pvMax) {
+            g.setColor(Color.GREEN);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
+        } else {
+            g.setColor(Color.BLUE);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT), 5);
+
+        }
 
     }
 
@@ -133,7 +139,6 @@ public class DrawGame implements DrawMode {
                } else {
                    drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
                }
-
            } else {
                drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
            }
