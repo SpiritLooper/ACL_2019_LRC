@@ -4,6 +4,8 @@ import model.element.entities.Entity;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * The event manager manages the event launched by the event tiles and gives the hero position to the monsters for their behaviors
  */
@@ -37,7 +39,7 @@ public class EventManager {
     /**
      * Switches the level to the next one
      */
-    public void nextLevel () {
+    public void nextLevel () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         game.nextLevel();
         game.notifyNextLevelEngine();
     }

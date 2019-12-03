@@ -2,7 +2,6 @@ package model.game;
 
 import controller.Command;
 import model.element.Position;
-import model.element.entities.Entity;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 import model.menu.Menu;
@@ -130,7 +129,7 @@ public class Game {
      * Executes the received command for the menu of open or the hero
      * @param command user input
      */
-    public void execute (Command command, boolean duration) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void execute (Command command) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if(!this.lock) {
             //controls the menu if it is open
             if (menu.isOpen()) {
@@ -171,11 +170,9 @@ public class Game {
             }
 
             // si la touche est tapée rapidement, on s'oriente, sinon on bouge
-            if(duration){
+            if(command != Command.IDLE){
                 moveHero(command);
                 update();
-            } else {
-                rotateHero(command);
             }
 
             notifyEngine();
@@ -255,7 +252,7 @@ public class Game {
     /**
      * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
-    private void update () {
+    private void update () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         level.update();
 
         if (level.getTimer().getTimeLeft()<= 0 || level.getHeroHp() <= 0) {
@@ -273,10 +270,11 @@ public class Game {
     /**
      * Put the current level to the next level
      */
-    public void nextLevel() {
+    public void nextLevel() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         int lifeHero = level.getHeroHp();
         level = level.nextLevel();
         level.setHeroHp(lifeHero);
+        saveGame();
     }
 
     /**

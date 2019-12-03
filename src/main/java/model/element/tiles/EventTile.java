@@ -2,6 +2,8 @@ package model.element.tiles;
 
 import model.game.Game;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * An EventTile is a tile with a special event attached to it, fired when the hero walks onto it
  */
@@ -22,6 +24,6 @@ public abstract class EventTile extends Tile{
     /**
      * Fires an event to the game
      */
-    public abstract void fireEvent();
+    public abstract void fireEvent() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
 
 }

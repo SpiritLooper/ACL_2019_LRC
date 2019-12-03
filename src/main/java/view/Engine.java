@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Engine {
 
-    public static final int NB_FRAME_MOVE = 3;
+    public static final int NB_FRAME_MOVE = 6;
     //Modele du jeu
     private Game game;
 
@@ -43,23 +43,21 @@ public class Engine {
      */
     public void run() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, InterruptedException {
         this.gui = new GUI(this.gamePainter,this.gameController);
+        AudioPlayer.playSoundtrack();
 
         while(!game.isFinished()) {
 
             Command command = gameController.getCommand();
 
-            boolean duration =  gameController.getDuration();
+            this.game.execute(command);
 
-            this.game.execute(command, duration );
-
-
-            if( duration &&  (command == Command.UP
+            if(     (command == Command.UP
                     || command == Command.DOWN
                     || command == Command.RIGHT
                     || command == Command.LEFT  ) && !game.isMenuOpen()) {
                 for(int i = 0 ; i < NB_FRAME_MOVE ; i++) {
                     this.gui.paint(i);
-                    Thread.sleep(100);
+                    Thread.sleep(75);
                 }
                 this.gamePainter.cleanCache();
             }

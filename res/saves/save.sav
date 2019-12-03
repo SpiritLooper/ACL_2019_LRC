@@ -1,6 +1,5 @@
-TIMER:23
-HERO:1,5,18,1,
-MONSTER:BasicMonster,3,0,2,1,
-MONSTER:ImmovableMonster,9,9,2,2,
-MONSTER:BasicMonster,5,0,2,1,
-BUFF_TILE:HealTile,0,0
+TIMER:30
+HERO:6,6,10,1,
+MONSTER:BasicMonster,0,6,2,1,
+MONSTER:BasicMonster,6,0,2,1,
+MONSTER:ImmovableMonster,9,8,2,2,

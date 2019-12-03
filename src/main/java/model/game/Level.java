@@ -8,6 +8,8 @@ import model.PositionPool;
 import model.persistency.SaveDAO;
 import model.element.*;
 import model.element.tiles.*;
+import view.AudioPlayer;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -112,6 +114,8 @@ public class Level {
 
         attacker.updateStatus(Status.ATTACKING);
         defendant.updateStatus(Status.ATTACKING);
+
+        AudioPlayer.playHitSound();
     }
 
     /**
@@ -254,7 +258,7 @@ public class Level {
     /**
      * Updates the level, thus updating the hero and monsters
      */
-    public void update () {
+    public void update () throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         //mise à jour du héro
         updateHero();
 
@@ -268,7 +272,7 @@ public class Level {
     /**
      * Updates the hero
      */
-    private void updateHero() {
+    private void updateHero() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         //reset du statut du héro
         hero.updateStatus(Status.STANDING);
 

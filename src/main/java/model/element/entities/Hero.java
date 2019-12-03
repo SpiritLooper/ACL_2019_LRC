@@ -5,6 +5,7 @@ import controller.Command;
 import controller.Orientation;
 import model.element.Position;
 import model.element.entities.buffs.Buff;
+import view.AudioPlayer;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class Hero implements Entity{
         atk = 1;
         status = Status.STANDING;
         buffs = new ArrayList<>();
-        orientation = Orientation.UP;
+        orientation = Orientation.DOWN;
     }
 
     /**
@@ -191,6 +192,7 @@ public class Hero implements Entity{
     @Override
     public void heal (int amount) {
         hp += amount;
+        AudioPlayer.playHealSound();
     }
 
     /**

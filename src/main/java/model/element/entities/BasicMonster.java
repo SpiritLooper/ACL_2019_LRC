@@ -22,7 +22,7 @@ public class BasicMonster extends Monster {
     @Override
     public Command behave() {
         Random r = new Random();
-        int rand = r.nextInt(5);
+        int rand = r.nextInt(4);
 
         return Command.values()[rand];
     }

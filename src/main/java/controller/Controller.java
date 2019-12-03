@@ -39,7 +39,7 @@ public class Controller {
         if(!game.isFinished() && listening) {
             listening = false;
             try {
-                game.execute(command, duration_key);
+                game.execute(command);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
