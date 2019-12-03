@@ -33,6 +33,9 @@ public class DrawGame implements DrawMode {
 
     private Game game;
 
+    /**
+     * Sprite handlers
+     */
     private OrientedSprite heroSprite;
     private BufferedImage treasureSprite;
     private BufferedImage stairsSprite;
@@ -41,8 +44,14 @@ public class DrawGame implements DrawMode {
     private BufferedImage healTile;
     private BufferedImage healOverTimeTile;
 
+    /**
+     * Level picture background
+     */
     private BufferedImage levelBackground ; // Contient le sol et les murs dessinee
 
+    /**
+     * entity last position remind
+     */
     private Position lastHeroPosition = null;
     private Map<Monster, Position> lastMonsterPositionMap = new HashMap<>();
 
@@ -50,6 +59,8 @@ public class DrawGame implements DrawMode {
         this.game = g;
 
         try {
+
+            //Load sprite and level
             SpriteTileParser.loadSprites();
             SpriteTileParser.loadLevels( game );
 
@@ -91,8 +102,10 @@ public class DrawGame implements DrawMode {
     }
 
     /**
-     * Dessine les pv d'une entité
-     * @param g Image sur laquelle dessinnee
+     * Draw hp entity
+     * @param g draw tool
+     * @param pv actual hp entity
+     * @param pvMax max hp entity
      */
     private void drawHp(Graphics2D g, Position p, double pv , double pvMax ) {
 
@@ -110,8 +123,8 @@ public class DrawGame implements DrawMode {
     }
 
     /**
-     * Dessine la structure du level
-     * @param g objet de dessin
+     * draw level background
+     * @param g draw tool
      * @param gameStat
      */
     private void drawLabyrinth(Graphics2D g, GameStatement gameStat){
@@ -127,24 +140,27 @@ public class DrawGame implements DrawMode {
      * Dessine l'ensemble des monstres du level
      * @param g objet de dessin de l'image
      * @param gameStat
+     * @param iFrame frame number, -1 if out of animation
      */
     private void drawMonsters(Graphics2D g, GameStatement gameStat, int iFrame) {
 
         //Parcours de chaque position de Zombie
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
+            //On regarde si on connait l'ancienne position du monstre
            if(lastMonsterPositionMap.containsKey(gameStat.getMonster(p))){
+               //On regarde s'il a un mur en face
                boolean haveWallInFace = isAWallInFace(lastMonsterPositionMap.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
-               if( !haveWallInFace ) {
+               if( !haveWallInFace ) { // On dessine l'animation
                    drawMoveEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus());
-               } else {
+               } else { // On dessine le sprite initial sinon
                    drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
                }
-           } else {
+           } else { // On dessine l'etat initial peu importe
                drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
            }
             drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
 
-            if(iFrame == -1)
+            if(iFrame == -1) // Enregistre la position du monstre
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
         }
 
@@ -170,26 +186,30 @@ public class DrawGame implements DrawMode {
         heroPosition = gameStat.getFirstPosition(GameStatement.HERO);
 
         //Dessin du hero
-        if(lastHeroPosition != null) {
+        if(lastHeroPosition != null) { // On regarde si son ancienne position est stockée
             boolean haveWallInFace = isAWallInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),gameStat);
             boolean haveAMonsterInFace = false;
-            for(Position monsterPosition : lastMonsterPositionMap.values()){
+            for(Position monsterPosition : lastMonsterPositionMap.values()){ // On regarde s'il y a un monstre en face de lui
                 haveAMonsterInFace = haveAMonsterInFace || isAMonsterInFace(lastHeroPosition,gameStat.getHeroStatement().getOrientation(),monsterPosition, gameStat);
             }
-            if(haveAMonsterInFace) {
+            if(haveAMonsterInFace) { // Si oui on applique l'animation d'attack
                 drawAttackMoveEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus());
-            } else if(!haveWallInFace ) {
+            } else if(!haveWallInFace ) { //Sinon s'il y a rien devant lui on applique l'animation de déplacement
                 drawMoveEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus());
-            } else {
+            } else { // Sinon on dessine le sprite de base
                 drawEntityOrientedSprite(g,heroPosition, iFrame,gameStat.getHeroStatement().getOrientation(), heroSprite,gameStat.getHeroStatement().getStatus(), gameStat);
             }
             drawHp(g, heroPosition, gameStat.getHeroStatement().getHp(), model.element.entities.Hero.PV_BASE);
         }
 
-        if(iFrame == -1)
+        if(iFrame == -1) // On stock l'ancienne position du hero
             lastHeroPosition = heroPosition;
     }
 
+    /**
+     * draw move left timer
+     * @param g draw tool
+     */
     private void drawTimer (Graphics2D g) {
         g.setFont(STANDARD_FONT);
         int timeLeft = game.getTimeLeft();
@@ -201,6 +221,11 @@ public class DrawGame implements DrawMode {
         g.drawString("Moves Left : "+timeLeft , 0, Painter.getHeight() - ( FONT_SIZE / 4 * 6));
     }
 
+    /**
+     * draw buff and debuff tiles
+     * @param g draw tool
+     * @param gameStat statment of model
+     */
     private void drawEventTiles(Graphics2D g, GameStatement gameStat) {
         //Dessin escalier ou trésor
         Position p;
@@ -223,6 +248,10 @@ public class DrawGame implements DrawMode {
 
     }
 
+    /**
+     * Draw the win or loose game
+     * @param g draw tool
+     */
     private void drawWin(Graphics2D g) {
         g.setFont(STANDARD_FONT);
         g.setColor(Color.LIGHT_GRAY);
@@ -237,6 +266,9 @@ public class DrawGame implements DrawMode {
         g.drawString(endMessage,0 ,Painter.getHeight() - ( FONT_SIZE / 4 ));
     }
 
+    /**
+     * update the background image
+     */
     public void updateNextLevel() {
         this.levelBackground = SpriteTileParser.nextLevel();
     }
@@ -253,7 +285,7 @@ public class DrawGame implements DrawMode {
     private void drawMoveEntityOrientedSprite(Graphics2D g, Position newPosition , int frame, Orientation o , OrientedSprite os, Status s) {
         os.setOrientation(o);
         os.setStatus(s);
-        if(frame >= 0) {
+        if(frame >= 0) { // Si on est dans une animation on dessine le sprite animé
             switch (o) {
                 case UP:
                     g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , (( newPosition.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
@@ -268,7 +300,7 @@ public class DrawGame implements DrawMode {
                     g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
-        } else {
+        } else { // Sinon on dessine le sprite par defaut
             g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
         }
     }
@@ -285,7 +317,7 @@ public class DrawGame implements DrawMode {
     private void drawAttackMoveEntityOrientedSprite(Graphics2D g, Position newPosition , int frame, Orientation o , OrientedSprite os, Status s) {
         os.setOrientation(o);
         os.setStatus(s);
-        if(frame >= 0) {
+        if(frame >= 0) { // Si pon est en animation on dessine le sprite anime
             switch (o) {
                 case UP:
                     g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , (( newPosition.getY() + 1 ) * WORLD_UNIT - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
@@ -300,7 +332,7 @@ public class DrawGame implements DrawMode {
                     g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
-        } else {
+        } else { // l'image par defaut sinon
             g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
         }
     }
@@ -323,7 +355,7 @@ public class DrawGame implements DrawMode {
 
         boolean haveWallInFace = isAWallInFace(p,o,gs);
 
-        if(frame >= 0 && !haveWallInFace ){
+        if(frame >= 0 && !haveWallInFace ){ // Dessine l'animation
 
             switch (o) {
                 case UP:
@@ -339,7 +371,7 @@ public class DrawGame implements DrawMode {
                     g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
-        } else {
+        } else { // Image de bvase sinon
           g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT), null );
         }
 
@@ -354,24 +386,29 @@ public class DrawGame implements DrawMode {
      */
     private boolean isAWallInFace(Position p, Orientation o, GameStatement gs) {
 
+        //Test Bas Hero
         if (p.getY() + 1 < Game.HEIGHT && (gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() + 1)) && o == Orientation.DOWN) ) {
             return true;
         }
 
+        //Test Haut Hero
         if  ( p.getY() - 1 >= 0 &&  (  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX(), p.getY() - 1)) && o == Orientation.UP )) {
             return true;
         }
 
+        //Test Gauche Hero
         if ( p.getX() - 1 >= 0 ) {
             if(  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX() - 1, p.getY())) && o == Orientation.LEFT ) {
                return true;
             }
         }
 
+        //Test Droite Hero
         if ( p.getX() + 1 < Game.WIDTH && (  gs.getAllPosition(GameStatement.WALL).contains(PositionPool.getInstance().getPosition(p.getX() + 1, p.getY())) && o == Orientation.RIGHT )){
             return true;
         }
 
+        // Test si on est en bordure
         boolean res =  ( p.getX() == 0 && Orientation.LEFT == o )||
                 ( p.getX() + 1 == Game.WIDTH && Orientation.RIGHT == o )||
                 ( p.getY() == 0 && Orientation.UP == o ) ||
@@ -389,6 +426,7 @@ public class DrawGame implements DrawMode {
      */
     private boolean isAMonsterInFace(Position p, Orientation o, Position positionMonster, GameStatement gs) {
 
+        //Test si on regarde une bordure
         if(p.getX() == 0 && o == Orientation.LEFT)
             return false;
         if(p.getY() == 0 && o == Orientation.UP)
@@ -398,7 +436,7 @@ public class DrawGame implements DrawMode {
         if(p.getY() == Game.HEIGHT - 1 && Orientation.DOWN == o)
             return false;
 
-
+        // Test monstre a cote du hero
         switch (o) {
             case UP:
                 return positionMonster.getX() == p.getX() && positionMonster.getY() == p.getY() - 1;
@@ -412,6 +450,9 @@ public class DrawGame implements DrawMode {
         return false;
     }
 
+    /**
+     * clean monster position
+     */
     public void cleanCachePositionStock() {
         lastMonsterPositionMap.clear();
     }
