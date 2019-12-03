@@ -1,6 +1,5 @@
 package model.game;
 
-import model.element.entities.Entity;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 
