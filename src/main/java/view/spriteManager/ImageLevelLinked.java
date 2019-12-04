@@ -37,4 +37,11 @@ public class ImageLevelLinked {
             next.add(bi);
         }
     }
+
+    public ImageLevelLinked clone() {
+        ImageLevelLinked res = new ImageLevelLinked(this.current);
+        if(next != null)
+            res.next = res.next.clone();
+        return res;
+    }
 }

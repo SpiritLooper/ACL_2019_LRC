@@ -60,7 +60,7 @@ public class SpriteTileParser {
             imageslevelCurrent.add(  DEFAULT_BIOM.buildImageLevel(ens) );
         }
 
-        imageslevelStock = imageslevelCurrent;
+        imageslevelStock = imageslevelCurrent.clone();
     }
 
     /*
@@ -109,6 +109,6 @@ public class SpriteTileParser {
     }
 
     public static void reloadFirstBackground() {
-        imageslevelCurrent = imageslevelStock;
+        imageslevelCurrent = imageslevelStock.clone();
     }
 }
