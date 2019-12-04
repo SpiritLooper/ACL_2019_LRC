@@ -51,13 +51,6 @@ public class EventManager {
     }
 
     /**
-     * Looses the game
-     */
-    public void looseGame () {
-        game.finish(false);
-    }
-
-    /**
      * Destroys a tile
      * @param tile tile to destroy
      */
@@ -80,7 +73,7 @@ public class EventManager {
      * @return y coordinate
      */
     public int getYofMonster (Monster monster) {
-        return game.getYofEntity(monster);
+        return game.getYofMonster(monster);
     }
 
 }

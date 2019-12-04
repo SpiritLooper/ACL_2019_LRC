@@ -8,6 +8,7 @@ import model.menu.Menu;
 import model.persistency.GameParser;
 import model.persistency.LevelDAO;
 import model.persistency.SaveDAO;
+import view.AudioPlayer;
 import view.Engine;
 
 import java.io.IOException;
@@ -90,18 +91,81 @@ public class Game {
     }
 
     /**
+     * @return current level
+     */
+    public Level getLevel () {
+        return level;
+    }
+
+    /**
+     * Put the current level to the next level
+     */
+    public void nextLevel() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        int lifeHero = level.getHeroHp();
+        level = level.nextLevel();
+        level.setHeroHp(lifeHero);
+        saveGame();
+    }
+
+    /**
+     * Generate the levelX.lyt in the game
+     * @param lvl : the indice of the file levelX.lyt
+     * @return : a Level class, which correspond to the levelX.lyt
+     */
+    private Level generateLevel(int lvl) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        try {
+            LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl);
+            Level level = new Level();
+            level.generate(lvlDAO);
+            return level;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Level(); //astuce pour le try catch normalement on ne retourne jamais un lvl vide
+    }
+
+    /**
+     * Generates a basic game
+     */
+    public void generateGame() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+
+        int nbLevel = GameParser.getINSTANCE().getNbLevel();
+
+        //on instancie les niveaux du plus grand au plus petit
+        //en effet le level_i étant bindé au level_i+1
+        //il faut bien avoir déjà instancié le level_i+1
+        //le parcours dans l'autre sens résoud ce problème
+        //je les stocks dans un tableau histoire de pouvoir bien
+        //les binder sans trop de prise de tête
+
+        //System.out.println("Will generate " + nbLevel + " levels....");
+        Level[] arrayLevels = new Level[nbLevel];
+
+        for(int i = nbLevel; i!=0; i--){
+            //System.out.println("generating level"+i);
+            arrayLevels[i-1] = generateLevel(i);
+            //System.out.println(arrayLevels[i-1]);
+        }
+
+        setLevel(arrayLevels[0]); //on commence au premier niveau
+
+        for(int i = 0; i<nbLevel-1; i++){ //on bind les niveaux entre eux
+            arrayLevels[i].setNextLevel(arrayLevels[i+1]);
+            arrayLevels[i] = null;//on libère la mémoire, on en a plus besoin
+            //l'idée est que les niveaux se connaissent entre eux mtnt plus besoin de tabs
+        }
+
+
+        level.updateGameStatement(this.gameStatement); // Mis a jour de l'instance de jeu
+    }
+
+    /**
      * Setting the observer
      * @param e engine observing the game
      */
     public void setEngine (Engine e){
         this.engine = e;
-    }
-
-    /**
-     * @return current level
-     */
-    public Level getLevel () {
-        return level;
     }
 
     /**
@@ -185,11 +249,11 @@ public class Game {
     }
 
     /**
-     * Rotates the hero depending on the given commend
-     * @param command command to ocnsult for the orientation change
+     * Moves the hero based on a command
+     * @param command command representing the move to make
      */
-    private void rotateHero(Command command) {
-        level.rotateHero(command);
+    public void moveHero(Command command) {
+        level.moveHero(command);
     }
 
     /**
@@ -215,26 +279,17 @@ public class Game {
         }
     }
 
+    /**
+     * Restart the game at the level 1
+     * @throws ClassNotFoundException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     private void restart() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         generateGame();
         engine.resetLevel();
-    }
-
-    /**
-     * Generate the levelX.lyt in the game
-     * @param lvl : the indice of the file levelX.lyt
-     * @return : a Level class, which correspond to the levelX.lyt
-     */
-    private Level generateLevel(int lvl) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        try {
-            LevelDAO lvlDAO = GameParser.getINSTANCE().parseLevelFile(lvl);
-            Level level = new Level();
-            level.generate(lvlDAO);
-            return level;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new Level(); //astuce pour le try catch normalement on ne retourne jamais un lvl vide
     }
 
     /**
@@ -252,14 +307,6 @@ public class Game {
     }
 
     /**
-     * Moves the hero based on a command
-     * @param command command representing the move to make
-     */
-    public void moveHero(Command command) {
-        level.moveHero(command);
-    }
-
-    /**
      * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
     private void update () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
@@ -268,69 +315,6 @@ public class Game {
         if (level.getTimer().getTimeLeft()<= 0 || level.getHeroHp() <= 0) {
             finish(false);
         }
-    }
-
-    /**
-     * @return true if the level contains a treasure, false else
-     */
-    public boolean hasATreasureInLevel() {
-        return level.hasATreasure();
-    }
-
-    /**
-     * Put the current level to the next level
-     */
-    public void nextLevel() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        int lifeHero = level.getHeroHp();
-        level = level.nextLevel();
-        level.setHeroHp(lifeHero);
-        saveGame();
-    }
-
-    /**
-     * Generates a basic game
-     */
-    public void generateGame() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
-
-        int nbLevel = GameParser.getINSTANCE().getNbLevel();
-
-        //on instancie les niveaux du plus grand au plus petit
-        //en effet le level_i étant bindé au level_i+1
-        //il faut bien avoir déjà instancié le level_i+1
-        //le parcours dans l'autre sens résoud ce problème
-        //je les stocks dans un tableau histoire de pouvoir bien
-        //les binder sans trop de prise de tête
-
-        //System.out.println("Will generate " + nbLevel + " levels....");
-        Level[] arrayLevels = new Level[nbLevel];
-
-        for(int i = nbLevel; i!=0; i--){
-            //System.out.println("generating level"+i);
-            arrayLevels[i-1] = generateLevel(i);
-            //System.out.println(arrayLevels[i-1]);
-        }
-
-        setLevel(arrayLevels[0]); //on commence au premier niveau
-
-        for(int i = 0; i<nbLevel-1; i++){ //on bind les niveaux entre eux
-            arrayLevels[i].setNextLevel(arrayLevels[i+1]);
-            arrayLevels[i] = null;//on libère la mémoire, on en a plus besoin
-            //l'idée est que les niveaux se connaissent entre eux mtnt plus besoin de tabs
-        }
-
-
-        level.updateGameStatement(this.gameStatement); // Mis a jour de l'instance de jeu
-    }
-
-
-    /**
-     * Ends the game
-     * @param won true if the player won, false if he lost
-     */
-    public void finish (boolean won) {
-        this.won = won;
-        finished = true;
     }
 
     /**
@@ -392,16 +376,17 @@ public class Game {
      * @param monster entity to look for
      * @return y coordinate
      */
-    public int getYofEntity (Monster monster) {
+    public int getYofMonster(Monster monster) {
         return level.getYofMonster(monster);
     }
 
-    public void lockGame(){
-        this.lock = true;
-    }
-
-    public void unlock() {
-        this.lock = false;
+    /**
+     * Ends the game
+     * @param won true if the player won, false if he lost
+     */
+    public void finish (boolean won) {
+        this.won = won;
+        finished = true;
     }
 }
 
