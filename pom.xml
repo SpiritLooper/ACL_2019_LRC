@@ -5,7 +5,7 @@
     <groupId>ACL_2019_LRC</groupId>
     <artifactId>ACL_2019_LRC</artifactId>
     <packaging>jar</packaging>
-    <version>2.0-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <name>ACL_App</name>
     <url>https://github.com/SpiritLooper/ACL_2019_LRC</url>
     <dependencies>
