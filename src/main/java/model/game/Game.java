@@ -396,13 +396,6 @@ public class Game {
         return level.getYofMonster(monster);
     }
 
-    public void lockGame(){
-        this.lock = true;
-    }
-
-    public void unlock() {
-        this.lock = false;
-    }
 }
 
 

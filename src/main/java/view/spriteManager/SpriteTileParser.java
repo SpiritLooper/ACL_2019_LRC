@@ -50,7 +50,6 @@ public class SpriteTileParser {
     }
 
     public static void loadLevels( Game game ) {
-        // TODO Ajouter au model la lecture du type de biome
         List<Set<Position>> levels =  game.getAllWallsOfEachLevels();
 
         imageslevelCurrent = new ImageLevelLinked(null);

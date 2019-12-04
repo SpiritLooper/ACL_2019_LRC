@@ -98,5 +98,5 @@ class PositionTest {
         assertEquals(new Position(0,0),p.applyCommand(Command.SPACE));
     }
 
-    //TODO gérer quand command null
+
 }

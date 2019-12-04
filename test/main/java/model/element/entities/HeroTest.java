@@ -1,9 +1,7 @@
 package model.element.entities;
 
+
 import model.PositionPool;
-import model.element.entities.Hero;
-import model.element.entities.Monster;
-import model.element.entities.BasicMonster;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,15 +9,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class HeroTest {
 
     private static Hero h0;
-
+    private static PositionPool positionPool = PositionPool.getInstance();
     @BeforeAll
     static void init(){
-
     }
 
     @BeforeEach
     void setUp(){
-        h0 = new Hero(PositionPool.getInstance().getPosition(0,0));
+        h0 = new Hero(positionPool.getPosition(0,0));
     }
 
     @AfterAll
@@ -34,30 +31,30 @@ class HeroTest {
 
     @Test
     void getPositionRight() {
-        assertEquals(PositionPool.getInstance().getPosition(0,0),h0.getPosition());
+        assertEquals(positionPool.getPosition(0,0),h0.getPosition());
     }
 
     @Test
     void getPositionRight2(){
-        Hero h = new Hero(PositionPool.getInstance().getPosition(2,2));
-        assertEquals(PositionPool.getInstance().getPosition(2,2),h.getPosition());
+        Hero h = new Hero(positionPool.getPosition(2,2));
+        assertEquals(positionPool.getPosition(2,2),h.getPosition());
     }
 
     @Test
     void getPositionFalse(){
-        assertNotEquals(PositionPool.getInstance().getPosition(1,1), h0.getPosition());
+        assertNotEquals(positionPool.getPosition(1,1), h0.getPosition());
     }
 
     @Test
     void setPosition() {
-        h0.setPosition(PositionPool.getInstance().getPosition(1,1));
-        assertEquals(PositionPool.getInstance().getPosition(1,1),h0.getPosition());
+        h0.setPosition(positionPool.getPosition(1,1));
+        assertEquals(positionPool.getPosition(1,1),h0.getPosition());
     }
 
     @Test
     void setSamePosition(){
-        h0.setPosition(PositionPool.getInstance().getPosition(0,0));
-        assertEquals(PositionPool.getInstance().getPosition(0,0),h0.getPosition());
+        h0.setPosition(positionPool.getPosition(0,0));
+        assertEquals(positionPool.getPosition(0,0),h0.getPosition());
     }
 
     @Test
@@ -71,6 +68,7 @@ class HeroTest {
         int hpMonsterBeforeHit = m.getHp();
         int hpHeroBeforeHit = h0.getHp();
         h0.attack(m);
+        m.attack(h0);
         assertSame(hpHeroBeforeHit-m.getAtk(), h0.getHp());
         assertSame(hpMonsterBeforeHit-h0.getAtk(), m.getHp());
     }
