@@ -190,7 +190,7 @@ public class Game {
     /**
      * Method that makes a save of the game
      */
-    private void saveGame () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void saveGame () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         try {
             GameParser.getINSTANCE().writeSaveFile(level.createSave());
         } catch (IOException e) {

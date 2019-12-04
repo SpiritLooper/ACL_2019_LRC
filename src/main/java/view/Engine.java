@@ -44,6 +44,7 @@ public class Engine {
     public void run() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, InterruptedException {
         this.gui = new GUI(this.gamePainter,this.gameController);
         AudioPlayer.playSoundtrack();
+        game.saveGame();
 
         while(!game.isFinished()) {
 
