@@ -85,11 +85,7 @@ public class Position {
         return this;
     }
 
-    /**
-     * todo à revoir
-     * @param obj
-     * @return
-     */
+
     @Override
     public boolean equals(Object obj) { //peut mieux faire ?
         if(this == obj) return true;

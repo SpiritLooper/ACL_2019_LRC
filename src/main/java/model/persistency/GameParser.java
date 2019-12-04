@@ -73,6 +73,7 @@ public class GameParser {
      */
     public void writeSaveFile (SaveDAO save) throws IOException {
         File file = new File(SAVE_FILENAME);
+
         FileWriter writer = new FileWriter(file);
 
         StringBuilder sb = new StringBuilder();

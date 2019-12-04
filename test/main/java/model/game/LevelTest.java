@@ -1,13 +1,16 @@
 package model.game;
 
+import controller.Command;
 import model.PositionPool;
 import model.element.entities.BasicMonster;
 import model.element.entities.ImmovableMonster;
 import model.element.entities.Monster;
 import model.element.tiles.Wall;
 import model.game.Level;
+import model.persistency.SaveDAO;
 import org.junit.jupiter.api.*;
 
+import static junit.framework.TestCase.assertSame;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,11 +20,12 @@ class LevelTest {
 
     @BeforeAll
     static void init(){
-        l = new Level();
+
     }
 
     @BeforeEach
     void setUp(){
+        l = new Level();
     }
 
     @AfterAll
@@ -81,7 +85,7 @@ class LevelTest {
 
     @Test
     void moveHero() {
-        /*
+
         l.moveHero(Command.DOWN);
         assertSame(PositionPool.getInstance().getPosition(0,1),l.getHero().getPosition());
         l.moveHero(Command.RIGHT);
@@ -89,20 +93,11 @@ class LevelTest {
         l.moveHero(Command.LEFT);
         assertSame(PositionPool.getInstance().getPosition(0,1),l.getHero().getPosition());
         l.moveHero(Command.UP);
-        assertSame(PositionPool.getInstance().getPosition(0,0),l.getHero().getPosition());*/
+        assertSame(PositionPool.getInstance().getPosition(0,0),l.getHero().getPosition());
 
         //a cause du niveau 1 le hero bloque contre un monstre trop souvent
 
     }
 
-    @Test
-    void loadSave() {
-        //TODO
-    }
-
-    @Test
-    void createSave() {
-        //TODO
-    }
 
 }

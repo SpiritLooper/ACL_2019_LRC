@@ -151,9 +151,9 @@ public class Level {
     }
 
     /**
-     * TODO
-     * @param m
-     * @return
+     * Check if the monster is in the level
+     * @param m : the monster to check
+     * @return : return True if the monster is in the level
      */
     public boolean containsMonster(Monster m){
         return monsters.containsValue(m);
@@ -173,9 +173,9 @@ public class Level {
     public void addTile(Position p, Tile t) { tiles.put(p, t); }
 
     /**
-     * TODO
-     * @param t
-     * @return
+     * Check if the Tile is in the level
+     * @param t : the tile to check
+     * @return True if the tile is in the level
      */
     public boolean constainsTile(Tile t){
         return tiles.containsValue(t);
