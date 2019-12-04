@@ -9,6 +9,7 @@ public enum MenuItem {
     SAVE,
     LOAD,
     EXIT,
+    RESTART,
     IDLE;
 
 }

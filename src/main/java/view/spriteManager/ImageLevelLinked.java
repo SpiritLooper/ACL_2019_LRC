@@ -41,7 +41,7 @@ public class ImageLevelLinked {
     public ImageLevelLinked clone() {
         ImageLevelLinked res = new ImageLevelLinked(this.current);
         if(next != null)
-            res.next = res.next.clone();
+            res.next = this.next.clone();
         return res;
     }
 }

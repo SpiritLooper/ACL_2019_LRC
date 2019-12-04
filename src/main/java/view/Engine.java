@@ -75,6 +75,7 @@ public class Engine {
      */
     public void resetLevel() {
         SpriteTileParser.reloadFirstBackground();
+        this.nextLevelUpdate();
     }
 
     public void nextLevelUpdate() {

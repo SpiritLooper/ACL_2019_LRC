@@ -148,6 +148,11 @@ public class Game {
                         menu.close();
                         break;
 
+                    case RESTART:
+                        restart();
+                        menu.close();
+                        break;
+
                     case EXIT:
                         finish(false);
                         menu.close();
@@ -208,6 +213,11 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void restart() throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        generateGame();
+        engine.resetLevel();
     }
 
     /**

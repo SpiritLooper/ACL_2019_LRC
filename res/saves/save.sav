@@ -1,7 +1,7 @@
 TIMER:30
-HERO:0,3,10,1,
-MONSTER:BasicMonster,4,0,2,1,
-MONSTER:BasicMonster,3,0,2,1,
-MONSTER:ImmovableMonster,9,9,2,2,
-BUFF_TILE:HealOverTimeTile,0,1
-BUFF_TILE:HealTile,0,0
+HERO:1,7,10,1,
+MONSTER:BasicMonster,0,9,2,1,
+MONSTER:BasicMonster,5,1,2,1,
+MONSTER:BasicMonster,6,6,2,1,
+MONSTER:ImmovableMonster,5,9,2,2,
+MONSTER:BasicMonster,2,3,2,1,
