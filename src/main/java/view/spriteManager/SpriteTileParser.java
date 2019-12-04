@@ -32,9 +32,10 @@ public class SpriteTileParser {
     private static BasicSprite healSprite;
     private static BasicSprite healOverTimeSprite;
 
-private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
+    private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
 
-    private static ImageLevelLinked imagesLevel;
+    private static ImageLevelLinked imageslevelCurrent;
+    private static ImageLevelLinked imageslevelStock;
 
     /**
      * Charge l'ensemble des sprites
@@ -52,11 +53,14 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
         // TODO Ajouter au model la lecture du type de biome
         List<Set<Position>> levels =  game.getAllWallsOfEachLevels();
 
-        imagesLevel = new ImageLevelLinked(null);
+        imageslevelCurrent = new ImageLevelLinked(null);
+
 
         for ( Set<Position> ens : levels ) {
-            imagesLevel.add(  DEFAULT_BIOM.buildImageLevel(ens) );
+            imageslevelCurrent.add(  DEFAULT_BIOM.buildImageLevel(ens) );
         }
+
+        imageslevelStock = imageslevelCurrent;
     }
 
     /*
@@ -92,8 +96,8 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
     }
 
     public static BufferedImage nextLevel() {
-        imagesLevel = imagesLevel.next();
-        return imagesLevel.getImage();
+        imageslevelCurrent = imageslevelCurrent.next();
+        return imageslevelCurrent.getImage();
     }
 
     public static BufferedImage getHealTileSprite() {
@@ -102,5 +106,9 @@ private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
 
     public static BufferedImage getOverTimeTileSprite() {
         return healOverTimeSprite.getSprite();
+    }
+
+    public static void reloadFirstBackground() {
+        imageslevelCurrent = imageslevelStock;
     }
 }

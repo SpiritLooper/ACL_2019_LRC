@@ -7,6 +7,7 @@ package view;
 import controller.Command;
 import controller.Controller;
 import model.game.Game;
+import view.spriteManager.SpriteTileParser;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -67,6 +68,13 @@ public class Engine {
 
             Thread.sleep(100);
         }
+    }
+
+    /**
+     * Reload first background of game
+     */
+    public void resetLevel() {
+        SpriteTileParser.reloadFirstBackground();
     }
 
     public void nextLevelUpdate() {
