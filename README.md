@@ -12,7 +12,7 @@ Maven installé sur son ordinateur
 
 ## Executer le projet 
 1. Récupérer dans le dossier **/bin** le dossier du sprint voulu, le dernier Sprint est la version la plus récente du projet
-2. Puis executer le jar du dossier récupéré avec la commande `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
+2. Puis exécuter le jar du dossier récupéré avec la commande `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
 
 ## Correction erreur de compilation
 Si le projet refuse de se compiler avec maven
