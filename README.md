@@ -5,10 +5,14 @@ Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gout
 JDK installé sur son ordinateur
 Maven installé sur son ordinateur
 
-## Executer le projet
+## Compiler le projet
 1. Aller à la racine du projet
 2. Lancer la commande `mvn package`
-3. Puis executer le jar généré avec la commande `java -jar .\target\ACL_2019_LRC-2.0-SNAPSHOT.jar`
+3. Puis executer le jar généré avec la commande `java -jar .\target\ACL_2019_LRC-*.0-SNAPSHOT.jar`
+
+## Executer le projet 
+1. Récupérer dans le dossier **/bin** le dossier du sprint voulu, le dernier Sprint est la version la plus récente du projet
+2. Puis executer le jar du dossier récupéré avec la commande `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
 
 ## Correction erreur de compilation
 Si le projet refuse de se compiler avec maven
