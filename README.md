@@ -2,8 +2,8 @@
 Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gouth / Nicolas Kleinhentz / Emilien Lambert
 
 ## Prérequis
-JDK installé sur son ordinateur
-Maven installé sur son ordinateur
+- JDK installé sur son ordinateur
+- Maven installé sur son ordinateur
 
 ## Compiler le projet
 1. Aller à la racine du projet
