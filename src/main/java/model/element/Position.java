@@ -3,6 +3,8 @@ package model.element;
 import controller.Command;
 import model.PositionPool;
 
+import java.util.Objects;
+
 /**
  * Represents a position in a 2-dimensional integer world
  * Immutable objects being managed by the model.PositionPool
@@ -32,14 +34,14 @@ public class Position {
     /**
      * @return x coordinate of the position
      */
-    public int getX(){
+    public final int getX(){
         return x;
     }
 
     /**
      * @return y coordinate of the position
      */
-    public int getY(){
+    public final int getY(){
         return y;
     }
 
@@ -85,14 +87,15 @@ public class Position {
         return this;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 
     @Override
     public boolean equals(Object obj) { //peut mieux faire ?
-        if(this == obj) return true;
-        if(obj == null) return false;
-        if(this.getClass() != obj.getClass()) return false;
-        Position tmp = (Position) obj;
-        return this.getX() == tmp.getX() && this.getY() == tmp.getY();
+        Position p = (Position) obj;
+        return this.getX() == p.getX() && this.getY() == p.getY();
     }
 
     @Override
