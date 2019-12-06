@@ -3,7 +3,7 @@ Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gout
 
 ## Présentation
 
-Incarner évoli dans une folle aventure ! Trouver le trésor qui se trouve dans la dernière salle du labyrithe en évitant les fantominus et les simularbre pour gagner !
+Incarnez évoli dans une folle aventure ! Trouvez le trésor qdans la dernière salle du labyrithe en évitant les fantominus et les simularbre pour gagner !
 
 ### Commandes
 
