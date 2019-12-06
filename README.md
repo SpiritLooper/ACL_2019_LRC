@@ -1,6 +1,12 @@
 # ACL_2019_LRC
 Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gouth / Nicolas Kleinhentz / Emilien Lambert
 
+## Présentation
+
+![GitHub Logo](/img/murky.png)
+![GitHub Logo](/img/temporal.png)
+
+
 ## Prérequis
 #### Exécution du projet
 - Java installé sur son ordinateur
