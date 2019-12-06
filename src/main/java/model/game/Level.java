@@ -45,6 +45,11 @@ public class Level {
     private Timer timer;
 
     /**
+     * Design of level
+     */
+    private Biom biomLevel;
+
+    /**
      * Constructor instantiating the maps and the hero to the default position
      */
     public Level(){
@@ -53,6 +58,15 @@ public class Level {
 
         hero = new Hero(PositionPool.getInstance().getPosition(0, 0));
         timer = new Timer();
+        biomLevel = Biom.values()[0];
+    }
+
+    public Biom getBiomLevel() {
+        return biomLevel;
+    }
+
+    public void setBiomLevel(Biom biomLevel) {
+        this.biomLevel = biomLevel;
     }
 
     /**

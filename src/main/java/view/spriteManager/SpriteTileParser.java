@@ -1,17 +1,15 @@
 package view.spriteManager;
 
-import model.element.Position;
 import model.game.Game;
+import model.game.Level;
 import view.Painter;
-import view.spriteManager.biomManager.BiomLevel;
-import view.spriteManager.biomManager.MurkyForest;
+import view.spriteManager.biomManager.*;
 import view.spriteManager.sprite.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Classe principale de la gestion des sprites
@@ -32,7 +30,10 @@ public class SpriteTileParser {
     private static BasicSprite healSprite;
     private static BasicSprite healOverTimeSprite;
 
-    private final static BiomLevel DEFAULT_BIOM = new MurkyForest();
+    private final static BiomLevel MURKY_BIOM = new MurkyForest();
+    private final static BiomLevel DARK_BIOM = new DarkWasteland();
+    private final static BiomLevel STATION_BIOM = new StationPass();
+    private final static BiomLevel TEMPORAL_BIOM = new TemporalTower();
 
     private static ImageLevelLinked imageslevelCurrent;
     private static ImageLevelLinked imageslevelStock;
@@ -50,13 +51,28 @@ public class SpriteTileParser {
     }
 
     public static void loadLevels( Game game ) {
-        List<Set<Position>> levels =  game.getAllWallsOfEachLevels();
+        List<Level> levels =  game.getAllWallsOfEachLevels();
 
         imageslevelCurrent = new ImageLevelLinked(null);
 
-
-        for ( Set<Position> ens : levels ) {
-            imageslevelCurrent.add(  DEFAULT_BIOM.buildImageLevel(ens) );
+        for ( Level l : levels ) {
+            BiomLevel biom;
+            switch ( l.getBiomLevel()) {
+                case STATION_PASS:
+                    biom = STATION_BIOM;
+                    break;
+                case DARK_WASTLAND:
+                    biom = DARK_BIOM;
+                    break;
+                case TEMPORAL_TOWER:
+                    biom = TEMPORAL_BIOM;
+                    break;
+                case MURKY_FOREST:
+                default:
+                    biom = MURKY_BIOM;
+                    break;
+            }
+            imageslevelCurrent.add(  biom.buildImageLevel(l.getWallsPosition()) );
         }
 
         imageslevelStock = imageslevelCurrent.clone();

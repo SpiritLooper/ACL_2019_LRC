@@ -1,7 +1,6 @@
 package model.game;
 
 import controller.Command;
-import model.element.Position;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 import model.menu.AbstractMenu;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Facade connecting the Model to the View for the MVC architecture
@@ -443,11 +441,11 @@ public class Game {
      * Utilisé à la vue de build les images de fond de chaque level
      * @return List d'ensemble de position des murs de chaque level
      */
-    public List<Set<Position>> getAllWallsOfEachLevels() {
-        ArrayList<Set<Position>> res = new ArrayList<>();
+    public List<Level> getAllWallsOfEachLevels() {
+        ArrayList<Level> res = new ArrayList<>();
         Level indiceLevel = level;
         while (  indiceLevel != null ) {
-            res.add(indiceLevel.getWallsPosition());
+            res.add(indiceLevel);
             indiceLevel = indiceLevel.nextLevel();
         }
         return res;
