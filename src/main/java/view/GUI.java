@@ -2,8 +2,12 @@ package view;
 
 import controller.Controller;
 import controller.InputManager;
+import view.spriteManager.SpriteTileParser;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Classe gérant la fenetre graphique du jeu
@@ -24,7 +28,7 @@ public class GUI {
      * @param gameController l'afficheur a utiliser dans le moteur
      *
      */
-    public GUI(Painter gamePainter, Controller gameController){
+    public GUI(Painter gamePainter, Controller gameController) {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -38,9 +42,19 @@ public class GUI {
         this.panel.addKeyListener(new InputManager(gameController));
 
         f.pack();
+        f.setTitle("Sad eevee");
         f.setVisible(true);
         f.getContentPane().setFocusable(true);
         f.getContentPane().requestFocus();
+        f.setResizable(false);
+
+        try {
+            f.setIconImage(SpriteTileParser.resizeBufferedImageAsWorldUnit(ImageIO.read(new File("res/textures/hero2.png"))));
+        } catch (IOException e) {
+            System.err.println("Can't get icon image");
+            e.printStackTrace();
+        }
+
     }
 
     /**
