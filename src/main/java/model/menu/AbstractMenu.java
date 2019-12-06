@@ -97,4 +97,10 @@ public abstract class AbstractMenu {
     public MenuItem[] getMenuItems () {
         return items;
     }
+
+    /**
+     * Get the name of menu to display
+     * @return string name
+     */
+    public abstract String getText();
 }

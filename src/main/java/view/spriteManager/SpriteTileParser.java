@@ -21,7 +21,7 @@ public class SpriteTileParser {
     /**
      * Constante
      */
-    public static final String TEXTURE_PATH = "res/textures/";
+    public static final String TEXTURE_PATH = "textures/";
 
     /**
      * Ensemble des sprites stockee

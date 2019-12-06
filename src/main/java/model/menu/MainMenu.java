@@ -20,4 +20,9 @@ public class MainMenu extends AbstractMenu{
         items[4] = MenuItem.EXIT;
     }
 
+    @Override
+    public String getText() {
+        return "PAUSE";
+    }
+
 }

@@ -4,7 +4,6 @@ import view.spriteManager.SpriteTileParser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -18,7 +17,7 @@ import java.io.IOException;
     protected BufferedImage sprite;
 
     public BasicSprite(String path, boolean autoResize) throws IOException {
-        this.sprite = ImageIO.read(new File(path)) ;
+        this.sprite = ImageIO.read(BasicSprite.class.getClassLoader().getResourceAsStream(path)) ;
         if (autoResize)
             this.sprite = SpriteTileParser.resizeBufferedImageAsWorldUnit(this.sprite);
     }

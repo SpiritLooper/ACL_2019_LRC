@@ -16,7 +16,7 @@ public class DrawMenu implements DrawMode {
 
     private final static char CHAR_SELECTED = '>';
 
-    private final static int MARGIN_TOP = Painter.getHeight() / MenuItem.values().length;
+    private final static int MARGIN_TOP = Painter.getHeight() / ( MenuItem.values().length + 1 );
     private final static int MARGIN_LEFT = Painter.getWidth() / 4;
     private static final int PADDING = FONT_SIZE * 2;
 
@@ -27,9 +27,6 @@ public class DrawMenu implements DrawMode {
         this.game = game;
     }
 
-    /**
-     * TODO javadoc
-     */
     public void setMenu(AbstractMenu m){
         menuActual = m;
     }
@@ -53,7 +50,9 @@ public class DrawMenu implements DrawMode {
         g.setColor(Color.WHITE);
         g.setFont(STANDARD_FONT);
 
-        int i = MARGIN_TOP;
+        g.drawString(menuActual.getText(), MARGIN_LEFT - FONT_SIZE , MARGIN_TOP );
+
+        int i = MARGIN_TOP + PADDING;
         for (MenuItem item : items) {
             if( item == MenuItem.IDLE )
                 continue;
@@ -65,7 +64,7 @@ public class DrawMenu implements DrawMode {
             i += PADDING;
         }
 
-        g.drawString( ""+CHAR_SELECTED, MARGIN_LEFT - FONT_SIZE , MARGIN_TOP + (game.getSelectedMenuItem() * PADDING));
+        g.drawString( ""+CHAR_SELECTED, MARGIN_LEFT - FONT_SIZE , MARGIN_TOP + ((menuActual.getSelected() + 1 )* PADDING));
 
     }
 

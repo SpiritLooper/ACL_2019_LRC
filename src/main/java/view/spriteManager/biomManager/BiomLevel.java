@@ -1,13 +1,12 @@
 package view.spriteManager.biomManager;
-import view.Painter;
 import model.PositionPool;
 import model.element.Position;
 import model.game.Game;
+import view.Painter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -49,7 +48,7 @@ public abstract class BiomLevel {
 
     public BiomLevel(String path) {
        try {
-           tileSet = ImageIO.read(new File(path));
+           tileSet = ImageIO.read(BiomLevel.class.getClassLoader().getResourceAsStream(path));
            ground = defineGround();
            wallAlone = defineWallAlone();
            wallCross = defineWallCross();
