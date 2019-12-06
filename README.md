@@ -21,8 +21,8 @@ Pour attaquer, déplacez vous vers la direction de l'ennemi
 #### Menu
 - `a : ouvrir le menu principal`
 - `z : monter la flèche de sélection`
-- `d : descendre la flèche de sélection`
-- `ESPACE : confiremr la sélection`
+- `s : descendre la flèche de sélection`
+- `ESPACE : confirmer la sélection`
 
 ### Capture d'écrans
 ![GitHub Logo](/img/murky.png)
