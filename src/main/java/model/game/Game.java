@@ -4,6 +4,9 @@ import controller.Command;
 import model.element.Position;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
+import model.menu.AbstractMenu;
+import model.menu.EndGame;
+import model.menu.GameOver;
 import model.menu.Menu;
 import model.persistency.GameParser;
 import model.persistency.LevelDAO;
@@ -36,7 +39,17 @@ public class Game {
     /**
      * menu of the game
      */
-    private Menu menu;
+    private AbstractMenu menu;
+
+    /**
+     * menu when the game is finish
+     */
+    private AbstractMenu endGameMenu;
+
+    /**
+     * menu when the game is lost
+     */
+    private AbstractMenu gameOverMenu;
 
     /**
      * current level to play in
@@ -73,6 +86,8 @@ public class Game {
      */
     public Game(){
         this.menu = new Menu();
+        this.endGameMenu = new EndGame();
+        this.gameOverMenu = new GameOver();
         this.level = null;
         this.engine = null;
         this.finished = false;
@@ -195,7 +210,7 @@ public class Game {
     public void execute (Command command) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if(!this.lock) {
             //controls the menu if it is open
-            if (menu.isOpen()) {
+            if (menu.isOpen() || endGameMenu.isOpen() || gameOverMenu.isOpen()) {
                 switch (menu.control(command)) {
                     case CONTINUE:
                         menu.close();
@@ -219,6 +234,38 @@ public class Game {
                     case EXIT:
                         finish(false);
                         menu.close();
+                        break;
+
+
+                }
+
+                //menu lors de la victoire
+                switch(endGameMenu.control(command)){
+                    case RESTART:
+                        restart();
+                        endGameMenu.close();
+                        break;
+
+                    case EXIT:
+                        finish(false);
+                        endGameMenu.close();
+                        break;
+
+                    case IDLE:
+                    default:
+                        break;
+                }
+
+                //menu lors d'une défaite
+                switch(gameOverMenu.control(command)){
+                    case RESTART:
+                        restart();
+                        endGameMenu.close();
+                        break;
+
+                    case EXIT:
+                        finish(false);
+                        endGameMenu.close();
                         break;
 
                     case IDLE:
@@ -296,6 +343,38 @@ public class Game {
      */
     public boolean isMenuOpen () {
         return menu.isOpen();
+    }
+
+    /**
+     * TODO javadoc
+     * @return
+     */
+    public AbstractMenu getMenu(){
+        return menu;
+    }
+
+    public AbstractMenu getEndGameMenu(){
+        return endGameMenu;
+    }
+
+    public AbstractMenu getGameOverMenu(){
+        return gameOverMenu;
+    }
+
+    /**
+     * TODO javadoc
+     * @return
+     */
+    public boolean isEndGameMenuOpen(){
+        return endGameMenu.isOpen();
+    }
+
+    /**
+     * TODO javadoc
+     * @return
+     */
+    public boolean isGameOverMenuOpen(){
+        return gameOverMenu.isOpen();
     }
 
     /**
@@ -385,7 +464,13 @@ public class Game {
      */
     public void finish (boolean won) {
         this.won = won;
-        finished = true;
+        if(won){
+            endGameMenu.open();
+        }else{
+            gameOverMenu.open();
+        }
+        //finished = true;
+        //TODO truc que j'ai mis en comentaire pour que les touches haut bas marche
     }
 }
 

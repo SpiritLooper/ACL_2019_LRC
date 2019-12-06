@@ -50,7 +50,19 @@ public class Painter {
 
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
-        displayMode = (game.isMenuOpen()) ? MENU : GAME;
+        //displayMode = (game.isMenuOpen()) ? MENU : GAME;
+        if(game.isMenuOpen()){
+            displayMode = MENU;
+            MENU.setMenu(game.getMenu());
+        }else if(game.isGameOverMenuOpen()){
+            displayMode = MENU;
+            MENU.setMenu(game.getGameOverMenu());
+        }else if(game.isEndGameMenuOpen()){
+            displayMode = MENU;
+            MENU.setMenu(game.getEndGameMenu());
+        }else{
+            displayMode = GAME;
+        }
 
         displayMode.draw(crayon, iFrame);
     }

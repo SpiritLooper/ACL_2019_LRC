@@ -1,5 +1,7 @@
 package view.drawMode;
 
+import model.menu.AbstractMenu;
+import model.menu.Menu;
 import view.Painter;
 import model.menu.MenuItem;
 import model.game.Game;
@@ -20,9 +22,17 @@ public class DrawMenu implements DrawMode {
     private static final int PADDING = FONT_SIZE * 2;
 
     private Game game;
+    private AbstractMenu menuActual;
 
     public DrawMenu(Game game) {
         this.game = game;
+    }
+
+    /**
+     * TODO javadoc
+     */
+    public void setMenu(AbstractMenu m){
+        menuActual = m;
     }
 
     @Override
@@ -38,7 +48,9 @@ public class DrawMenu implements DrawMode {
      * @param g Image sur laquelle dessinee
      */
     private void drawItem(Graphics2D g) {
-        MenuItem[] items = MenuItem.values();
+        MenuItem[] items;
+        items = menuActual.getMenuItems();
+
         g.setColor(Color.WHITE);
         g.setFont(STANDARD_FONT);
 
