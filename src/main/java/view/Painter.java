@@ -20,6 +20,7 @@ public class Painter {
      */
     public static final int WORLD_UNIT = 50;
     public static final int FONT_SIZE = 36;
+    public static final int HEIGHT_ATH = 3 * FONT_SIZE / 2;
     public static final Font STANDARD_FONT = new Font("TimesRoman", Font.PLAIN, FONT_SIZE);
 
 
@@ -50,7 +51,6 @@ public class Painter {
 
         Graphics2D crayon = (Graphics2D) im.getGraphics();
 
-        //displayMode = (game.isMenuOpen()) ? MENU : GAME;
         if(game.isMenuOpen()){
             displayMode = MENU;
             MENU.setMenu(game.getMenu());
@@ -72,7 +72,7 @@ public class Painter {
     }
 
     public static int getHeight() {
-        return WORLD_UNIT * (Game.HEIGHT + 2);
+        return WORLD_UNIT * (Game.HEIGHT + 2) + HEIGHT_ATH;
     }
 
     public void updateNextLevel() {

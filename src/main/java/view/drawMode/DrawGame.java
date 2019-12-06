@@ -85,6 +85,12 @@ public class DrawGame implements DrawMode {
     public void draw(Graphics2D g, int iFrame) {
         GameStatement gameStat = game.getGameStatement();
 
+        //Création d'un fond
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0,0, Painter.getWidth(), Painter.getHeight());
+
+        drawATH(g, gameStat);
+
         drawLabyrinth(g, gameStat);
 
         drawEventTiles(g,gameStat);
@@ -93,12 +99,14 @@ public class DrawGame implements DrawMode {
 
         drawMonsters(g,  gameStat, iFrame);
 
-        drawTimer(g);
-
         if(game.isFinished()) {
             drawWin(g);
         }
 
+    }
+
+    private void drawATH(Graphics2D g, GameStatement gameStat) {
+        drawTimer(g);
     }
 
     /**
@@ -110,13 +118,13 @@ public class DrawGame implements DrawMode {
     private void drawHp(Graphics2D g, Position p, double pv , double pvMax ) {
 
         g.setColor(Color.RED);
-        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT, 5);
+        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT, 5);
         if(pv <= pvMax) {
             g.setColor(Color.GREEN);
-            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT , HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
         } else {
             g.setColor(Color.CYAN);
-            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  (p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT), 5);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  HEIGHT_ATH +(p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT), 5);
 
         }
 
@@ -128,12 +136,8 @@ public class DrawGame implements DrawMode {
      * @param gameStat
      */
     private void drawLabyrinth(Graphics2D g, GameStatement gameStat){
-        //Création fond blanc
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0,0, Painter.getWidth(), Painter.getHeight());
-
         //Dessin du sol
-        g.drawImage(levelBackground, 0,0, null);
+        g.drawImage(levelBackground, 0,HEIGHT_ATH , null);
     }
 
     /**
@@ -166,7 +170,7 @@ public class DrawGame implements DrawMode {
 
         //Parcours de chaque position de Wild Rose
         for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
-            g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
             drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
             if(iFrame == -1){
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
@@ -218,7 +222,7 @@ public class DrawGame implements DrawMode {
                 Color.RED :
                 Color.WHITE );
 
-        g.drawString("Moves Left : "+timeLeft , 0, Painter.getHeight() - ( FONT_SIZE / 4 * 6));
+        g.drawString("Moves Left : "+timeLeft , 0, HEIGHT_ATH / 2 + ( FONT_SIZE / 2) );
     }
 
     /**
@@ -231,19 +235,19 @@ public class DrawGame implements DrawMode {
         Position p;
         if(gameStat.hasATresure()){
             p = gameStat.getFirstPosition(GameStatement.TREASURE);
-            g.drawImage(treasureSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(treasureSprite, ( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
         } else {
             p = gameStat.getFirstPosition(GameStatement.STAIRS);
-            g.drawImage(stairsSprite, ( p.getX() + 1 ) * WORLD_UNIT, ( p.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(stairsSprite, ( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
         }
 
         //Dessin tiles buffer
         for( Position pos : gameStat.getAllPosition(GameStatement.HEAL)) {
-            g.drawImage(healTile, ( pos.getX() + 1 ) * WORLD_UNIT, ( pos.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(healTile, ( pos.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( pos.getY() + 1 ) * WORLD_UNIT , null);
         }
 
         for( Position pos : gameStat.getAllPosition(GameStatement.HEALOVERTIME)) {
-            g.drawImage(healOverTimeTile, ( pos.getX() + 1 ) * WORLD_UNIT, ( pos.getY() + 1 ) * WORLD_UNIT , null);
+            g.drawImage(healOverTimeTile, ( pos.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( pos.getY() + 1 ) * WORLD_UNIT , null);
         }
 
     }
@@ -263,7 +267,7 @@ public class DrawGame implements DrawMode {
             endMessage = "You Loose !";
         }
 
-        g.drawString(endMessage,0 ,Painter.getHeight() - ( FONT_SIZE / 4 ));
+        g.drawString(endMessage,0 ,HEIGHT_ATH + Painter.getHeight() - ( FONT_SIZE / 4 ));
     }
 
     /**
@@ -288,20 +292,20 @@ public class DrawGame implements DrawMode {
         if(frame >= 0) { // Si on est dans une animation on dessine le sprite animé
             switch (o) {
                 case UP:
-                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , (( newPosition.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT ,HEIGHT_ATH + (( newPosition.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
                     break;
                 case LEFT:
-                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( newPosition.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case RIGHT:
-                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( newPosition.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case DOWN:
-                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , HEIGHT_ATH + ( (newPosition.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
         } else { // Sinon on dessine le sprite par defaut
-            g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
+            g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT ,HEIGHT_ATH + ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
         }
     }
 
@@ -320,20 +324,20 @@ public class DrawGame implements DrawMode {
         if(frame >= 0) { // Si pon est en animation on dessine le sprite anime
             switch (o) {
                 case UP:
-                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , (( newPosition.getY() + 1 ) * WORLD_UNIT - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , HEIGHT_ATH +(( newPosition.getY() + 1 ) * WORLD_UNIT - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
                     break;
                 case LEFT:
-                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( newPosition.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case RIGHT:
-                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( newPosition.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( newPosition.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( newPosition.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case DOWN:
-                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                    g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , HEIGHT_ATH + ( (newPosition.getY() + 1 ) * WORLD_UNIT) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
         } else { // l'image par defaut sinon
-            g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT , ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
+            g.drawImage(os.getSprite(frame), ( newPosition.getX() + 1 ) * WORLD_UNIT ,HEIGHT_ATH + ( (newPosition.getY() + 1 ) * WORLD_UNIT), null );
         }
     }
 
@@ -359,20 +363,20 @@ public class DrawGame implements DrawMode {
 
             switch (o) {
                 case UP:
-                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , (( p.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
+                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , HEIGHT_ATH + (( p.getY() + 1 ) * WORLD_UNIT + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT)), null );
                     break;
                 case LEFT:
-                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) + (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( p.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case RIGHT:
-                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), ( p.getY() + 1) * WORLD_UNIT, null );
+                    g.drawImage(os.getSprite(frame), (( p.getX() + 1 ) * WORLD_UNIT ) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), HEIGHT_ATH + ( p.getY() + 1) * WORLD_UNIT, null );
                     break;
                 case DOWN:
-                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
+                    g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , HEIGHT_ATH + ( (p.getY() + 1 ) * WORLD_UNIT) - (int)(((double)(Engine.NB_FRAME_MOVE - frame) / (double)Engine.NB_FRAME_MOVE) * WORLD_UNIT), null );
                     break;
             }
         } else { // Image de bvase sinon
-          g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT , ( (p.getY() + 1 ) * WORLD_UNIT), null );
+          g.drawImage(os.getSprite(frame), ( p.getX() + 1 ) * WORLD_UNIT ,HEIGHT_ATH + ( (p.getY() + 1 ) * WORLD_UNIT), null );
         }
 
     }
