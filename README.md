@@ -9,20 +9,20 @@ Incarner évoli dans une folle aventure ! Trouver le trésor qui se trouve dans 
 
 #### Déplacement
 
-`z : déplacer le personnage en HAUT`
-`q : déplacer le personnage à GAUCHE`
-`s : déplacer le personnage en BAS`
-`d : déplacer le personnage à DROITE`
+- `z : déplacer le personnage en HAUT`
+- `q : déplacer le personnage à GAUCHE`
+- `s : déplacer le personnage en BAS`
+- `d : déplacer le personnage à DROITE`
 
 #### Attaques
 
 Pour attaquer, déplacez vous vers la direction de l'ennemi
 
 #### Menu
-`a : ouvrir le menu principal`
-`z : monter la flèche de sélection`
-`d : descendre la flèche de sélection`
-`ESPACE : confiremr la sélection`
+- `a : ouvrir le menu principal`
+- `z : monter la flèche de sélection`
+- `d : descendre la flèche de sélection`
+- `ESPACE : confiremr la sélection`
 
 ### Capture d'écrans
 ![GitHub Logo](/img/murky.png)
