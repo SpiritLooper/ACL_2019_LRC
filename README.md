@@ -3,9 +3,30 @@ Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gout
 
 ## Présentation
 
+Incarner évoli dans une folle aventure ! Trouver le trésor qui se trouve dans la dernière salle du labyrithe en évitant les fantominus et les simularbre pour gagner !
+
+### Commandes
+
+#### Déplacement
+
+`z : déplacer le personnage en HAUT`
+`q : déplacer le personnage à GAUCHE`
+`s : déplacer le personnage en BAS`
+`d : déplacer le personnage à DROITE`
+
+#### Attaques
+
+Pour attaquer, déplacez vous vers la direction de l'ennemi
+
+#### Menu
+`a : ouvrir le menu principal`
+`z : monter la flèche de sélection`
+`d : descendre la flèche de sélection`
+`ESPACE : confiremr la sélection`
+
+### Capture d'écrans
 ![GitHub Logo](/img/murky.png)
 ![GitHub Logo](/img/temporal.png)
-
 
 ## Prérequis
 #### Exécution du projet
