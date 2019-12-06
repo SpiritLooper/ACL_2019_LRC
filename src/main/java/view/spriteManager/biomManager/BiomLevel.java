@@ -69,6 +69,12 @@ public abstract class BiomLevel {
     protected static final int P_DOWN_BOTTOM_LEFT = 2;
     protected static final int P_DOWN_BOTTOM_RIGHT = 3;
 
+    private BufferedImage[] wallCornerTiny;
+    protected static final int CORNER_TINY_TOP_LEFT = 0;
+    protected static final int CORNER_TINY_TOP_RIGHT = 1;
+    protected static final int CORNER_TINY_BOTTOM_LEFT = 2;
+    protected static final int CORNER_TINY_BOTTOM_RIGHT = 3;
+
 
     public BiomLevel(String path) {
        try {
@@ -82,6 +88,7 @@ public abstract class BiomLevel {
            wallTetrisBorder = defineWallTetrisBorder();
            wallP = defineWallP();
            wallPDown = defineWallPDown();
+           wallCornerTiny = defineWallCornersTiny();
 
        } catch (IOException e ) {
            System.err.println("Load setTile Failed");
@@ -226,9 +233,16 @@ public abstract class BiomLevel {
         } else if (!wallUp && wallDown && !wallLeft && !wallRight ) { // 0  1  0  0
             wallSelected = wallCross[CROSS_MARGIN_TOP];
         } else if (!wallUp && wallDown && !wallLeft && wallRight) { // 0  1  0  1
-            wallSelected = wallSquare[SQUARE_TOP_LEFT];
+            if(bottomRight)
+                wallSelected = wallSquare[SQUARE_TOP_LEFT];
+            else
+                wallSelected = wallCornerTiny[CORNER_TINY_TOP_LEFT];
         } else if (!wallUp && wallDown && wallLeft && !wallRight) { // 0  1  1  0
-            wallSelected = wallSquare[SQUARE_TOP_RIGHT];
+            if(bottomLeft)
+                wallSelected = wallSquare[SQUARE_TOP_RIGHT];
+            else
+                wallSelected = wallCornerTiny[CORNER_TINY_TOP_RIGHT];
+
         } else if (!wallUp && wallDown && wallLeft && wallRight  ) { // 0  1  1  1
             if(!bottomRight && !bottomLeft){
                 wallSelected = wallTetris[TETRIS_TOP];
@@ -242,9 +256,19 @@ public abstract class BiomLevel {
         } else if (wallUp && !wallDown && !wallLeft && !wallRight ) { // 1  0  0  0
             wallSelected = wallCross[CROSS_MARGIN_BOTTOM];
         } else if (wallUp && !wallDown && !wallLeft && wallRight ) { // 1  0  0  1
-            wallSelected = wallSquare[SQUARE_BOTTOM_LEFT];
+            if(topRight)
+                wallSelected = wallSquare[SQUARE_BOTTOM_LEFT];
+            else {
+                wallSelected = wallCornerTiny[CORNER_TINY_BOTTOM_LEFT];
+            }
         } else if (wallUp && !wallDown && wallLeft && !wallRight ) { // 1  0  1  0
             wallSelected = wallSquare[SQUARE_BOTTOM_RIGHT];
+            if(topLeft)
+                wallSelected = wallSquare[SQUARE_BOTTOM_RIGHT];
+            else {
+                wallSelected = wallCornerTiny[CORNER_TINY_BOTTOM_RIGHT];
+            }
+
         } else if (wallUp && !wallDown && wallLeft && wallRight ) { // 1  0  1  1
             if(!topRight && !topLeft) {
                 wallSelected = wallTetris[TETRIS_BOTTOM];
@@ -324,6 +348,12 @@ public abstract class BiomLevel {
      * @return tableau d'image organise comme les constante CORNER_*
      */
     protected abstract BufferedImage[] defineWallCorners();
+
+    /**
+     * Defini les murs en coins
+     * @return tableau d'image organise comme les constante CORNER_TINY_*
+     */
+    protected abstract BufferedImage[] defineWallCornersTiny();
 
     /**
      * Give wall in disposition tetris like

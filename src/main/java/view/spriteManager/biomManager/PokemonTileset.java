@@ -134,5 +134,20 @@ public abstract class PokemonTileset extends BiomLevel {
 
         return wallPDown;
     }
+
+    @Override
+    protected BufferedImage[] defineWallCornersTiny() {
+        BufferedImage[] wallTinyCorner = new BufferedImage[4];
+
+        wallTinyCorner[CORNER_TINY_TOP_LEFT] = this.tileSet.getSubimage(84,238,24,24);
+        wallTinyCorner[CORNER_TINY_BOTTOM_LEFT] = this.tileSet.getSubimage(84,288,24,24);
+        wallTinyCorner[CORNER_TINY_TOP_RIGHT] = this.tileSet.getSubimage(134,238,24,24);
+        wallTinyCorner[CORNER_TINY_BOTTOM_RIGHT] = this.tileSet.getSubimage(134,288,24,24);
+
+        for (int i = 0 ; i < wallTinyCorner.length ; i++ )
+            wallTinyCorner[i] = SpriteTileParser.resizeBufferedImageAsWorldUnit(wallTinyCorner[i]);
+
+        return wallTinyCorner;
+    }
 }
 
