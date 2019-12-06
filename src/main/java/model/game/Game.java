@@ -5,9 +5,9 @@ import model.element.Position;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 import model.menu.AbstractMenu;
-import model.menu.EndGame;
-import model.menu.GameOver;
-import model.menu.Menu;
+import model.menu.EndGameMenu;
+import model.menu.GameOverMenu;
+import model.menu.MainMenu;
 import model.persistency.GameParser;
 import model.persistency.LevelDAO;
 import model.persistency.SaveDAO;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * todo nettoyer ca
  * Facade connecting the Model to the View for the MVC architecture
  * @author gouth
  */
@@ -85,9 +84,9 @@ public class Game {
      * Constructor instantiating a timer and setting the game to not finished
      */
     public Game(){
-        this.menu = new Menu();
-        this.endGameMenu = new EndGame();
-        this.gameOverMenu = new GameOver();
+        this.menu = new MainMenu();
+        this.endGameMenu = new EndGameMenu();
+        this.gameOverMenu = new GameOverMenu();
         this.level = null;
         this.engine = null;
         this.finished = false;
@@ -210,7 +209,7 @@ public class Game {
     public void execute (Command command) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if(!this.lock) {
             //controls the menu if it is open
-            if (menu.isOpen() || endGameMenu.isOpen() || gameOverMenu.isOpen()) {
+            if (menu.isOpen()) {
                 switch (menu.control(command)) {
                     case CONTINUE:
                         menu.close();
@@ -236,11 +235,19 @@ public class Game {
                         menu.close();
                         break;
 
-
+                    case IDLE:
+                    default:
+                        break;
                 }
 
+                notifyEngine();
+                return;
+            }
+
+            if (endGameMenu.isOpen()) {
+
                 //menu lors de la victoire
-                switch(endGameMenu.control(command)){
+                switch (endGameMenu.control(command)) {
                     case RESTART:
                         restart();
                         endGameMenu.close();
@@ -256,16 +263,27 @@ public class Game {
                         break;
                 }
 
+                notifyEngine();
+                return;
+            }
+
+            if (gameOverMenu.isOpen()) {
+
                 //menu lors d'une défaite
                 switch(gameOverMenu.control(command)){
                     case RESTART:
                         restart();
-                        endGameMenu.close();
+                        gameOverMenu.close();
+                        break;
+
+                    case LOAD:
+                        loadSave();
+                        gameOverMenu.close();
                         break;
 
                     case EXIT:
                         finish(false);
-                        endGameMenu.close();
+                        gameOverMenu.close();
                         break;
 
                     case IDLE:
@@ -346,32 +364,35 @@ public class Game {
     }
 
     /**
-     * TODO javadoc
-     * @return
+     * @return the main menu of the game
      */
     public AbstractMenu getMenu(){
         return menu;
     }
 
+    /**
+     * @return the end game menu of the game
+     */
     public AbstractMenu getEndGameMenu(){
         return endGameMenu;
     }
 
+    /**
+     * @return the game over menu of the game
+     */
     public AbstractMenu getGameOverMenu(){
         return gameOverMenu;
     }
 
     /**
-     * TODO javadoc
-     * @return
+     * @return whether the end game menu is open or not
      */
     public boolean isEndGameMenuOpen(){
         return endGameMenu.isOpen();
     }
 
     /**
-     * TODO javadoc
-     * @return
+     * @return whether the game over menu is open or not
      */
     public boolean isGameOverMenuOpen(){
         return gameOverMenu.isOpen();
@@ -381,7 +402,7 @@ public class Game {
      * @return an integer (0..3) representing the selected item in the menu : 0:CONTINUE, 1:SAVE, 2:LOAD, 3:EXIT
      */
     public int getSelectedMenuItem () {
-        return menu.getSelected().ordinal();
+        return menu.getSelected();
     }
 
     /**
@@ -469,8 +490,6 @@ public class Game {
         }else{
             gameOverMenu.open();
         }
-        //finished = true;
-        //TODO truc que j'ai mis en comentaire pour que les touches haut bas marche
     }
 }
 

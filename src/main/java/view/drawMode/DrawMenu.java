@@ -1,7 +1,6 @@
 package view.drawMode;
 
 import model.menu.AbstractMenu;
-import model.menu.Menu;
 import view.Painter;
 import model.menu.MenuItem;
 import model.game.Game;

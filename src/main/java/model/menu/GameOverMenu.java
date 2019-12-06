@@ -1,19 +1,16 @@
 package model.menu;
 
-public class GameOver extends AbstractMenu {
+public class GameOverMenu extends AbstractMenu {
 
-    public GameOver(){
+    /**
+     * Constructor for the menu when dying
+     */
+    public GameOverMenu(){
         super();
-    }
-
-    @Override
-    public MenuItem[] getMenuItems(){
-        MenuItem[] items = new MenuItem[3];
+        items = new MenuItem[3];
         items[0] = MenuItem.RESTART;
         items[1] = MenuItem.LOAD;
         items[2] = MenuItem.EXIT;
-
-        return items;
     }
 
     public String getText(){

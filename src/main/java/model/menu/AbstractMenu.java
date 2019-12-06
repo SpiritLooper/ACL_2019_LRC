@@ -2,12 +2,12 @@ package model.menu;
 
 import controller.Command;
 
-public class AbstractMenu {
+public abstract class AbstractMenu {
 
     /**
      * currently selected item of the menu
      */
-    protected MenuItem selected;
+    protected int selected;
 
     /**
      * is the menu open?
@@ -15,10 +15,15 @@ public class AbstractMenu {
     protected boolean open;
 
     /**
+     * items of this menu
+     */
+    protected MenuItem[] items;
+
+    /**
      * Constructor initializing the selected item to CONTINUE
      */
     protected AbstractMenu() {
-        selected = MenuItem.CONTINUE;
+        selected = 0;
     }
 
     /**
@@ -26,16 +31,14 @@ public class AbstractMenu {
      */
     public void open () {
         open = true;
-        //System.out.println("Menu est ouvert");
     }
 
     /**
      * Closes the menu and puts the selected item to CONTINUE
      */
     public void close () {
-        selected = MenuItem.CONTINUE;
+        selected = 0;
         open = false;
-        //System.out.println("Menu est fermé");
     }
 
     /**
@@ -46,22 +49,26 @@ public class AbstractMenu {
     public MenuItem control (Command command) {
         switch (command) {
             case UP:
-                if (selected.ordinal() - 1 == -1) {
-                    selected = MenuItem.values()[MenuItem.values().length - 2];
+                if (selected - 1 == -1) {
+                    selected = items.length - 1;
                 } else {
-                    selected = MenuItem.values()[(selected.ordinal() - 1) % (MenuItem.values().length - 1)];
+                    selected = selected - 1;
                 }
                 break;
 
             case DOWN:
-                selected = MenuItem.values()[(selected.ordinal() + 1) % (MenuItem.values().length - 1)];
+                if (selected + 1 == items.length) {
+                    selected = 0;
+                } else {
+                    selected = selected + 1;
+                }
                 break;
 
             case SPACE:
-                return selected;
+                return items[selected];
 
             case ESCAPE:
-                return MenuItem.CONTINUE;
+                return items[0];
 
             default:
                 break;
@@ -80,17 +87,14 @@ public class AbstractMenu {
     /**
      * @return selected item of the menu
      */
-    public MenuItem getSelected () {
+    public int getSelected () {
         return selected;
     }
 
     /**
-     * TODO javadoc
-     * @return
+     * @return array of the menu items of this menu
      */
-    public MenuItem[] getMenuItems(){
-        MenuItem[] items = new MenuItem[1];
-        items[0] = MenuItem.IDLE;
+    public MenuItem[] getMenuItems () {
         return items;
     }
 }
