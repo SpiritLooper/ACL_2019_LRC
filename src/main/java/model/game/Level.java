@@ -453,14 +453,6 @@ public class Level {
     }
 
     /**
-     * Rotates the hero depending on the given command
-     * @param command command to consult for the rotation
-     */
-    public void rotateHero(Command command) {
-        hero.rotate(command);
-    }
-
-    /**
      * Returns x coordinate of the given entity
      * @param monster entity to look for
      * @return x coordinate

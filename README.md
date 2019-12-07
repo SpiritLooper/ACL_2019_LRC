@@ -24,6 +24,14 @@ Pour attaquer, déplacez vous vers la direction de l'ennemi
 - `s : descendre la flèche de sélection`
 - `ESPACE : confirmer la sélection`
 
+### Outils
+
+Dans les fichiers du jeu, vous avez à votre disposition un classeur libre Office, où il vous faudra accepter les macros.
+Ce fichier permet de générer des fichiers de niveau .lyt plus facilement grâce à la grille qu'offre un classeur.
+Pour ce faire il suffit de placer vos divers élement, à l'endroit desiré dans le niveau. 
+Par exemple dans la case du classeur (2,5), si vous mettez un "H", un le Héro démarrera à la position (2,5) dans le niveau.
+Plus de détails dans le classeur.
+
 ### Capture d'écrans
 ![GitHub Logo](/img/murky.png)
 ![GitHub Logo](/img/temporal.png)
