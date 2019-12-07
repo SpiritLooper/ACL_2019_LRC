@@ -152,12 +152,21 @@ public class DrawGame implements DrawMode {
         for(Position p : gameStat.getAllPosition(GameStatement.ZOMBIE))  {
             //On regarde si on connait l'ancienne position du monstre
            if(lastMonsterPositionMap.containsKey(gameStat.getMonster(p))){
-               //On regarde s'il a un mur en face
-               boolean haveWallInFace = isAWallInFace(lastMonsterPositionMap.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
-               if( !haveWallInFace ) { // On dessine l'animation
-                   drawMoveEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus());
-               } else { // On dessine le sprite initial sinon
-                   drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
+               boolean haveAMonsterInFace = false;
+               for(Position monsterPosition : lastMonsterPositionMap.values()){ // On regarde s'il y a un monstre en face de lui
+                   haveAMonsterInFace = haveAMonsterInFace || isAMonsterInFace(lastMonsterPositionMap.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),monsterPosition, gameStat);
+               }
+
+               if(haveAMonsterInFace) {
+                   drawEntityOrientedSprite(g,p, -1,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
+               } else {
+                   //On regarde s'il a un mur en face
+                   boolean haveWallInFace = isAWallInFace(lastMonsterPositionMap.get(gameStat.getMonster(p)),gameStat.getMonster(p).getOrientation(),gameStat);
+                   if( !haveWallInFace ) { // On dessine l'animation
+                       drawMoveEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus());
+                   } else { // On dessine le sprite initial sinon
+                       drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
+                   }
                }
            } else { // On dessine l'etat initial peu importe
                drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
