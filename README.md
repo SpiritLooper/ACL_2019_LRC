@@ -27,10 +27,19 @@ Pour attaquer, déplacez vous vers la direction de l'ennemi
 ### Outils
 
 Dans les fichiers du jeu, vous avez à votre disposition un classeur libre Office, où il vous faudra accepter les macros.
+
+- `/res/saves/generator_level.xmls`
+
 Ce fichier permet de générer des fichiers de niveau .lyt plus facilement grâce à la grille qu'offre un classeur.
-Pour ce faire il suffit de placer vos divers élement, à l'endroit desiré dans le niveau. 
-Par exemple dans la case du classeur (2,5), si vous mettez un "H", un le Héro démarrera à la position (2,5) dans le niveau.
-Plus de détails dans le classeur.
+Pour ce faire il suffit de : 
+
+1. Placer vos divers élement, à l'endroit desiré dans le niveau. (Légende dans le classeur)
+2. Cliquer sur le bouton `Générer` 
+3. Prener le code généré de la cellule M2
+4. Enregistrer ce code dans un fichier *nom_fichier.lyt* dans le dossier `res/saves/`
+5. Ajouter dans le fichier `res/saves/game.lyt`  le nom du fichier que vous venez de créer en pensant bien de mettre à jour le nombre de __LEVEL:__*X*
+
+> *Attention /!\ : Il n'est possible que de créer des niveaux 10 x 10 cases*
 
 ### Capture d'écrans
 ![GitHub Logo](/img/murky.png)
@@ -51,6 +60,8 @@ Plus de détails dans le classeur.
 ## Exécuter le projet 
 1. Récupérer dans le dossier **/bin** le dossier du sprint voulu, le dernier Sprint est la version la plus récente du projet
 2. Puis exécuter le jar du dossier récupéré avec la commande `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
+
+> *A partir du Sprint2 inclus, vérifier que le jar executé est à côté du dossier *res* contenant toutes les ressources du projet*
 
 ## Correction erreur de compilation
 Si le projet refuse de se compiler avec maven
