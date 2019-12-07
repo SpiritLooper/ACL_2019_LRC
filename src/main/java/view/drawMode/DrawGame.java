@@ -118,13 +118,13 @@ public class DrawGame implements DrawMode {
     private void drawHp(Graphics2D g, Position p, double pv , double pvMax ) {
 
         g.setColor(Color.RED);
-        g.fillRect((p.getX() + 1) * WORLD_UNIT ,  HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT, 5);
+        g.fillRect((p.getX() + 1) * WORLD_UNIT + 1,  HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, WORLD_UNIT - 2, 5);
         if(pv <= pvMax) {
             g.setColor(Color.GREEN);
-            g.fillRect((p.getX() + 1) * WORLD_UNIT , HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax, 5);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT + 1 , HEIGHT_ATH + (p.getY() + 1) * WORLD_UNIT - 10, ( (int)pv  * WORLD_UNIT) / (int)pvMax - 2, 5);
         } else {
             g.setColor(Color.CYAN);
-            g.fillRect((p.getX() + 1) * WORLD_UNIT ,  HEIGHT_ATH +(p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT), 5);
+            g.fillRect((p.getX() + 1) * WORLD_UNIT  + 1,  HEIGHT_ATH +(p.getY() + 1) * WORLD_UNIT - 10, ( WORLD_UNIT ) - 2 , 5);
 
         }
 
