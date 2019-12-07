@@ -3,3 +3,4 @@ TILE:Stairs:9,9
 MONSTER:BasicMonster:6,0;0,6
 MONSTER:ImmovableMonster:9,8
 HERO:6,6
+BIOM:MURKY_FOREST

@@ -4,6 +4,7 @@ import model.element.entities.Monster;
 import model.element.Position;
 import model.element.entities.buffs.Buff;
 import model.element.tiles.buffTiles.BuffTile;
+import model.game.Biom;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -213,6 +214,10 @@ public class GameParser {
                         level.addWall(Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]));
                     }
                 }//end for
+            } else if(line.startsWith("BIOM:")){
+                String tmp = line.substring(5);
+                Biom biom = Biom.valueOf(tmp);
+                level.setBiom(biom);
             }//end if...else..if
 
         }//end while

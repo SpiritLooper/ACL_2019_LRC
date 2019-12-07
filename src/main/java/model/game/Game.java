@@ -166,8 +166,7 @@ public class Game {
             arrayLevels[i] = null;//on libère la mémoire, on en a plus besoin
             //l'idée est que les niveaux se connaissent entre eux mtnt plus besoin de tabs
         }
-
-
+        //ce commentaire est ici juste pour voir si qqun lis le code, bisous <3 (P.G)
         level.updateGameStatement(this.gameStatement); // Mis a jour de l'instance de jeu
     }
 

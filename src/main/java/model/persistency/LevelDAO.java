@@ -6,6 +6,8 @@ import model.element.entities.Hero;
 import model.element.entities.Monster;
 import model.element.tiles.Tile;
 import model.element.tiles.Wall;
+import model.game.Biom;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,11 @@ public class LevelDAO {
      * list of tiles
      */
     private HashMap<Position, Tile> tiles;
+
+    /**
+     * biom of the level
+     */
+    private Biom biom;
 
     /**
      * Constructor initializing the lists
@@ -94,6 +101,7 @@ public class LevelDAO {
         tiles.put(pos, new Wall());
     }
 
+
     /**
      * @return the map of the monsters referenced by their keys
      */
@@ -115,4 +123,18 @@ public class LevelDAO {
         return hero;
     }
 
+    /**
+     * @return : the biom
+     */
+    public Biom getBiom() {
+        return biom;
+    }
+
+    /**
+     * setter
+     * @param biom ; the biom
+     */
+    public void setBiom(Biom biom){
+        this.biom = biom;
+    }
 }

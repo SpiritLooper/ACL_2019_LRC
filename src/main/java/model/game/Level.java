@@ -236,6 +236,7 @@ public class Level {
         this.monsters = lvl.getMonsters();
         this.tiles = lvl.getTiles();
         this.hero = lvl.getHero();
+        this.biomLevel = lvl.getBiom();
     }
 
     /**

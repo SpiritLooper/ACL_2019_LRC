@@ -5,3 +5,4 @@ MONSTER:ImmovableMonster:9,9
 BUFF_TILE:HealTile:0,0
 BUFF_TILE:HealOverTimeTile:0,1
 HERO:0,3
+BIOM:STATION_PASS
