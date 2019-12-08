@@ -228,8 +228,7 @@ public class Game {
                         break;
 
                     case EXIT:
-                        finish(false);
-                        menu.close();
+                        closeGame();
                         break;
 
                     case IDLE:
@@ -251,8 +250,7 @@ public class Game {
                         break;
 
                     case EXIT:
-                        finish(false);
-                        endGameMenu.close();
+                        closeGame();
                         break;
 
                     case IDLE:
@@ -279,8 +277,7 @@ public class Game {
                         break;
 
                     case EXIT:
-                        finish(false);
-                        gameOverMenu.close();
+                        closeGame();
                         break;
 
                     case IDLE:
@@ -488,6 +485,14 @@ public class Game {
             gameOverMenu.open();
         }
     }
+
+    /**
+     * Closes the game
+     */
+    private void closeGame () {
+        System.exit(0);
+    }
+
 }
 
 
