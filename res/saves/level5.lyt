@@ -1,0 +1,7 @@
+WALLS:2,0to7,0;2,9to7,9;0,2to0,7;9,2to9,7
+MONSTER:BasicMonster:4,1;3,1;5,1;3,2;5,2
+MONSTER:ImmovableMonster:4,3
+HERO:4,2
+TILE:Treasure:4,7
+BUFF_TILE:HealOverTimeTile:4,5;
+BIOM:TEMPORAL_TOWER
