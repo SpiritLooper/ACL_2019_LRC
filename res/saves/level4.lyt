@@ -3,4 +3,6 @@ MONSTER:BasicMonster:8,1;9,1;6,4;1,6;4,8;7,9
 MONSTER:ImmovableMonster:9,4
 HERO:1,3
 TILE:Treasure:9,3
+BUFF_TILE:HealOverTimeTile:0,9;6,5
+BUFF_TILE:HealTile:0,3;6,7
 BIOM:TEMPORAL_TOWER
