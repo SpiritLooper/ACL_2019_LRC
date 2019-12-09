@@ -174,7 +174,7 @@ public class DrawGame implements DrawMode {
            } else { // On dessine l'etat initial peu importe
                drawEntityOrientedSprite(g,p, iFrame,gameStat.getMonster(p).getOrientation(), zombieSprite,gameStat.getMonster(p).getStatus(), gameStat);
            }
-            drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.PV_BASE);
+            drawHp(g, p, gameStat.getMonster(p).getHp(), BasicMonster.BASE_HP);
 
             if(iFrame == -1) // Enregistre la position du monstre
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
@@ -183,7 +183,7 @@ public class DrawGame implements DrawMode {
         //Parcours de chaque position de Wild Rose
         for(Position p : gameStat.getAllPosition(GameStatement.WILD_ROSE))  {
             g.drawImage(wildRoseSprite,( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
-            drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
+            drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.BASE_HP);
             if(iFrame == -1){
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
             }

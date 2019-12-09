@@ -36,7 +36,7 @@ public class Engine {
     public Engine(Game game) {
         this.game = game;
         this.gamePainter = new Painter(game);
-        this.gameController = new Controller(game);
+        this.gameController = new Controller();
     }
 
     /**

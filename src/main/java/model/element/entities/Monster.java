@@ -4,7 +4,6 @@ import controller.Command;
 import controller.Orientation;
 import model.element.entities.buffs.Buff;
 import model.game.EventManager;
-import view.AudioPlayer;
 
 import java.util.ArrayList;
 

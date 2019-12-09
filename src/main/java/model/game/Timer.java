@@ -23,14 +23,6 @@ public class Timer {
     }
 
     /**
-     * Constructor with a set time
-     * @param timeLeft time until the game finishes
-     */
-    public Timer (int timeLeft) {
-        this.timeLeft = timeLeft;
-    }
-
-    /**
      * @return time left before the galme finishes
      */
     public int getTimeLeft() {

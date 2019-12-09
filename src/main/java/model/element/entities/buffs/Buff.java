@@ -33,10 +33,6 @@ public abstract class Buff {
         this.entity = entity;
     }
 
-    public void setDuration (int duration) {
-        this.duration = duration;
-    }
-
     /**
      * @return duration
      */

@@ -1,5 +1,8 @@
 package model.menu;
 
+/**
+ * Menu used for when the hero finishes the game
+ */
 public class EndGameMenu extends AbstractMenu {
 
     /**

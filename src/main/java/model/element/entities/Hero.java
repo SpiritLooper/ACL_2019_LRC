@@ -15,6 +15,9 @@ import java.util.ArrayList;
  */
 public class Hero implements Entity{
 
+    /**
+     * Base health points of the hero
+     */
     public static int PV_BASE = 10;
 
     /**
@@ -228,7 +231,6 @@ public class Hero implements Entity{
 
             default:
         }
-        //System.out.println("I'm hero" + this.getClass() + "and i'm rotating to the " + getOrientation().name());
     }
 
     /**

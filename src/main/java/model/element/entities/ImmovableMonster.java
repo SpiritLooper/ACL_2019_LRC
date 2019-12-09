@@ -7,13 +7,21 @@ import controller.Command;
  */
 public class ImmovableMonster extends Monster {
 
-    public static int PV_BASE = 2;
+    /**
+     * base health points of the monster
+     */
+    public static final int BASE_HP = 2;
+
+    /**
+     * base attack value of the monster
+     */
+    public static final int BASE_ATK = 2;
 
     /**
      * Constructor initializing the immovable monster to 2 hp and 2 atk
      */
     public ImmovableMonster(){
-        super(PV_BASE,2);
+        super(BASE_HP, BASE_ATK);
     }
 
     /**

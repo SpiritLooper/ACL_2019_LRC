@@ -9,10 +9,21 @@ import java.util.Random;
  */
 public class BasicMonster extends Monster {
 
-    public static int PV_BASE = 2;
+    /**
+     * Base health point of the monster
+     */
+    public static final int BASE_HP = 2;
 
+    /**
+     * BAse attack value of the monster
+     */
+    public static final int BASE_ATK = 1;
+
+    /**
+     * Constructor of a basic monster
+     */
     public BasicMonster(){
-        super(PV_BASE,1);
+        super(BASE_HP, BASE_ATK);
     }
 
     /**

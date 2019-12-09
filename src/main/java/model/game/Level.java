@@ -240,22 +240,6 @@ public class Level {
     }
 
     /**
-     * Generates a default level
-     * @return the generated level
-     */
-    protected Level generateDefaultLevel() {
-
-        Position p = PositionPool.getInstance().getPosition(2, 2);
-        addMonster(p, new BasicMonster());
-
-        //Ajout mur
-        p = PositionPool.getInstance().getPosition(2, 1);
-        addTile(p, new Wall());
-
-        return this;
-    }
-
-    /**
      * @return next level
      */
     public Level nextLevel() {

@@ -1,5 +1,8 @@
 package model.menu;
 
+/**
+ * Menu used for when the hero dies
+ */
 public class GameOverMenu extends AbstractMenu {
 
     /**

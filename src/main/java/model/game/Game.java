@@ -393,13 +393,6 @@ public class Game {
     }
 
     /**
-     * @return an integer (0..3) representing the selected item in the menu : 0:CONTINUE, 1:SAVE, 2:LOAD, 3:EXIT
-     */
-    public int getSelectedMenuItem () {
-        return menu.getSelected();
-    }
-
-    /**
      * Updates the level, decrease the remaining time (finish the game if the time is out and notifies the engine
      */
     private void update () throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {

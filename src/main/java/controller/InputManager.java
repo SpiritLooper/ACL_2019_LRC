@@ -59,8 +59,6 @@ public class InputManager implements KeyListener {
      */
     private long previous_time;
 
-    private long delta;
-
     private boolean pressed;
 
     /**
@@ -71,9 +69,7 @@ public class InputManager implements KeyListener {
         this.controller = controller;
         this.currentCommand = Command.IDLE;
         previous_time = 0;
-        delta = 0;
         pressed = false;
-
     }
 
     /**
@@ -81,10 +77,7 @@ public class InputManager implements KeyListener {
      * @param e keyboard input event
      */
     @Override
-    public void keyTyped(KeyEvent e) {
-
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     /**
      * Launched when pressing a key start the timer
@@ -105,7 +98,6 @@ public class InputManager implements KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        delta = System.currentTimeMillis() - previous_time;
         pressed = false;
         switch (e.getKeyChar()) {
             case UP_KEY:
@@ -141,9 +133,7 @@ public class InputManager implements KeyListener {
 
         }
 
-        controller.setDurationKey(delta > 150);
         controller.setCommand(currentCommand);
-
 
         currentCommand = Command.IDLE;
     }

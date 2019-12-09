@@ -93,7 +93,7 @@ public class Position {
     }
 
     @Override
-    public boolean equals(Object obj) { //peut mieux faire ?
+    public boolean equals(Object obj) {
         Position p = (Position) obj;
         return this.getX() == p.getX() && this.getY() == p.getY();
     }

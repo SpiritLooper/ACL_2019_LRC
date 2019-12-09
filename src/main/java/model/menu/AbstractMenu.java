@@ -2,6 +2,9 @@ package model.menu;
 
 import controller.Command;
 
+/**
+ * Abstract class for the 3 different menus
+ */
 public abstract class AbstractMenu {
 
     /**
