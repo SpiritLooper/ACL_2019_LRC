@@ -192,7 +192,6 @@ public class DrawGame implements DrawMode {
         //Parcours des murs cassable
         for (Position p : gameStat.getAllPosition(GameStatement.BREAKABLE_WALL)) {
             g.drawImage(breakableWallSprite.getSprite(),( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
-            //drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
             if(iFrame == -1){
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
             }
