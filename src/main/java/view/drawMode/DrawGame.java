@@ -98,9 +98,9 @@ public class DrawGame implements DrawMode {
 
         drawEventTiles(g,gameStat);
 
-        drawHero(g, gameStat, iFrame);
-
         drawMonsters(g,  gameStat, iFrame);
+
+        drawHero(g, gameStat, iFrame);
 
         if(game.isFinished()) {
             drawWin(g);
