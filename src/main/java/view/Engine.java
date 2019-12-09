@@ -62,7 +62,7 @@ public class Engine {
                             || !game.isGameOverMenuOpen())) {
                 for(int i = 0 ; i < NB_FRAME_MOVE ; i++) {
                     this.gui.paint(i);
-                    Thread.sleep(75);
+                    Thread.sleep(20);
                 }
                 this.gamePainter.cleanCache();
             }
