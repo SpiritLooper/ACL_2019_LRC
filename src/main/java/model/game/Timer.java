@@ -8,7 +8,7 @@ public class Timer {
     /**
      * Default time to use
      */
-    private final int DEFAULT_TIME = 30;
+    private final int DEFAULT_TIME = 100;
 
     /**
      * remaining time (rounds) until the game finishes
