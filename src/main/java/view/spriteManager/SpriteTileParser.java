@@ -34,6 +34,7 @@ public class SpriteTileParser {
     private final static BiomLevel DARK_BIOM = new DarkWasteland();
     private final static BiomLevel STATION_BIOM = new StationPass();
     private final static BiomLevel TEMPORAL_BIOM = new TemporalTower();
+    private final static BiomLevel ABYSSE = new Abysse();
 
     private static ImageLevelLinked imageslevelCurrent;
     private static ImageLevelLinked imageslevelStock;
@@ -66,6 +67,9 @@ public class SpriteTileParser {
                     break;
                 case TEMPORAL_TOWER:
                     biom = TEMPORAL_BIOM;
+                    break;
+                case ABYSSE:
+                    biom = ABYSSE;
                     break;
                 case MURKY_FOREST:
                 default:

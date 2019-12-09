@@ -4,4 +4,4 @@ MONSTER:ImmovableMonster:4,3
 HERO:4,2
 TILE:Treasure:4,7
 BUFF_TILE:HealOverTimeTile:4,5;
-BIOM:TEMPORAL_TOWER
+BIOM:ABYSSE
