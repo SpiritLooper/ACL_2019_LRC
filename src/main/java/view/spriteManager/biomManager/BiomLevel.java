@@ -18,6 +18,8 @@ public abstract class BiomLevel {
 
     private BufferedImage ground;
 
+    public String path;
+
     private BufferedImage[] wallSquare;
     protected static final int SQUARE_TOP_LEFT = 0;
     protected static final int SQUARE_TOP_MID = 1;
@@ -78,6 +80,7 @@ public abstract class BiomLevel {
 
     public BiomLevel(String path) {
        try {
+           this.path = path;
            tileSet = ImageIO.read(BiomLevel.class.getClassLoader().getResourceAsStream(path));
            ground = defineGround();
            wallAlone = defineWallAlone();
@@ -217,7 +220,7 @@ public abstract class BiomLevel {
      * @param bottomLeft true if no wall bottom left
      * @param bottomRight true if no wall bottom right
      */
-    private BufferedImage getWall(Position p, boolean wallUp, boolean wallDown, boolean wallLeft, boolean wallRight, 
+    public BufferedImage getWall(Position p, boolean wallUp, boolean wallDown, boolean wallLeft, boolean wallRight,
                                   boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight) {
      // On traite tout les cas possible : Liste par suite binaire (Je pleure en ecrivant ce commentaire)
 
@@ -466,6 +469,10 @@ public abstract class BiomLevel {
         } else {
             return wallSquare[SQUARE_MID_LEFT];
         }
+    }
+
+    public BufferedImage getWallAlone() {
+        return wallAlone;
     }
 
 

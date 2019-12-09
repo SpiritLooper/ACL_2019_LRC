@@ -77,6 +77,7 @@ public class Painter {
 
     public void updateNextLevel() {
         GAME.updateNextLevel();
+        GAME.updateBreakableWall();
     }
 
     public void cleanCache() {

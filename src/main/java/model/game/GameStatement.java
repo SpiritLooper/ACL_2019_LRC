@@ -1,10 +1,7 @@
 package model.game;
 
 import model.element.*;
-import model.element.entities.Hero;
-import model.element.entities.ImmovableMonster;
-import model.element.entities.BasicMonster;
-import model.element.entities.Monster;
+import model.element.entities.*;
 import model.element.tiles.Stairs;
 import model.element.tiles.Treasure;
 import model.element.tiles.Wall;
@@ -30,6 +27,8 @@ public class GameStatement {
     public static final String WALL = Wall.class.getSimpleName() ;
     public static final String HEAL = HealTile.class.getSimpleName();
     public static final String HEALOVERTIME = HealOverTimeTile.class.getSimpleName();
+    public static final String BREAKABLE_WALL = BreakableWall.class.getSimpleName();
+
     /**
      * Stockage des elements
      */
@@ -48,6 +47,7 @@ public class GameStatement {
         elements.put(ZOMBIE, new HashSet<>());
         elements.put(HEAL, new HashSet<>());
         elements.put(HEALOVERTIME, new HashSet<>());
+        elements.put(BREAKABLE_WALL, new HashSet<>());
     }
 
     /**

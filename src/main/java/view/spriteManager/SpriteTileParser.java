@@ -1,5 +1,6 @@
 package view.spriteManager;
 
+import model.game.Biom;
 import model.game.Game;
 import model.game.Level;
 import view.Painter;
@@ -129,5 +130,21 @@ public class SpriteTileParser {
 
     public static void reloadFirstBackground() {
         imageslevelCurrent = imageslevelStock.clone();
+    }
+
+    public static BiomLevel getBiomFromEnum(Biom b) {
+        switch ( b) {
+            case STATION_PASS:
+                return STATION_BIOM;
+            case DARK_WASTLAND:
+                return DARK_BIOM;
+            case TEMPORAL_TOWER:
+                return TEMPORAL_BIOM;
+            case ABYSSE:
+                return ABYSSE;
+            case MURKY_FOREST:
+            default:
+                return MURKY_BIOM;
+        }
     }
 }

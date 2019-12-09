@@ -12,6 +12,7 @@ import model.game.GameStatement;
 import view.Engine;
 import view.Painter;
 import view.spriteManager.SpriteTileParser;
+import view.spriteManager.sprite.BreakableWall;
 import view.spriteManager.sprite.oriented.Hero;
 import view.spriteManager.sprite.oriented.OrientedSprite;
 import view.spriteManager.sprite.oriented.Zombie;
@@ -43,6 +44,7 @@ public class DrawGame implements DrawMode {
     private BufferedImage wildRoseSprite;
     private BufferedImage healTile;
     private BufferedImage healOverTimeTile;
+    private BreakableWall breakableWallSprite;
 
     /**
      * Level picture background
@@ -71,6 +73,7 @@ public class DrawGame implements DrawMode {
             wildRoseSprite = SpriteTileParser.getWildRoseSprite();
             healTile = SpriteTileParser.getHealTileSprite();
             healOverTimeTile = SpriteTileParser.getOverTimeTileSprite();
+            breakableWallSprite = new BreakableWall(SpriteTileParser.getBiomFromEnum(g.getLevel().getBiomLevel()));
 
             levelBackground = SpriteTileParser.nextLevel();
 
@@ -185,6 +188,16 @@ public class DrawGame implements DrawMode {
                 lastMonsterPositionMap.put( gameStat.getMonster(p), p);
             }
         }
+
+        //Parcours des murs cassable
+        for (Position p : gameStat.getAllPosition(GameStatement.BREAKABLE_WALL)) {
+            g.drawImage(breakableWallSprite.getSprite(),( p.getX() + 1 ) * WORLD_UNIT, HEIGHT_ATH + ( p.getY() + 1 ) * WORLD_UNIT , null);
+            //drawHp(g, p, gameStat.getMonster(p).getHp(), ImmovableMonster.PV_BASE);
+            if(iFrame == -1){
+                lastMonsterPositionMap.put( gameStat.getMonster(p), p);
+            }
+        }
+
     }
 
     /**
@@ -470,4 +483,7 @@ public class DrawGame implements DrawMode {
         lastMonsterPositionMap.clear();
     }
 
+    public void updateBreakableWall() {
+        this.breakableWallSprite.setBiom(SpriteTileParser.getBiomFromEnum(this.game.getLevel().getBiomLevel()));
+    }
 }
