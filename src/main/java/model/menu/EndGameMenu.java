@@ -13,6 +13,6 @@ public class EndGameMenu extends AbstractMenu {
     }
 
     public String getText(){
-        return "You Win !";
+        return "YOU WIN !";
     }
 }
