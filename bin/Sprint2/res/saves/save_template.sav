@@ -1,3 +1,0 @@
-TIMER:<timeLeft>
-HERO:<x>,<y>,<hp>,<atk>
-*[MONSTER:"monsterType",<x>,<y>,<hp>,<atk>]

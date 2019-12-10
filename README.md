@@ -77,8 +77,9 @@ Pour ce faire il suffit de :
 3. Puis executer le jar généré avec la commande `java -jar .\target\ACL_2019_LRC-*.0-SNAPSHOT.jar`
 
 ## Exécuter le projet 
-1. Récupérer dans le dossier **/bin** le dossier du sprint voulu, le dernier Sprint est la version la plus récente du projet
-2. Puis exécuter le jar du dossier récupéré avec la commande `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
+1. Récupérer dans le dossier **/bin** le fichier *ACL_2019_LRC-\*.0-SNAPSHOT.zip* du sprint voulu, le dernier Sprint est la version la plus récente du projet
+2. Décompresser ce fichier
+3. Puis exécuter le jar se trouvant dans le  `java -jar ACL_2019_LRC-*.0-SNAPSHOT.jar`
 
 > *A partir du Sprint2 inclus, vérifier que le jar executé est à côté du dossier *res* contenant toutes les ressources du projet*
 
