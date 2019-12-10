@@ -5,5 +5,6 @@ public enum Biom {
     STATION_PASS,
     TEMPORAL_TOWER,
     DARK_WASTLAND,
-    ABYSSE
+    ABYSSE,
+    TEST
 }

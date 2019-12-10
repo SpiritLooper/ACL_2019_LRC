@@ -39,12 +39,13 @@ Pour ce faire il suffit de :
 4. Enregistrer ce code dans un fichier *nom_fichier.lyt* dans le dossier `res/saves/`
 5. Ajouter dans le fichier `res/saves/game.lyt`  le nom du fichier que vous venez de créer en pensant bien de mettre à jour le nombre de __LEVEL:__*X*
 6. Mentionner le champ BIOM dans le fichier *nom_fichier.lyt* avec le biom que vous souhaitez avoir.
-> Il existe 5 types de Biom :
+> Il existe 6 types de Biom :
 > - *STATION_PASS*
 > - *MURKY_FOREST*
 > - *DARK_WASTLAND*
 > - *TEMPORAL_TOWER*
 > - *ABYSSE*
+> - *TEST*
 
 > *Attention /!\ : Il n'est possible que de créer des niveaux 10 x 10 cases*
 

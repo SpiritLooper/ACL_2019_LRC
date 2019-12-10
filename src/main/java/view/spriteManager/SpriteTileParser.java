@@ -36,6 +36,7 @@ public class SpriteTileParser {
     private final static BiomLevel STATION_BIOM = new StationPass();
     private final static BiomLevel TEMPORAL_BIOM = new TemporalTower();
     private final static BiomLevel ABYSSE = new Abysse();
+    private final static BiomLevel TEST_DONJON = new TestBiom();
 
     private static ImageLevelLinked imageslevelCurrent;
     private static ImageLevelLinked imageslevelStock;
@@ -71,6 +72,9 @@ public class SpriteTileParser {
                     break;
                 case ABYSSE:
                     biom = ABYSSE;
+                    break;
+                case TEST:
+                    biom = TEST_DONJON;
                     break;
                 case MURKY_FOREST:
                 default:
@@ -142,6 +146,8 @@ public class SpriteTileParser {
                 return TEMPORAL_BIOM;
             case ABYSSE:
                 return ABYSSE;
+            case TEST:
+                return TEST_DONJON;
             case MURKY_FOREST:
             default:
                 return MURKY_BIOM;
