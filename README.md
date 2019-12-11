@@ -1,4 +1,4 @@
-# ACL_2019_LRC
+# ACL_2019_LRC : Sad Eevee ![GitHub Logo](/res/textures/logo.png)
 Projet Analyse et Conception de Logiciel - Groupe : Julien Claisse / Pierre Gouth / Nicolas Kleinhentz / Emilien Lambert
 
 ## Présentation
