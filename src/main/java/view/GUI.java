@@ -42,14 +42,14 @@ public class GUI {
         this.panel.addKeyListener(new InputManager(gameController));
 
         f.pack();
-        f.setTitle("Sad eevee");
+        f.setTitle("Sad Eevee");
         f.setVisible(true);
         f.getContentPane().setFocusable(true);
         f.getContentPane().requestFocus();
         f.setResizable(false);
 
         try {
-            f.setIconImage(SpriteTileParser.resizeBufferedImageAsWorldUnit(ImageIO.read(new File("res/textures/hero2.png"))));
+            f.setIconImage(SpriteTileParser.resizeBufferedImageAsWorldUnit(ImageIO.read(new File("res/textures/logo.png"))));
         } catch (IOException e) {
             System.err.println("Can't get icon image");
             e.printStackTrace();
